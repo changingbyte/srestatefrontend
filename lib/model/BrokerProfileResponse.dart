@@ -44,34 +44,38 @@ class BrokerProfileData {
       this.contacts, 
       this.estates, 
       this.area, 
-      this.estateType,});
+      this.estate_type,});
 
-  BrokerProfileData.fromJson(dynamic json) {
-    name = json['name'];
-    mobile = json['mobile'];
-    balance = json['balance'];
-    contacts = json['contacts'];
-    estates = json['estates'];
-    area = json['area'] != null ? json['area'].cast<String>() : [];
-    estateType = json['estate_type'] != null ? json['estate_type'].cast<String>() : [];
-  }
   String? name;
   String? mobile;
   int? balance;
   int? contacts;
   int? estates;
   List<String>? area;
-  List<String>? estateType;
+  List<String>? estate_type;
+
+
+  factory BrokerProfileDataResponse.fromJson(Map<String, dynamic> json) => BrokerProfileDataResponse(
+    name: json["name"] == null ? null : json["name"],
+    mobile: json["mobile"] == null ? null : json["mobile"],
+    balance: json["balance"] == null ? null : json["balance"],
+    contacts: json["contacts"] == null ? null : json["contacts"],
+    estates: json["estates"] == null ? null : json["estates"],
+    area: json["area"] == null ? null : List<String>.from(json["area"].map((x) => x)),
+    estate_type: json["estate_type"] == null ? null : List<String>.from(json["estate_type"].map((x) => x)),
+  );
+  
 
   Map<String, dynamic> toJson() {
     final map = <String, dynamic>{};
+    
     map['name'] = name;
     map['mobile'] = mobile;
     map['balance'] = balance;
     map['contacts'] = contacts;
     map['estates'] = estates;
     map['area'] = area;
-    map['estate_type'] = estateType;
+    map['estate_type'] = estate_type;
     return map;
   }
 
