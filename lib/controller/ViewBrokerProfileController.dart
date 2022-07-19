@@ -19,6 +19,11 @@ class ViewBrokerProfileController extends GetxController{
 
 
 
+
+
+
+
+
   Future<BrokerProfileResponse> brokerProfileApi({required String token}) async {
     try{
 
