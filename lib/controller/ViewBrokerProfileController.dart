@@ -1,6 +1,11 @@
+import 'package:croma_brokrage/model/BrokerProfileResponse.dart';
+import 'package:croma_brokrage/model/ChatProfileResponse.dart';
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
+
+import '../model/BrokerProfileResponse.dart';
+import '../model/BrokerProfileResponse.dart';
 import '../model/BrokerProfileResponse.dart';
 import '../utils/AppCommonFunction.dart';
 import '../utils/AppString.dart';
@@ -8,7 +13,7 @@ import '../utils/AppString.dart';
 
 class ViewBrokerProfileController extends GetxController{
   bool isDataLoading = true;
-  late BrokerProfileResponse BrokerProfileResponse;
+  BrokerProfileResponse BrokerProfileResponse;
   BrokerProfileData? brokerProfileData;
 
 
