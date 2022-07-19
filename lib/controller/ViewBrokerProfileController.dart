@@ -17,13 +17,6 @@ class ViewBrokerProfileController extends GetxController{
   BrokerProfileData? brokerProfileData;
 
 
-
-
-
-
-
-
-
   Future<BrokerProfileResponse> brokerProfileApi({required String token}) async {
     try{
 
@@ -76,3 +69,5 @@ class ViewBrokerProfileController extends GetxController{
   }
 
 }
+
+
