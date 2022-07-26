@@ -55,7 +55,7 @@ class BrokerProfileData {
   List<String>? estate_type;
 
 
-  factory BrokerProfileDataResponse.fromJson(Map<String, dynamic> json) => BrokerProfileDataResponse(
+  factory BrokerProfileData.fromJson(Map<String, dynamic> json) => BrokerProfileData(
     name: json["name"] == null ? null : json["name"],
     mobile: json["mobile"] == null ? null : json["mobile"],
     balance: json["balance"] == null ? null : json["balance"],

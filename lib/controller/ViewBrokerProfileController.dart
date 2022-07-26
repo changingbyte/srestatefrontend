@@ -8,7 +8,7 @@ import '../utils/AppString.dart';
 
 class ViewBrokerProfileController extends GetxController{
   bool isDataLoading = true;
-  late BrokerProfileResponse BrokerProfileResponse;
+  late BrokerProfileResponse brokerProfileResponse;
   BrokerProfileData? brokerProfileData;
 
 

@@ -71,21 +71,59 @@ class _AddEstateScreenUIState extends State<AddEstateScreenUI> {
 
                             FlipCard(
                               key: flatKey,
-                              front: EstateTypeContainer(text: "FLAT",color: Colors.red,controller: controller),
-                              back: EstateTypeContainer(text: "FLAT",color: Colors.red,controller: controller),
+                              front: EstateTypeContainer(text: "FLAT",color: Colors.red,controller: controller,bgColor: Colors.white),
+                              back: EstateTypeContainer(text: "FLAT",color: Colors.red,controller: controller,bgColor: AppColors.redColor),
                               onFlip: (){
+                                if(!flatKey.currentState!.isFront){
+                                  controller.estateType = "FLAT";
+                                }
+                                else{
+                                  controller.estateType = "";
+                                }
+
+                                if(!shopKey.currentState!.isFront){shopKey.currentState!.toggleCard();}
+                                if(!bunglowKey.currentState!.isFront){bunglowKey.currentState!.toggleCard();}
+                                if(!rowHouseKey.currentState!.isFront){rowHouseKey.currentState!.toggleCard();}
+                                if(!landKey.currentState!.isFront){landKey.currentState!.toggleCard();}
+                                if(!plotKey.currentState!.isFront){plotKey.currentState!.toggleCard();}
                               },
                             ),
+
                             FlipCard(
                               key: shopKey,
-                              front: EstateTypeContainer(text: "Shop",color: Colors.red,controller: controller),
-                              back: EstateTypeContainer(text: "Shop",color: Colors.red,controller: controller),
+                              front: EstateTypeContainer(text: "Shop",color: Colors.red,controller: controller,bgColor: Colors.white),
+                              back: EstateTypeContainer(text: "Shop",color: Colors.red,controller: controller,bgColor: AppColors.redColor),
                               onFlip: (){
+                                if(!shopKey.currentState!.isFront){
+                                  controller.estateType = "Shop";
+                                }
+                                else{
+                                  controller.estateType = "";
+                                }
+                                if(!flatKey.currentState!.isFront){flatKey.currentState!.toggleCard();}
+                                if(!bunglowKey.currentState!.isFront){bunglowKey.currentState!.toggleCard();}
+                                if(!rowHouseKey.currentState!.isFront){rowHouseKey.currentState!.toggleCard();}
+                                if(!landKey.currentState!.isFront){landKey.currentState!.toggleCard();}
+                                if(!plotKey.currentState!.isFront){plotKey.currentState!.toggleCard();}
                               },
                             ),
                             FlipCard(
-                                front: EstateTypeContainer(text: "Bunglow",color: Colors.red,controller: controller),
-                                back: EstateTypeContainer(text: "Bunglow",color: Colors.red,controller: controller),
+                                key: bunglowKey,
+                                front: EstateTypeContainer(text: "Bunglow",color: Colors.red,controller: controller,bgColor: Colors.white),
+                                back: EstateTypeContainer(text: "Bunglow",color: Colors.red,controller: controller,bgColor: AppColors.redColor),
+                                onFlip: (){
+                                  if(!bunglowKey.currentState!.isFront){
+                                    controller.estateType = "Bunglow";
+                                  }
+                                  else{
+                                    controller.estateType = "";
+                                  }
+                                  if(!flatKey.currentState!.isFront){flatKey.currentState!.toggleCard();}
+                                  if(!shopKey.currentState!.isFront){shopKey.currentState!.toggleCard();}
+                                  if(!rowHouseKey.currentState!.isFront){rowHouseKey.currentState!.toggleCard();}
+                                  if(!landKey.currentState!.isFront){landKey.currentState!.toggleCard();}
+                                  if(!plotKey.currentState!.isFront){plotKey.currentState!.toggleCard();}
+                                },
                             ),
 
                           ],
@@ -97,16 +135,58 @@ class _AddEstateScreenUIState extends State<AddEstateScreenUI> {
                           mainAxisAlignment: MainAxisAlignment.spaceAround,
                           children: [
                             FlipCard(
-                                front: EstateTypeContainer(text: "Row house",color: Colors.red,controller: controller),
-                                back: EstateTypeContainer(text: "Row house",color: Colors.red,controller: controller),
+                              key: rowHouseKey,
+                                front: EstateTypeContainer(text: "Row house",color: Colors.red,controller: controller,bgColor: Colors.white),
+                                back: EstateTypeContainer(text: "Row house",color: Colors.red,controller: controller,bgColor: AppColors.redColor),
+                                onFlip: (){
+                                  if(!rowHouseKey.currentState!.isFront){
+                                    controller.estateType = "Row house";
+                                  }
+                                  else{
+                                    controller.estateType = "";
+                                  }
+                                  if(!flatKey.currentState!.isFront){flatKey.currentState!.toggleCard();}
+                                  if(!bunglowKey.currentState!.isFront){bunglowKey.currentState!.toggleCard();}
+                                  if(!shopKey.currentState!.isFront){shopKey.currentState!.toggleCard();}
+                                  if(!landKey.currentState!.isFront){landKey.currentState!.toggleCard();}
+                                  if(!plotKey.currentState!.isFront){plotKey.currentState!.toggleCard();}
+                                },
                             ),
                             FlipCard(
-                                front: EstateTypeContainer(text: "Land",color: Colors.red,controller: controller),
-                                back: EstateTypeContainer(text: "Land",color: Colors.red,controller: controller),
+                              key: landKey,
+                                front: EstateTypeContainer(text: "Land",color: Colors.red,controller: controller,bgColor: Colors.white),
+                                back: EstateTypeContainer(text: "Land",color: Colors.red,controller: controller,bgColor: AppColors.redColor),
+                              onFlip: (){
+                                if(!landKey.currentState!.isFront){
+                                  controller.estateType = "Land";
+                                }
+                                else{
+                                  controller.estateType = "";
+                                }
+                                if(!flatKey.currentState!.isFront){flatKey.currentState!.toggleCard();}
+                                if(!bunglowKey.currentState!.isFront){bunglowKey.currentState!.toggleCard();}
+                                if(!rowHouseKey.currentState!.isFront){rowHouseKey.currentState!.toggleCard();}
+                                if(!shopKey.currentState!.isFront){shopKey.currentState!.toggleCard();}
+                                if(!plotKey.currentState!.isFront){plotKey.currentState!.toggleCard();}
+                              },
                             ),
                             FlipCard(
-                                front: EstateTypeContainer(text: "Plot",color: Colors.red,controller: controller),
-                                back: EstateTypeContainer(text: "Plot",color: Colors.red,controller: controller),
+                              key: plotKey,
+                                front: EstateTypeContainer(text: "Plot",color: Colors.red,controller: controller,bgColor: Colors.white),
+                                back: EstateTypeContainer(text: "Plot",color: Colors.red,controller: controller,bgColor: AppColors.redColor),
+                              onFlip: (){
+                                if(!plotKey.currentState!.isFront){
+                                  controller.estateType = "Plot";
+                                }
+                                else{
+                                  controller.estateType = "";
+                                }
+                                if(!flatKey.currentState!.isFront){flatKey.currentState!.toggleCard();}
+                                if(!bunglowKey.currentState!.isFront){bunglowKey.currentState!.toggleCard();}
+                                if(!rowHouseKey.currentState!.isFront){rowHouseKey.currentState!.toggleCard();}
+                                if(!shopKey.currentState!.isFront){shopKey.currentState!.toggleCard();}
+                                if(!landKey.currentState!.isFront){landKey.currentState!.toggleCard();}
+                              },
                             ),
                           ],
                         ),
@@ -214,16 +294,17 @@ class _AddEstateScreenUIState extends State<AddEstateScreenUI> {
     );
   }
 
-  Widget EstateTypeContainer({required String text,required Color color,required AddEstateController controller}){
+  Widget EstateTypeContainer({required String text,required Color color,required AddEstateController controller,required Color bgColor}){
     return Container(
       height: 30,
       width: 100,
       decoration: BoxDecoration(
+          color: bgColor,
           border: Border.all(color: color),
           borderRadius: BorderRadius.all(Radius.circular(20))
       ),
       child: Center(
-        child: Txt(text,fontSize: 15,color: AppColors.redColor,fontWeight: FontWeight.w600),
+        child: Txt(text,fontSize: 15,color:bgColor == AppColors.redColor ? Colors.white : AppColors.redColor ,fontWeight: FontWeight.w600),
       ),
     );
   }
@@ -243,9 +324,8 @@ class _AddEstateScreenUIState extends State<AddEstateScreenUI> {
       estate_status: addEstateController.estateStatusVal,
       city: "surat",
       no_of_bedroom: noOfBedroomController.text,
-      estate_type: "flat"
+      estate_type: addEstateController.estateType
     ).then((resposne) {
-
 
       if(resposne.success == true){
         AppCommonFunction.flutterToast(resposne.message, true);
@@ -271,6 +351,14 @@ class _AddEstateScreenUIState extends State<AddEstateScreenUI> {
     noOfBedroomController.clear();
     addEstateController.updateEstateStatusVal("Status");
   }
-  
+
+
+  cardCondition(){
+    if(!shopKey.currentState!.isFront){shopKey.currentState!.toggleCard();}
+    if(!bunglowKey.currentState!.isFront){bunglowKey.currentState!.toggleCard();}
+    if(!rowHouseKey.currentState!.isFront){rowHouseKey.currentState!.toggleCard();}
+    if(!landKey.currentState!.isFront){landKey.currentState!.toggleCard();}
+    if(!plotKey.currentState!.isFront){plotKey.currentState!.toggleCard();}
+  }
   
 }

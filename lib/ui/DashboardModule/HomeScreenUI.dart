@@ -175,6 +175,7 @@ class _HomeScreenUIState extends State<HomeScreenUI> {
 
       },
       child: Card(
+        elevation: 10,
         color: homeController.myMultiSelectController.isSelected(index)
             ? Colors.grey.shade400
             : Colors.white,
@@ -183,12 +184,9 @@ class _HomeScreenUIState extends State<HomeScreenUI> {
         ),
         child: InkWell(
           onTap: () {
-
-            Get.to(() =>
-                PropertyDetailsScreenUI(
-                  estateList: controller.estateList[index],
-                )
-            );
+              Get.to(() =>
+                  PropertyDetailsScreenUI(estateList: controller.estateList[index],),
+              );
           },
           child: Container(
             width: Get.width,
@@ -212,20 +210,15 @@ class _HomeScreenUIState extends State<HomeScreenUI> {
 
                       SizedBox(height: 13,),
 
-                      ListCardContainer(icon: Icons.perm_identity_rounded,text: controller.estateList[index].id.toString()),
-
                       ListCardContainer(icon: Icons.location_on,text: controller.estateList[index].society.toString()),
 
                       ListCardContainer(icon: Icons.home_work,text: controller.estateList[index].area.toString()),
 
                       ListCardContainer(icon: Icons.photo_size_select_small_outlined,text: " ${controller.estateList[index].floorSpace.toString()}"),
 
-                      ListCardContainer(icon: Icons.photo_size_select_small_outlined,text: " ${controller.estateList[index].area.toString()}"),
+                      ListCardContainer(icon: Icons.photo_size_select_small_outlined,text: " ${controller.estateList[index].estateType.toString()}"),
 
-                    controller.estateList[index].brokerMobile == null
-                      ? Container()
-                      : ListCardContainer(icon: Icons.call,text: controller.estateList[index].brokerMobile.toString()),
-
+                      ListCardContainer(icon: Icons.photo_size_select_small_outlined,text: " ${controller.estateList[index].estateStatus.toString()}"),
 
                     ],
                   ),
@@ -271,7 +264,6 @@ class _HomeScreenUIState extends State<HomeScreenUI> {
       ],
     );
   }
-
 
 
 
@@ -376,57 +368,6 @@ class _HomeScreenUIState extends State<HomeScreenUI> {
 
 
                           SizedBox(height: 10),
-
-
-                         /* Padding(
-                            padding: const EdgeInsets.only(top: 8.0,left: 8),
-                            child: Txt("Budget (Lakhs)"),
-                          ),
-
-
-
-                          SfRangeSlider(
-                            min: controller.filterBudgetList.first.toInt(),
-                            max: controller.filterBudgetList.last.toInt(),
-                            values: budgetValue,
-                            interval: controller.intervalValue.toDouble(),
-                            showTicks: true,
-                            showLabels: true,
-                            enableTooltip: true,
-                            onChanged: (SfRangeValues values){
-                              setState(() {
-                                _values = values;
-                              });
-                            },
-                          ),
-*/
-
-
-
-                          /*SizedBox(height: 15),
-
-
-                          Padding(
-                            padding: const EdgeInsets.only(top: 8.0,left: 8),
-                            child: Txt("Size (SQFT)"),
-                          ),
-
-                          SfRangeSlider(
-                            min: 0.0,
-                            max: 100.0,
-                            values: _values,
-                            interval: 20,
-                            showTicks: true,
-                            showLabels: true,
-                            enableTooltip: true,
-
-                            onChanged: (SfRangeValues values){
-                              setState(() {
-                                _values = values;
-                              });
-                            },
-                          ),*/
-
 
                           
 

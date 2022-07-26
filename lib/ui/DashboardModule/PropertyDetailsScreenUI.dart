@@ -9,7 +9,9 @@ import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
 
+import '../../controller/HomeController.dart';
 import '../../model/EstateListResponse.dart';
+import '../../utils/AppCommonFunction.dart';
 import '../../widgets/Txt.dart';
 
 
@@ -25,8 +27,7 @@ class PropertyDetailsScreenUI extends StatefulWidget {
 }
 
 class _PropertyDetailsScreenUIState extends State<PropertyDetailsScreenUI> {
-
-
+  HomeController homeController = Get.put(HomeController());
   CarouselController carouselController = CarouselController();
 
   @override
@@ -41,9 +42,6 @@ class _PropertyDetailsScreenUIState extends State<PropertyDetailsScreenUI> {
                 carouselController: carouselController,
                 items: [
                   Image.asset(AppString.imagesAssetPath+"ic_flat_img.jpg",fit: BoxFit.cover,),
-                  /*Image.asset(AppString.imagesAssetPath+"ic_flat_img.jpg",fit: BoxFit.cover,),
-                  Image.asset(AppString.imagesAssetPath+"ic_flat_img.jpg",fit: BoxFit.cover,),
-                  Image.asset(AppString.imagesAssetPath+"ic_flat_img.jpg",fit: BoxFit.cover,),*/
                 ],
                 options: CarouselOptions(
                   height: Get.height/2,
@@ -65,8 +63,6 @@ class _PropertyDetailsScreenUIState extends State<PropertyDetailsScreenUI> {
                 ),
               ),
 
-              /*Image.asset(AppString.imagesAssetPath+"ic_flat_img.jpg",
-                height: Get.height/2,width: Get.width,fit: BoxFit.cover,),*/
 
               Padding(
                 padding: const EdgeInsets.all(8.0),
@@ -89,11 +85,9 @@ class _PropertyDetailsScreenUIState extends State<PropertyDetailsScreenUI> {
                             Row(
                               mainAxisAlignment: MainAxisAlignment.spaceAround,
                               children: [
-
                                 CardTextContainer(icon: Icons.photo_size_select_small_outlined,text: widget.estateList.floorSpace.toString()),
 
                                 CardTextContainer(icon: Icons.location_on,text: widget.estateList.city.toString()),
-
                               ],
                             ),
 
@@ -105,17 +99,6 @@ class _PropertyDetailsScreenUIState extends State<PropertyDetailsScreenUI> {
                                 CardTextContainer(icon: FontAwesomeIcons.layerGroup,text: widget.estateList.area.toString()),
 
                                 CardTextContainer(icon: Icons.home_work,text: widget.estateList.society.toString()),
-
-                              ],
-                            ),
-
-                            SizedBox(height: 5,),
-
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceAround,
-                              children: [
-                                CardTextContainer(icon: Icons.account_circle,text: widget.estateList.brokerName.toString()),
-                                CardTextContainer(icon: Icons.call,text: widget.estateList.brokerMobile.toString()),
                               ],
                             ),
 
@@ -160,18 +143,17 @@ class _PropertyDetailsScreenUIState extends State<PropertyDetailsScreenUI> {
 
                     Center(
                       child: RoundedButtonWidget(
-                        text: "Book",
+                        text: "Share",
                         height: 45,
                         width: Get.width/1.5,
                         onPressed: () {
-
+                          AppCommonFunction.flutterToast("Navigate", true);
+                          Get.to(()=> PropertyDetailsScreenUI(estateList: widget.estateList,),);
                         },
                       ),
                     ),
 
-                    SizedBox(
-                      height: 10,
-                    ),
+                    SizedBox(height: 10),
 
                     Center(
                       child: RoundedButtonWidget(

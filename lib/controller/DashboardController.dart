@@ -17,9 +17,6 @@ class DashboardController extends GetxController{
     else if(index == 2){
       appBarTitle = "Add Balance";
     }
-    else if(index == 3){
-      appBarTitle = "Message Query";
-    }
     else{
       appBarTitle = "Profile";
     }

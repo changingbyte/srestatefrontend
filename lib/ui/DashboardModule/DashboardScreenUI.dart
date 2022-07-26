@@ -115,7 +115,6 @@ class _DashboardScreenUIState extends State<DashboardScreenUI> {
                 BottomBarItem(text: "Home",icon: Icons.home),
                 BottomBarItem(text: "Search",icon: Icons.search),
                 BottomBarItem(text: "New",icon: Icons.add_box),
-                BottomBarItem(text: "Query",icon: Icons.queue_sharp),
                 BottomBarItem(text: "Profile",icon: Icons.account_box),
               ],
               onTap: (index) {
@@ -128,7 +127,6 @@ class _DashboardScreenUIState extends State<DashboardScreenUI> {
                 HomeScreenUI(),
                 SearchModuleScreenUI(),
                 MessageBalanceScreenUI(),
-                QueryScreenUI(),
                 UserProfileScreenUI(),
 
               ],

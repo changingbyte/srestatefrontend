@@ -1,7 +1,11 @@
+import 'package:croma_brokrage/ui/AreaPropertyScreenUI.dart';
+import 'package:croma_brokrage/widgets/RoundedButtonWidget.dart';
 import 'package:croma_brokrage/widgets/Txt.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
+import '../../controller/ViewBrokerProfileController.dart';
+import '../../helper/PreferenceHelper.dart';
 import '../../utils/AppCommonFunction.dart';
 import '../../utils/AppString.dart';
 import '../ChatModule/ChatListScreenUI.dart';
@@ -29,127 +33,160 @@ class _UserProfileScreenUIState extends State<UserProfileScreenUI> {
       child: Scaffold(
         body: SingleChildScrollView(
           child: Center(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
+            child: Container(
+              height: Get.height,
+              width: Get.width,
+              child: GetBuilder(
+                init: ViewBrokerProfileController(),
+                builder: (ViewBrokerProfileController controller) {
+                  return controller.isDataLoading
+                    ? Center(child: AppCommonFunction.circularIndicator(),)
+                    : Column(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
 
-                SizedBox(height: 20),
+                        SizedBox(height: 20),
 
-                Container(
-                  padding: EdgeInsets.only(left: 20),
-                  alignment: Alignment.centerLeft,
-                  child: Txt("My Profile",fontSize: 24,fontWeight: FontWeight.bold)),
-
-
-                SizedBox(height: 10),
-                InkWell(
-                  onTap: () {
-                    Get.to(()=> ContactListScreenUI() );
-                  },
-                  child: CircleAvatar(
-                    radius: 60,
-                  ),
-                ),
-                SizedBox(height: 40),
-
-                Txt(widget.name,fontSize: 22,fontWeight: FontWeight.w600),
-                SizedBox(height: 8),
-                Txt(widget.mobile,fontSize: 20,fontWeight: FontWeight.w500),
-
-                SizedBox(height: 15),
-
-                Container(
-                  decoration: BoxDecoration(
-                    color: Color(0xFFFC8862),
-                    //borderRadius: BorderRadius.all(Radius.circular(10))
-                  ),
-                  padding: EdgeInsets.all(10),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceAround,
-                    children: [
-                      StateContainer(title: "Estates", value: widget.estates),
-                      StateContainer(title: "Contacts", value: widget.contacts),
-                      StateContainer(title: "Balance", value: widget.balance),
-                    ],
-                  ),
-                ),
+                        Container(
+                            padding: EdgeInsets.only(left: 20),
+                            alignment: Alignment.centerLeft,
+                            child: Txt("My Profile",fontSize: 24,fontWeight: FontWeight.bold)),
 
 
-                Container(
-                  alignment: Alignment.centerLeft,
-                    padding: EdgeInsets.only(left: 20),
-                  child: Txt("by Area",fontSize: 20,fontWeight: FontWeight.w600,)),
-
-                Container(
-                  height: 140,
-                  child: ListView.builder(
-                    scrollDirection: Axis.horizontal,
-                    itemCount: viewBrokerProfileController.brokerProfileData!.area!.length,
-                    itemBuilder: (context, index) {
-                      return Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: Card(
-                          elevation: 10,
-                          color: Colors.grey,
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(15.0),
+                        SizedBox(height: 10),
+                        InkWell(
+                          onTap: () {
+                            Get.to(()=> ContactListScreenUI() );
+                          },
+                          child: CircleAvatar(
+                            radius: 60,
                           ),
-                          child: Container(
-                            height: 140,
-                            width: 170,
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.all(Radius.circular(15)),
-                              image: DecorationImage(image: AssetImage(AppString.imagesBackgroundPath+"ic_area_bg.jpg",),fit: BoxFit.cover),
-                            ),
-                            child: Center(child: Txt("${viewBrokerProfileController.brokerProfileData!.area![index]}",fontSize: 30,fontWeight: FontWeight.w600,color: Colors.white)),
-                          ),
-
                         ),
-                      );
-                  },),
-                ),
+                        SizedBox(height: 40),
 
-                SizedBox(
-                  height: 15,
-                ),
+                        Txt(viewBrokerProfileController.brokerProfileData!.name.toString(),fontSize: 22,fontWeight: FontWeight.w600),
+                        SizedBox(height: 8),
+                        Txt(viewBrokerProfileController.brokerProfileData!.mobile.toString(),fontSize: 20,fontWeight: FontWeight.w500),
 
-                Container(
-                    alignment: Alignment.centerLeft,
-                    padding: EdgeInsets.only(left: 20),
-                    child: Txt("by Type",fontSize: 20,fontWeight: FontWeight.w600,)),
+                        SizedBox(height: 15),
 
-                Container(
-                  height: 140,
-                  child: ListView.builder(
-                    scrollDirection: Axis.horizontal,
-                    itemCount: viewBrokerProfileController.brokerProfileData!.estate_type!.length,
-                    itemBuilder: (context, index) {
-                      return Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: Card(
-                          elevation: 10,
-                          color: Colors.grey,
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(15.0),
+                        Container(
+                          decoration: BoxDecoration(
+                            color: Color(0xFFFC8862),
+                            //borderRadius: BorderRadius.all(Radius.circular(10))
                           ),
-                          child: Container(
-                            height: 140,
-                            width: 170,
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.all(Radius.circular(15)),
-                              image: DecorationImage(image: AssetImage(AppString.imagesBackgroundPath+"ic_area_bg.jpg",),fit: BoxFit.cover),
-                            ),
-                            child: Center(child: Txt("${viewBrokerProfileController.brokerProfileData!.estate_type![index]}",fontSize: 30,fontWeight: FontWeight.w600,color: Colors.white)),
+                          padding: EdgeInsets.all(10),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceAround,
+                            children: [
+                              StateContainer(title: "Estates", value: viewBrokerProfileController.brokerProfileData!.estates.toString()),
+                              StateContainer(title: "Contacts", value: viewBrokerProfileController.brokerProfileData!.contacts.toString()),
+                              StateContainer(title: "Balance", value: viewBrokerProfileController.brokerProfileData!.balance.toString()),
+                            ],
                           ),
-
                         ),
-                      );
-                  },),
-                ),
 
 
-              ]
+                        viewBrokerProfileController.brokerProfileData!.area!.isEmpty
+                            ? Container()
+                            : Container(
+                            alignment: Alignment.centerLeft,
+                            padding: EdgeInsets.only(left: 20),
+                            child: Txt("Area",fontSize: 20,fontWeight: FontWeight.w600,)),
+
+                        viewBrokerProfileController.brokerProfileData!.area!.isEmpty
+                            ? Container()
+                            : Container(
+                          height: 140,
+                          child: ListView.builder(
+                            scrollDirection: Axis.horizontal,
+                            itemCount: viewBrokerProfileController.brokerProfileData!.area!.length,
+                            itemBuilder: (context, index) {
+                              return Padding(
+                                padding: const EdgeInsets.all(8.0),
+                                child: Card(
+                                  elevation: 10,
+                                  color: Colors.grey,
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(15.0),
+                                  ),
+                                  child: Container(
+                                    height: 140,
+                                    width: 170,
+                                    decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.all(Radius.circular(15)),
+                                      image: DecorationImage(image: AssetImage(AppString.imagesBackgroundPath+"ic_area_bg.jpg",),fit: BoxFit.cover),
+                                    ),
+                                    child: Center(child: Txt("${viewBrokerProfileController.brokerProfileData!.area![index]}",fontSize: 30,fontWeight: FontWeight.w600,color: Colors.white)),
+                                  ),
+
+                                ),
+                              );
+                            },),
+                        ),
+
+                        SizedBox(height: 15,),
+
+                        viewBrokerProfileController.brokerProfileData!.estate_type!.isEmpty
+                            ? Container()
+                            : Container(
+                            alignment: Alignment.centerLeft,
+                            padding: EdgeInsets.only(left: 20),
+                            child: Txt("Type",fontSize: 20,fontWeight: FontWeight.w600,)),
+
+                        viewBrokerProfileController.brokerProfileData!.estate_type!.isEmpty
+                            ? Container()
+                            : Container(
+                          height: 140,
+                          child: ListView.builder(
+                            scrollDirection: Axis.horizontal,
+                            itemCount: viewBrokerProfileController.brokerProfileData!.estate_type!.length,
+                            itemBuilder: (context, index) {
+                              return Padding(
+                                padding: const EdgeInsets.all(8.0),
+                                child: Card(
+                                  elevation: 10,
+                                  color: Colors.grey,
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(15.0),
+                                  ),
+                                  child: Container(
+                                    height: 140,
+                                    width: 170,
+                                    decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.all(Radius.circular(15)),
+                                      image: DecorationImage(image: AssetImage(AppString.imagesBackgroundPath+"ic_type_bg.jpg",),fit: BoxFit.cover),
+                                    ),
+                                    child: Center(child: Txt("${viewBrokerProfileController.brokerProfileData!.estate_type![index]}",fontSize: 30,fontWeight: FontWeight.w600,color: Colors.white)),
+                                  ),
+
+                                ),
+                              );
+                            },),
+                        ),
+
+
+
+                        viewBrokerProfileController.brokerProfileData!.estate_type!.isEmpty && viewBrokerProfileController.brokerProfileData!.area!.isEmpty
+                          ? Expanded(
+                            child: Center(
+                              child: RoundedButtonWidget(height: 45, width: Get.width/2, text: "Please Enter details", onPressed: (){
+                                Get.offAll(()=> AreaPropertyScreenUI());
+                              }),
+                            ),
+                          )
+                          : Container(),
+
+                        SizedBox(height: 100),
+
+                      ]
+                  );
+                },
+
+              ),
             ),
+
+
           ),
         ),
       ),
@@ -168,7 +205,8 @@ class _UserProfileScreenUIState extends State<UserProfileScreenUI> {
 
   getBrokerProfile(){
     viewBrokerProfileController.progressDataLoading(true);
-    viewBrokerProfileController.chatProfileApi(token: PreferenceHelper().getUserData().authToken!,).then((value) {
+
+    viewBrokerProfileController.brokerProfileApi(token: PreferenceHelper().getUserData().authToken!,).then((value) {
 
       if(value != null){
         if(value.success.toString() == "true"){
@@ -180,7 +218,6 @@ class _UserProfileScreenUIState extends State<UserProfileScreenUI> {
         else{
           AppCommonFunction.flutterToast("Something went wrong", false);
         }
-
 
       }
       else{
