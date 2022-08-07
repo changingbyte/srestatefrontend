@@ -182,9 +182,9 @@ static circularIndicator(){
 }
 
 
-static noDataFound(){
+static noDataFound({String text = "No Data Found!"}){
     return Center(
-      child: Txt("No Data Found!",color: AppColors.primaryColor,fontSize: 20,fontWeight: FontWeight.bold),
+      child: Txt(text,color: AppColors.primaryColor,fontSize: 20,fontWeight: FontWeight.bold),
     );
 }
 

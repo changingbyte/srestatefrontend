@@ -1,4 +1,4 @@
-import 'package:croma_brokrage/ui/ChatModule/ChatListScreenUI.dart';
+import 'package:croma_brokrage/ui/ChatModule/ChatContactListScreenUI.dart';
 import 'package:croma_brokrage/ui/DashboardModule/UserProfileScreenUI.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -26,7 +26,7 @@ class _ProfileScreenUIState extends State<ProfileScreenUI> {
                 ElevatedButton(
                   child: Text("Chat List UI"),
                   onPressed: () {
-                    Get.to(()=> ContactListScreenUI() );
+                    Get.to(()=> ChatContactListScreenUI() );
                 },),
 
 

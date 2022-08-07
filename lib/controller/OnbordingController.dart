@@ -20,7 +20,7 @@ class OnBoardingController extends GetxController
 
 
  Future<NumberApiResponse> enterNumberApi({required String number,required String appSignature}) async {
-   try{
+   /*try{*/
      var jsonPayload = jsonEncode( { 'Mobile' : '$number', 'appString' : '$appSignature '  });
 
     http.Response response = await http.post(
@@ -59,14 +59,14 @@ class OnBoardingController extends GetxController
     }
 
 
-   }
+   /*}
    catch (e){
      progressDataLoading(false);
      AppCommonFunction.flutterToast(AppString.somethingWentWrong, false);
      print("ERROR  ::  $e");
      throw Exception(AppString.somethingWentWrong);
 
-   }
+   }*/
   }
 
 

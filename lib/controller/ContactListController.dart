@@ -20,11 +20,11 @@ class ContactListController extends GetxController{
     try{
 
       http.Response response = await http.get(
-          Uri.parse("http://srestateapi.herokuapp.com/chats/contactlist/"),
-          headers: {
-            //"Content-Type": "application/json",
-            "Authorization" : "Token $token"
-          },
+        Uri.parse("http://srestateapi.herokuapp.com/chats/contactlist/"),
+        headers: {
+          //"Content-Type": "application/json",
+          "Authorization" : "Token $token"
+        },
       ).timeout(
           Duration(seconds: 20),
           onTimeout: () async{

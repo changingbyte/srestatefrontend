@@ -110,6 +110,12 @@
       "languageVersion": "2.12"
     },
     {
+      "name": "contacts_service",
+      "rootUri": "file:///C:/flutter/.pub-cache/hosted/pub.dartlang.org/contacts_service-0.6.3",
+      "packageUri": "lib/",
+      "languageVersion": "2.12"
+    },
+    {
       "name": "convex_bottom_bar",
       "rootUri": "file:///C:/flutter/.pub-cache/hosted/pub.dartlang.org/convex_bottom_bar-3.0.0",
       "packageUri": "lib/",
@@ -172,6 +178,12 @@
     {
       "name": "flutter",
       "rootUri": "file:///C:/flutter/packages/flutter",
+      "packageUri": "lib/",
+      "languageVersion": "2.12"
+    },
+    {
+      "name": "flutter_datetime_picker",
+      "rootUri": "file:///C:/flutter/.pub-cache/hosted/pub.dartlang.org/flutter_datetime_picker-1.5.1",
       "packageUri": "lib/",
       "languageVersion": "2.12"
     },
@@ -386,6 +398,12 @@
       "languageVersion": "2.12"
     },
     {
+      "name": "modal_bottom_sheet",
+      "rootUri": "file:///C:/flutter/.pub-cache/hosted/pub.dartlang.org/modal_bottom_sheet-2.1.0",
+      "packageUri": "lib/",
+      "languageVersion": "2.17"
+    },
+    {
       "name": "multi_select_item",
       "rootUri": "file:///C:/flutter/.pub-cache/hosted/pub.dartlang.org/multi_select_item-1.0.3",
       "packageUri": "lib/",
@@ -458,6 +476,36 @@
       "languageVersion": "2.12"
     },
     {
+      "name": "permission_handler",
+      "rootUri": "file:///C:/flutter/.pub-cache/hosted/pub.dartlang.org/permission_handler-10.0.0",
+      "packageUri": "lib/",
+      "languageVersion": "2.15"
+    },
+    {
+      "name": "permission_handler_android",
+      "rootUri": "file:///C:/flutter/.pub-cache/hosted/pub.dartlang.org/permission_handler_android-10.0.0",
+      "packageUri": "lib/",
+      "languageVersion": "2.15"
+    },
+    {
+      "name": "permission_handler_apple",
+      "rootUri": "file:///C:/flutter/.pub-cache/hosted/pub.dartlang.org/permission_handler_apple-9.0.4",
+      "packageUri": "lib/",
+      "languageVersion": "2.15"
+    },
+    {
+      "name": "permission_handler_platform_interface",
+      "rootUri": "file:///C:/flutter/.pub-cache/hosted/pub.dartlang.org/permission_handler_platform_interface-3.7.0",
+      "packageUri": "lib/",
+      "languageVersion": "2.14"
+    },
+    {
+      "name": "permission_handler_windows",
+      "rootUri": "file:///C:/flutter/.pub-cache/hosted/pub.dartlang.org/permission_handler_windows-0.1.0",
+      "packageUri": "lib/",
+      "languageVersion": "2.12"
+    },
+    {
       "name": "petitparser",
       "rootUri": "file:///C:/flutter/.pub-cache/hosted/pub.dartlang.org/petitparser-4.4.0",
       "packageUri": "lib/",
@@ -492,6 +540,12 @@
       "rootUri": "file:///C:/flutter/.pub-cache/hosted/pub.dartlang.org/process-4.2.4",
       "packageUri": "lib/",
       "languageVersion": "2.14"
+    },
+    {
+      "name": "quiver",
+      "rootUri": "file:///C:/flutter/.pub-cache/hosted/pub.dartlang.org/quiver-3.1.0",
+      "packageUri": "lib/",
+      "languageVersion": "2.12"
     },
     {
       "name": "salomon_bottom_bar",
@@ -562,6 +616,12 @@
     {
       "name": "sms_autofill",
       "rootUri": "file:///C:/flutter/.pub-cache/hosted/pub.dartlang.org/sms_autofill-2.2.0",
+      "packageUri": "lib/",
+      "languageVersion": "2.12"
+    },
+    {
+      "name": "sms_otp_auto_verify",
+      "rootUri": "file:///C:/flutter/.pub-cache/hosted/pub.dartlang.org/sms_otp_auto_verify-2.1.0",
       "packageUri": "lib/",
       "languageVersion": "2.12"
     },
@@ -722,7 +782,7 @@
       "languageVersion": "2.16"
     }
   ],
-  "generated": "2022-07-24T08:35:08.806572Z",
+  "generated": "2022-08-07T09:41:20.760236Z",
   "generator": "pub",
   "generatorVersion": "2.17.1"
 }

@@ -19,7 +19,7 @@ class EstateListController extends GetxController{
 
 
       http.Response response = await http.post(
-        Uri.parse("http://srestateapi.herokuapp.com/api/v1/property/estate/filter/"),
+        Uri.parse("http://srestateapi.herokuapp.com/api/v1/property/estate/filter_query/"),
         headers: {
           "Content-Type": "application/json",
           "Authorization" : "Token $token"
@@ -63,7 +63,6 @@ class EstateListController extends GetxController{
       AppCommonFunction.flutterToast(AppString.somethingWentWrong, false);
       print("ERROR  ::  $e");
       throw Exception(AppString.somethingWentWrong);
-
     }
   }
 

@@ -4,8 +4,12 @@ import 'dart:convert';
 
 import 'package:croma_brokrage/helper/PreferenceHelper.dart';
 import 'package:croma_brokrage/ui/ChatModule/ViewProfileScreenUI.dart';
+import 'package:croma_brokrage/ui/DashboardModule/DashboardScreenUI.dart';
 import 'package:croma_brokrage/utils/AppCommonFunction.dart';
+import 'package:croma_brokrage/widgets/TextFormInputField.dart';
+import 'package:croma_brokrage/widgets/WidgetButton.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_datetime_picker/flutter_datetime_picker.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:web_socket_channel/io.dart';
@@ -29,6 +33,7 @@ class ChatScreenUI extends StatefulWidget {
 
 class _ChatScreenUIState extends State<ChatScreenUI> {
   var channel;
+
   TextEditingController msgController  = TextEditingController();
   ChatController chatController = Get.put(ChatController());
   ScrollController scrollController = new ScrollController();
@@ -131,97 +136,63 @@ class _ChatScreenUIState extends State<ChatScreenUI> {
               return controller.isDataLoading
                 ? AppCommonFunction.circularIndicator()
                 : controller.chatDataList.isEmpty
-                  ? Center(child: AppCommonFunction.noDataFound(),)
-                  : Container(
-                      padding: EdgeInsets.all(8.0),
-                      child: Column(
-                        children: [
-                          Flexible(
-                            child:
+                  ? Column(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Expanded(child: Center(child: AppCommonFunction.noDataFound(text: "No Messages"),)),
+                      enterMessageContainer(),
+                    ],
+                  )
+                  : Stack(
+                    children: [
+                      Container(
+                          padding: EdgeInsets.all(8.0),
+                          child: Column(
+                            children: [
+                              Flexible(
+                                child: ListView.builder(
+                                  controller: scrollController,
+                                  itemCount: controller.chatDataList.length,
+                                  itemBuilder: (context,index){
+                                    return controller.chatDataList[index].sent!
+                                        ? Row(
+                                      mainAxisAlignment: MainAxisAlignment.end,
+                                      children: [
+                                        Padding(
+                                          padding: const EdgeInsets.only(top: 10.0),
+                                          child: Container(
+                                            constraints: BoxConstraints(maxWidth: 230),
+                                            color: Colors.black54.withOpacity(0.045),
+                                            child: Wrap(
+                                              children: [
 
-                            /*
-                            ListView.builder(
-
-                              // Scroll Controller for functionality
-                              controller: scrollController,
-                              itemCount: 100,
-                              itemBuilder: (context, index) {
-                                return ListTile(
-                                  title: Text("Item ${index + 1}"),
-                                );
-                              },
-                            ),
-                            */
-
-
-
-                            ListView.builder(
-                              controller: scrollController,
-                              itemCount: controller.chatDataList.length,
-                              itemBuilder: (context,index){
-                                return controller.chatDataList[index].sent!
-                                    ? Row(
-                                  mainAxisAlignment: MainAxisAlignment.end,
-                                  children: [
-                                    Padding(
-                                      padding: const EdgeInsets.only(top: 10.0),
-                                      child: Container(
-                                        constraints: BoxConstraints(maxWidth: 230),
-                                        color: Colors.black54.withOpacity(0.045),
-                                        child: Wrap(
-                                          children: [
-
-                                            /*
-                                            Container(
-                                              alignment: Alignment.topRight,
-                                              padding: const EdgeInsets.all(6.0),
-                                              child:
-                                              msgData[index].attachment.isNotEmpty
-                                                  ? InkWell(
-                                                onTap: () {
-                                                  Navigator.push(
-                                                      context, MaterialPageRoute(builder: (context) =>
-                                                      ViewImageScreenUi(imageList: bytes,index: index,fileType: "memory",) ));
-                                                },
-                                                child: Image.memory(
-                                                  bytes[index],
-                                                  width: 180,
-                                                  height: 200,
-                                                  fit: BoxFit.fill,
+                                              Container(
+                                                padding: const EdgeInsets.all(2.0),
+                                                alignment: Alignment.bottomRight,
+                                                child:Text("${controller.chatDataList[index].description}",
+                                                  style: TextStyle(color: Colors.black),
                                                 ),
-                                              )
-                                                  : Container(),
-                                            ),
-                                             */
-
-                                            Container(
-                                              padding: const EdgeInsets.all(2.0),
-                                              alignment: Alignment.bottomRight,
-                                              child:Text("${controller.chatDataList[index].description}",
-                                                style: TextStyle(color: Colors.black),
                                               ),
-                                            ),
 
-
-                                            Container(
-                                              padding: const EdgeInsets.all(2.0),
-                                              alignment: Alignment.bottomLeft,
-                                              child:Text("${AppCommonFunction.timestampToDatetime(controller.chatDataList[index].timestamp!)} ",
-                                                style: TextStyle(color: Colors.black54),
+                                              Container(
+                                                padding: const EdgeInsets.all(2.0),
+                                                alignment: Alignment.bottomLeft,
+                                                child:Text("${AppCommonFunction.timestampToDatetime(controller.chatDataList[index].timestamp!)} ",
+                                                  style: TextStyle(color: Colors.black54),
+                                                ),
                                               ),
-                                            ),
 
-                                          ],),
+                                            ],),
+                                        ),
                                       ),
-                                    ),
-                                    SizedBox(width: 5,),
-                                    CircleAvatar(
-                                      radius: 15,
-                                      backgroundColor: AppColors.primaryAccent ,
-                                      child: Icon(Icons.account_circle_sharp,color: Colors.white,size: 20, ),
-                                    ),
-                                  ],)
-                                    : Row(
+                                      SizedBox(width: 5,),
+                                      CircleAvatar(
+                                        radius: 15,
+                                        backgroundColor: AppColors.primaryAccent ,
+                                        child: Icon(Icons.account_circle_sharp,color: Colors.white,size: 20, ),
+                                      ),
+                                    ],)
+                                      : Row(
                                     mainAxisAlignment: MainAxisAlignment.start,
                                     children: [
                                       CircleAvatar(
@@ -238,8 +209,6 @@ class _ChatScreenUIState extends State<ChatScreenUI> {
                                           child: Wrap(
                                             children: [
 
-
-
                                               Container(
                                                 padding: const EdgeInsets.all(2.0),
                                                 alignment: Alignment.bottomLeft,
@@ -247,7 +216,6 @@ class _ChatScreenUIState extends State<ChatScreenUI> {
                                                   style: TextStyle(color: Colors.black),
                                                 ),
                                               ),
-
 
                                               Container(
                                                 padding: const EdgeInsets.all(2.0),
@@ -261,71 +229,20 @@ class _ChatScreenUIState extends State<ChatScreenUI> {
                                         ),
                                       ),
 
-
                                     ],);
-                              },
-                            ),
-
-                          ),
-                          Row(
-                            children:[
-                              Flexible(
-                                child: Container(
-                                    margin: EdgeInsets.only(top: 5),
-                                    alignment: Alignment.center,
-                                    child: Theme(
-                                      data: ThemeData(primaryColor: AppColors.primaryColor,),
-                                      child: TextFormField(
-                                        controller: msgController,
-                                        enableSuggestions: true,
-                                        minLines: 1,
-                                        maxLines: 5,
-                                        textCapitalization: TextCapitalization.sentences,
-                                        decoration: InputDecoration(
-                                          filled: true,
-                                          suffixIcon: InkWell(
-                                              onTap: () {
-                                                getImage();
-                                              },
-                                              child: Icon(Icons.attach_file,color: Colors.grey,)),
-                                          fillColor: Colors.grey[100],
-                                          hintText: "Enter your message..",
-                                          border: OutlineInputBorder(
-                                            borderRadius: BorderRadius.circular(30),
-                                          ),
-                                        ),
-                                        onChanged: (value) {
-
-                                        },
-                                      ),
-                                    )
-                                ),
-                              ),
-                              SizedBox(width: 10,),
-                              InkWell(
-                                onTap: () {
-
-                                  channel.sink.add(json.encode({"message":"${msgController.text}","sender" : "7984702696",'sent':'True'}));
-
-                                  msgController.clear();
-                                  setState((){});
-
                                 },
-                                child: Container(
-                                  margin: EdgeInsets.only(top: 5),
-                                  padding: EdgeInsets.all(10.0),
-                                  decoration: BoxDecoration(
-                                    shape: BoxShape.circle,
-                                    color: AppColors.primaryColor,
-                                  ),
-                                  child: Icon(Icons.send, color: Colors.white),
-                                ),
                               ),
-                            ],
-                          ),
+                           ),
+                              enterMessageContainer(),
                       ],
-                  ),
-              );
+                )),
+
+                      controller.isStackDataLoading
+                        ? AppCommonFunction.circularIndicator()
+                        : Container()
+
+                    ],
+                  );
             },
 
           ),
@@ -333,6 +250,207 @@ class _ChatScreenUIState extends State<ChatScreenUI> {
     );
   }
 
+  Widget enterMessageContainer(){
+    return GetBuilder(
+      builder: (ChatController controller) {
+        return Row(
+          children:[
+            Flexible(
+              child: Container(
+                  margin: EdgeInsets.only(top: 5),
+                  alignment: Alignment.center,
+                  child: Theme(
+                    data: ThemeData(primaryColor: AppColors.primaryColor,),
+                    child: TextFormField(
+                      controller: msgController,
+                      enableSuggestions: true,
+                      minLines: 1,
+                      maxLines: 5,
+                      textCapitalization: TextCapitalization.sentences,
+                      decoration: InputDecoration(
+                        filled: true,
+                        suffixIcon: InkWell(
+                            onTap: () {
+                              showModalBottomSheet(
+                                context: context,
+                                barrierColor: Colors.transparent,
+                                backgroundColor: Colors.grey,
+                                elevation: 10,
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(10.0),
+                                ),
+                                builder: (BuildContext context) {
+                                  return SizedBox(
+                                    height: 180,
+                                    child: Center(
+                                      child: Row(
+                                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                                        crossAxisAlignment: CrossAxisAlignment.center,
+                                        children: <Widget>[
+                                          InkWell(
+                                            onTap: (){
+                                              showModalBottomSheet(
+                                                context: context,
+
+                                                barrierColor: Colors.transparent,
+                                                backgroundColor: Colors.indigoAccent,
+                                                elevation: 10,
+                                                shape: RoundedRectangleBorder(
+                                                  borderRadius: BorderRadius.circular(10.0),
+                                                ),
+                                                builder: (BuildContext context) {
+                                                  return SizedBox(
+                                                    height: 250,
+                                                    child: Center(
+                                                      child: Column(
+                                                        children: <Widget>[
+
+                                                          SizedBox(height: 10),
+
+                                                          Txt("Set Reminder",fontWeight: FontWeight.w600,fontSize: 22),
+
+                                                          Padding(
+                                                            padding: EdgeInsets.only(top: 12,bottom: 12),
+                                                            child: Container(
+                                                              height: 40,
+                                                              width: Get.width/1.1,
+                                                              decoration: BoxDecoration(
+                                                                  color: Colors.blue,
+                                                                  borderRadius: BorderRadius.all(Radius.circular(11))
+                                                              ),
+                                                              child: Row(
+                                                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                                                children: [
+
+                                                                  Padding(
+                                                                    padding: EdgeInsets.only(left: 10.0),
+                                                                    child: Txt("${controller.selectedDateTime}",fontSize: 18,fontWeight: FontWeight.w500,),
+                                                                  ),
+
+                                                                  InkWell(
+                                                                    onTap: () {
+
+                                                                      DatePicker.showDateTimePicker(context,
+                                                                          showTitleActions: true, onConfirm: (date) {
+                                                                            var temp = date.toString();
+                                                                            print("TEMP  ::  $temp");
+                                                                            controller.selectedDateTime = temp.toString();
+                                                                          },
+                                                                          currentTime: DateTime.now()
+                                                                      );
+
+                                                                    },
+                                                                    child: Container(
+                                                                      height: 40,
+                                                                      padding: EdgeInsets.only(left: 12,right: 12),
+                                                                      decoration: BoxDecoration(
+                                                                          color: Colors.deepPurple,
+                                                                          borderRadius: BorderRadius.only(
+                                                                            bottomRight: Radius.circular(10),
+                                                                            topRight: Radius.circular(10),
+                                                                          )
+                                                                      ),
+                                                                      child: Icon(Icons.date_range_outlined,color: Colors.white),
+                                                                    ),
+                                                                  ),
+
+                                                                ],
+                                                              ),
+                                                            ),
+                                                          ),
+
+                                                          Padding(
+                                                            padding: const EdgeInsets.only(left: 15,right: 15),
+                                                            child: TextFormInputField(
+                                                              hintText: "Enter Message",
+                                                            ),
+                                                          ),
+
+                                                          SizedBox(height: 20),
+
+                                                          WidgetButton(
+                                                              text: "Submit",
+                                                              onPressed: (){}
+                                                          ),
+
+                                                          SizedBox(height: 10),
+
+                                                        ],
+                                                      ),
+                                                    ),
+                                                  );
+                                                },
+                                              );
+
+                                            },
+                                            child: Column(
+                                              mainAxisAlignment: MainAxisAlignment.center,
+                                              children: [
+                                                CircleAvatar(radius: 30),
+                                                SizedBox(height: 5),
+                                                Txt("Reminder",fontWeight: FontWeight.w600),
+                                              ],
+                                            ),
+                                          ),
+                                          InkWell(
+                                            onTap: (){
+                                              Get.offAll(()=> DashboardScreenUI() );
+                                            },
+                                            child: Column(
+                                              mainAxisAlignment: MainAxisAlignment.center,
+                                              children: [
+                                                CircleAvatar(radius: 30),
+                                                SizedBox(height: 5),
+                                                Txt("Properties",fontWeight: FontWeight.w600),
+                                              ],
+                                            ),
+                                          ),
+
+                                        ],
+                                      ),
+                                    ),
+                                  );
+                                },
+                              );
+                            },
+                            child: Icon(Icons.attach_file,color: Colors.grey,)),
+                        fillColor: Colors.grey[100],
+                        hintText: "Enter your message..",
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(30),
+                        ),
+                      ),
+                      onChanged: (value) {
+
+                      },
+                    ),
+                  )
+              ),
+            ),
+            SizedBox(width: 10,),
+            InkWell(
+              onTap: () {
+                channel.sink.add(json.encode({"message":"${msgController.text}","sender" : "7984702696",'sent':'True'}));
+
+                msgController.clear();
+                setState((){});
+              },
+              child: Container(
+                margin: EdgeInsets.only(top: 5),
+                padding: EdgeInsets.all(10.0),
+                decoration: BoxDecoration(
+                  shape: BoxShape.circle,
+                  color: AppColors.primaryColor,
+                ),
+                child: Icon(Icons.send, color: Colors.white),
+              ),
+            ),
+          ],
+        );
+      },
+
+    );
+  }
 
   void getImage() async{
     final ImagePicker _picker = ImagePicker();
@@ -349,6 +467,7 @@ class _ChatScreenUIState extends State<ChatScreenUI> {
     super.dispose();
     channel.sink.close(status.goingAway);
   }
+
 
   void scrollDown(){
     Future.delayed(Duration(milliseconds: 50),() {

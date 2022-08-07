@@ -32,6 +32,8 @@ class _AddEstateScreenUIState extends State<AddEstateScreenUI> {
   TextEditingController areaController = TextEditingController();
   TextEditingController noOfBedroomController = TextEditingController();
 
+  TextEditingController whatsAppMsgController = TextEditingController(text: "   ");
+
   FlipCardController flipCardController = FlipCardController();
 
   final flatKey = GlobalKey<FlipCardState>();
@@ -61,6 +63,21 @@ class _AddEstateScreenUIState extends State<AddEstateScreenUI> {
                     Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
+
+                        Txt("Create by Whatsapp",fontSize: 20,color: AppColors.black,fontWeight: FontWeight.w600),
+
+                        TextFormInputField(
+                          controller: whatsAppMsgController,
+                          hintText: "  Enter whatsapp message",
+                          minLine: 3,
+                          maxLine: 5,
+                          onChanged: (val){
+                            print("VALUE  :: $val");
+
+                            onChangeWhatsAppMsg(val);
+
+                          },
+                        ),
 
                         Txt("Property Type",fontSize: 20,color: AppColors.black,fontWeight: FontWeight.w600),
 
@@ -213,7 +230,7 @@ class _AddEstateScreenUIState extends State<AddEstateScreenUI> {
                           child: DropdownButton(
                             isExpanded: true,
                             icon: Icon(
-                              Icons.arrow_drop_down_circle,
+                               Icons.arrow_drop_down_circle,
                               color: AppColors.primaryColor,
                             ),
                             items: [
@@ -226,7 +243,7 @@ class _AddEstateScreenUIState extends State<AddEstateScreenUI> {
                             onChanged: (value) {
                               setState(() {
                                 controller.estateStatusVal = value.toString();
-
+                                //estate status ----
                                 if(radioListVal  == 3){
                                   cityDropDownVal = "Select Designation";
                                 }
@@ -276,8 +293,6 @@ class _AddEstateScreenUIState extends State<AddEstateScreenUI> {
                           ),
                         ),
 
-
-
                       ],
                     ),
 
@@ -310,20 +325,35 @@ class _AddEstateScreenUIState extends State<AddEstateScreenUI> {
   }
 
 
+  onChangeWhatsAppMsg(String val){
+    addEstateController.progressDataLoading(true);
+
+    addEstateController.enterWhatsAppMsgApi(
+      token: PreferenceHelper().getUserData().authToken,
+      message: whatsAppMsgController.text,
+    ).then((response){
+      if(response != null){
+        print("STRIx4NG  :: ${whatsAppMsgController.text}");
+      }
+    });
+
+    addEstateController.progressDataLoading(false);
+  }
+
+
 
   addEstate(){
-
     addEstateController.progressDataLoading(true);
 
     addEstateController.addEstateApi(
       token: PreferenceHelper().getUserData().authToken,
       floor_space: sizeController.text,
       area: areaController.text,
-      budget: budgetController.text,
+      budget: int.parse(budgetController.text),
       society: societyController.text,
       estate_status: addEstateController.estateStatusVal,
       city: "surat",
-      no_of_bedroom: noOfBedroomController.text,
+      no_of_bedroom: int.parse(noOfBedroomController.text),
       estate_type: addEstateController.estateType
     ).then((resposne) {
 
@@ -334,7 +364,6 @@ class _AddEstateScreenUIState extends State<AddEstateScreenUI> {
       else{
         AppCommonFunction.flutterToast(resposne.message, false);
       }
-
 
 
       addEstateController.progressDataLoading(false);

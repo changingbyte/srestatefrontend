@@ -63,14 +63,6 @@ class FieldValidator {
     return null;
   }
 
-  static String? validateAddress(String? value) {
-    if (value!.isEmpty) {
-      return "Please Enter Address";
-    }else if(value.length <= 32){
-      return "Enter valid Address";
-    }
-    return null;
-  }
 
   static String? validateAmount(String? value) {
     if (value!.isEmpty) {
@@ -80,6 +72,18 @@ class FieldValidator {
     }
     return null;
   }
+
+
+  static String? validatePhoneNumber(String value) {
+    if (value.isEmpty) {
+      return "Please Enter Number";
+    }/*else if(value.length < 10){
+      return "Enter valid Number";
+    }*/
+    return null;
+  }
+
+
 
   static String? validateLocalAmount(String value) {
     if (value.isEmpty) {

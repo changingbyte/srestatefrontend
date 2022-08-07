@@ -15,6 +15,7 @@ import 'package:get/get.dart';
 import 'package:keyboard_actions/keyboard_actions.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:sms_autofill/sms_autofill.dart';
+import 'package:sms_otp_auto_verify/sms_otp_auto_verify.dart';
 
 import '../helper/PreferenceHelper.dart';
 import '../widgets/Txt.dart';
@@ -33,8 +34,6 @@ class _EnterNumberScreenUIState extends State<EnterNumberScreenUI> {
   OnBoardingController onBoardingController = Get.put(OnBoardingController());
   final formKey = GlobalKey<FormState>();
   TextEditingController numberController = new TextEditingController();
-
-
 
 
   @override
@@ -222,9 +221,11 @@ class _EnterNumberScreenUIState extends State<EnterNumberScreenUI> {
   enterNumberApi() async {
     final prefs = await SharedPreferences.getInstance();
     onBoardingController.progressDataLoading(true);
-    final signature = await SmsAutoFill().getAppSignature;
 
-    onBoardingController.enterNumberApi(number: numberController.text,appSignature: signature).then((value) async {
+    String? signature = await SmsVerification.getAppSignature();
+
+
+    onBoardingController.enterNumberApi(number: numberController.text,appSignature: signature!).then((value) async {
       onBoardingController.numberApiResponse = value;
 
       prefs.setString(PrefUtils.USER_DATA, json.encode(onBoardingController.numberApiResponse));

@@ -8,7 +8,7 @@ import '../../controller/ViewBrokerProfileController.dart';
 import '../../helper/PreferenceHelper.dart';
 import '../../utils/AppCommonFunction.dart';
 import '../../utils/AppString.dart';
-import '../ChatModule/ChatListScreenUI.dart';
+import '../ChatModule/ChatContactListScreenUI.dart';
 
 class UserProfileScreenUI extends StatefulWidget {
   const UserProfileScreenUI({Key? key}) : super(key: key);
@@ -56,7 +56,7 @@ class _UserProfileScreenUIState extends State<UserProfileScreenUI> {
                         SizedBox(height: 10),
                         InkWell(
                           onTap: () {
-                            Get.to(()=> ContactListScreenUI() );
+                            Get.to(()=> ChatContactListScreenUI() );
                           },
                           child: CircleAvatar(
                             radius: 60,

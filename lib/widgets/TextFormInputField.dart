@@ -12,6 +12,7 @@ class TextFormInputField extends StatelessWidget {
   final int? maxLength;
   final bool enable;
   final int? minLine;
+  final int? maxLine;
   Iterable<String>? autofill;
   final GestureTapCallback? onPressedSuffix;
   final FormFieldValidator<String>? validator;
@@ -28,6 +29,7 @@ class TextFormInputField extends StatelessWidget {
      this.maxLength,
      this.autofill,
      this.minLine,
+     this.maxLine,
      this.enable = true,
      this.validator,
      this.onChanged,
@@ -57,6 +59,7 @@ class TextFormInputField extends StatelessWidget {
             keyboardType: keyboardType==null?TextInputType.text : keyboardType,
             maxLength: maxLength==null?null:maxLength,
             minLines: minLine==null?null:minLine,
+            maxLines: maxLine==null?null:maxLine,
             enabled: enable,
             autofillHints: autofill,
             enableSuggestions: true,
