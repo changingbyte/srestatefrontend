@@ -11,14 +11,14 @@ import '../../utils/AppColors.dart';
 import '../../utils/AppCommonFunction.dart';
 import '../../utils/AppString.dart';
 
-class ContactListScreenUI extends StatefulWidget {
-  const ContactListScreenUI({Key? key}) : super(key: key);
+class ChatContactListScreenUI extends StatefulWidget {
+  const ChatContactListScreenUI({Key? key}) : super(key: key);
 
   @override
-  State<ContactListScreenUI> createState() => _ContactListScreenUIState();
+  State<ChatContactListScreenUI> createState() => _ChatContactListScreenUIState();
 }
 
-class _ContactListScreenUIState extends State<ContactListScreenUI> {
+class _ChatContactListScreenUIState extends State<ChatContactListScreenUI> {
   ContactListController contactListController = Get.put(ContactListController());
 
   @override
@@ -64,10 +64,12 @@ class _ContactListScreenUIState extends State<ContactListScreenUI> {
               return
                 controller.isDataLoading
                 ? AppCommonFunction.circularIndicator()
-                : ListView.builder(
-                itemCount: controller.contactListResponse.results!.length,
-                itemBuilder: (context, index) {
-                  return Padding(
+                : controller.contactListResponse.results!.isEmpty
+                  ? AppCommonFunction.noDataFound()
+                  : ListView.builder(
+                    itemCount: controller.contactListResponse.results!.length,
+                    itemBuilder: (context, index) {
+                      return Padding(
                     padding: const EdgeInsets.all(6.0),
                     child: InkWell(
                       onTap: () {
@@ -91,7 +93,9 @@ class _ContactListScreenUIState extends State<ContactListScreenUI> {
                                   Column(
                                     crossAxisAlignment: CrossAxisAlignment.start,
                                     children: [
-                                      Txt("${controller.contactListResponse.results![index].lastMessage!.receiverName}",fontWeight: FontWeight.w600,fontSize: 18),
+                                      Txt("${controller.contactListResponse.results![index].lastMessage == ""
+                                          ? ""
+                                          : controller.contactListResponse.results![index].lastMessage!.receiverName}",fontWeight: FontWeight.w600,fontSize: 18),
                                       Txt("${controller.contactListResponse.results![index].lastMessage!.description}",maxLines: 1,overflow: TextOverflow.ellipsis),
                                     ],
                                   ),
@@ -100,9 +104,7 @@ class _ContactListScreenUIState extends State<ContactListScreenUI> {
                               //Txt("${controller.chatListResponse[index].timestamp!.substring(0,10)}",fontSize: 13,color: Colors.black38),
                             ],
                           ),
-                          SizedBox(
-                            height: 10,
-                          ),
+                          SizedBox(height: 10),
                           Divider(height: 3,indent: 10),
                         ],
                       ),
@@ -137,3 +139,5 @@ class _ContactListScreenUIState extends State<ContactListScreenUI> {
   }
 
 }
+
+

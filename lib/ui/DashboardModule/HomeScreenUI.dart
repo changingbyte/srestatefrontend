@@ -35,8 +35,12 @@ class _HomeScreenUIState extends State<HomeScreenUI> {
   void initState() {
     super.initState();
 
-    getEstateApi();
-    getFilterApi();
+    Future.delayed(Duration.zero,(){
+      getEstateApi();
+      getFilterApi();
+    });
+
+
   }
 
   @override
@@ -366,10 +370,7 @@ class _HomeScreenUIState extends State<HomeScreenUI> {
                               }
                           ),
 
-
                           SizedBox(height: 10),
-
-                          
 
                           Row(
                             mainAxisAlignment: MainAxisAlignment.end,
@@ -414,7 +415,7 @@ class _HomeScreenUIState extends State<HomeScreenUI> {
 
   getEstateApi({List<String>? area = const [],List<String>? apartment = const [],List<String>?  budget = const [],
     List<String>? estateStatus = const [],List<String>? furniture = const [],List<String>? no_of_bedrooms = const []}){
-
+    homeController.progressDataLoading(true);
     homeController.estateList.clear();
     homeController.newEstateList.clear();
 

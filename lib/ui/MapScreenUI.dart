@@ -8,7 +8,7 @@ import '../utils/AppColors.dart';
 class MapScreenUI extends StatefulWidget {
   var lat;
   var long;
-  MapScreenUI({this.lat = 21.1702, this.long = 72.8311});
+  MapScreenUI({this.lat = 0.0000, this.long = 0.0000});
 
   @override
   State<MapScreenUI> createState() => _MapScreenUIState();
@@ -19,7 +19,7 @@ class _MapScreenUIState extends State<MapScreenUI> {
 
   void onMapCreated(GoogleMapController googleMapController){
     setState(() {
-      _marker.add(Marker(markerId: MarkerId("id-1"),position: LatLng(widget.lat,widget.long)),);
+      _marker.add(Marker(markerId: MarkerId("id-1"),position: LatLng(double.parse(widget.lat),double.parse(widget.long))));
     });
   }
 

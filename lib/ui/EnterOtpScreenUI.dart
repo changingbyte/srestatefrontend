@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:croma_brokrage/controller/OnbordingController.dart';
 import 'package:croma_brokrage/ui/DashboardModule/DashboardScreenUI.dart';
 import 'package:croma_brokrage/utils/AppColors.dart';
@@ -16,6 +18,7 @@ import 'package:slide_countdown_clock/slide_countdown_clock.dart';
 
 import 'package:keyboard_actions/keyboard_actions.dart';
 import 'package:sms_autofill/sms_autofill.dart';
+import 'package:sms_otp_auto_verify/sms_otp_auto_verify.dart';
 
 
 import '../helper/PreferenceHelper.dart';
@@ -40,13 +43,22 @@ class _EnterOtpScreenUIState extends State<EnterOtpScreenUI> {
   final formKey = GlobalKey<FormState>();
   TextEditingController otpController = new TextEditingController();
   TextEditingController numberController = new TextEditingController();
+  int _otpCodeLength = 6;
+  String _otpCode = "";
+  final _scaffoldKey = GlobalKey<ScaffoldState>();
+  final intRegex = RegExp(r'\d+', multiLine: true);
+  TextEditingController textEditingController = new TextEditingController(text: "");
+
+
 
   @override
   void initState() {
-    _listenOtp();
+    //_listenOtp();
     Future.delayed(Duration.zero,(){
       numberController.text = widget.number;
     });
+    _getSignatureCode();
+    _startListeningSms();
     super.initState();
   }
 
@@ -59,11 +71,14 @@ class _EnterOtpScreenUIState extends State<EnterOtpScreenUI> {
   }
 
 
-  _listenOtp() async {
+  /*_listenOtp() async {
    var temp = await SmsAutoFill().listenForCode;
+   String? signature = await SmsVerification.getAppSignature();
+
+   await SmsVerification.getAppSignature().then((otp) => textEditingController.text = otp!);
 
    print("AUTO READ  ::  ${temp}");
-  }
+  }*/
 
   @override
   Widget build(BuildContext context) {
@@ -159,6 +174,31 @@ class _EnterOtpScreenUIState extends State<EnterOtpScreenUI> {
 
 
                   Padding(
+                    padding: const EdgeInsets.only(left: 30,right: 30,top: 20,bottom: 10),
+                    child: TextFieldPin(
+                        textController: textEditingController,
+                        autoFocus: true,
+                        codeLength: 6,
+                        alignment: MainAxisAlignment.center,
+                        defaultBoxSize: 40.0,
+                        margin: 7,
+                        selectedBoxSize: 40.0,
+                        textStyle: TextStyle(fontSize: 16),
+                        defaultDecoration: _pinPutDecoration.copyWith(
+                            border: Border.all(color: Theme.of(context).primaryColor.withOpacity(0.6))),
+                        selectedDecoration: _pinPutDecoration,
+                        onChange: (code) {
+                          if(code.length >= 6){
+                            FocusScope.of(context).unfocus();
+                          }
+                          setState((){});
+                        }),
+                  ),
+
+
+
+                  /*
+                  Padding(
                     padding: const EdgeInsets.only(left: 30,right: 30,top: 10,bottom: 10),
                     child: PinFieldAutoFill(
                       controller: otpController,
@@ -177,6 +217,8 @@ class _EnterOtpScreenUIState extends State<EnterOtpScreenUI> {
                       },
                     ),
                   ),
+*/
+
 
                   AbsorbPointer(
                     absorbing: controller.isResendTimerShow  ? true : false,
@@ -280,8 +322,9 @@ class _EnterOtpScreenUIState extends State<EnterOtpScreenUI> {
     }
 
   }
+
   void otpCallUser(){
-      if(widget.otp == otpController.text){
+      if(widget.otp == textEditingController.text){
 
         if(widget.statusCode == "200"){
           AppCommonFunction.flutterToast("Success", true);
@@ -338,7 +381,8 @@ class _EnterOtpScreenUIState extends State<EnterOtpScreenUI> {
   }
 
   void resetAllField() {
-    otpController.text="";
+    otpController.clear();
+    textEditingController.clear();
   }
 
   KeyboardActionsConfig _buildConfig(BuildContext context) {
@@ -370,4 +414,42 @@ class _EnterOtpScreenUIState extends State<EnterOtpScreenUI> {
       ],
     );
   }
+
+
+  BoxDecoration get _pinPutDecoration {
+    return BoxDecoration(
+      border: Border.all(color: Theme.of(context).primaryColor),
+      borderRadius: BorderRadius.circular(15.0),
+    );
+  }
+
+  /// get signature code
+  _getSignatureCode() async {
+    String? signature = await SmsVerification.getAppSignature();
+    print("signature $signature");
+  }
+
+  /// listen sms
+  _startListeningSms()  {
+    SmsVerification.startListeningSms().then((message) {
+
+      if(message != null){
+        print("OTP MSG  ::  ${message}");
+        String otp = message.toString().substring(message.length-6,message.length);
+
+        print("START  :: ${message.length-6}");
+        print("END  :: ${message.length}");
+        print("LAST 6 DIGIT  :: ${otp}");
+
+        textEditingController.text = otp;
+      }
+
+    });
+  }
+
+  _verifyOtpCode() {
+    FocusScope.of(context).requestFocus(new FocusNode());
+  }
+
+
 }
