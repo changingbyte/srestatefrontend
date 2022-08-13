@@ -8,7 +8,7 @@ EstateListResponse estateListResponseFromJson(String str) => EstateListResponse.
 
 String estateListResponseToJson(EstateListResponse data) => json.encode(data.toJson());
 
-class   EstateListResponse {
+class EstateListResponse {
   EstateListResponse({
     this.success,
     this.error,
@@ -43,19 +43,11 @@ class EstateList {
     this.city,
     this.estateType,
     this.floorSpace,
-    this.numberOfBalconies,
-    this.balconiesSpace,
     this.numberOfBedrooms,
-    this.numberOfBathrooms,
-    this.numberOfGarages,
-    this.numberOfParkingSpaces,
-    this.petsAllowed,
     this.estateDescription,
     this.estateStatus,
     this.society,
     this.area,
-    this.brokerMobile,
-    this.brokerName,
     this.budget,
     this.furniture,
   });
@@ -65,21 +57,14 @@ class EstateList {
   String? city;
   String? estateType;
   String? floorSpace;
-  int? numberOfBalconies;
-  String? balconiesSpace;
   int? numberOfBedrooms;
-  int? numberOfBathrooms;
-  int? numberOfGarages;
-  int? numberOfParkingSpaces;
-  int? petsAllowed;
   String? estateDescription;
   String? estateStatus;
   String? society;
   String? area;
-  String? brokerMobile;
-  String? brokerName;
   int? budget;
   String? furniture;
+
 
   factory EstateList.fromJson(Map<String, dynamic> json) => EstateList(
     id: json["id"] == null ? null : json["id"],
@@ -87,19 +72,11 @@ class EstateList {
     city: json["city"] == null ? null : json["city"],
     estateType: json["estate_type"] == null ? null : json["estate_type"],
     floorSpace: json["floor_space"] == null ? null : json["floor_space"],
-    numberOfBalconies: json["number_of_balconies"] == null ? null : json["number_of_balconies"],
-    balconiesSpace: json["balconies_space"] == null ? null : json["balconies_space"],
     numberOfBedrooms: json["number_of_bedrooms"] == null ? null : json["number_of_bedrooms"],
-    numberOfBathrooms: json["number_of_bathrooms"] == null ? null : json["number_of_bathrooms"],
-    numberOfGarages: json["number_of_garages"] == null ? null : json["number_of_garages"],
-    numberOfParkingSpaces: json["number_of_parking_spaces"] == null ? null : json["number_of_parking_spaces"],
-    petsAllowed: json["pets_allowed"] == null ? null : json["pets_allowed"],
     estateDescription: json["estate_description"] == null ? null : json["estate_description"],
     estateStatus: json["estate_status"] == null ? null : json["estate_status"],
     society: json["society"] == null ? null : json["society"],
     area: json["area"] == null ? null : json["area"],
-    brokerMobile: json["broker_mobile"] == null ? null : json["broker_mobile"],
-    brokerName: json["broker_name"] == null ? null : json["broker_name"],
     budget: json["budget"] == null ? null : json["budget"],
     furniture: json["furniture"] == null ? null : json["furniture"],
   );
@@ -110,20 +87,13 @@ class EstateList {
     "city": city == null ? null : city,
     "estate_type": estateType == null ? null : estateType,
     "floor_space": floorSpace == null ? null : floorSpace,
-    "number_of_balconies": numberOfBalconies == null ? null : numberOfBalconies,
-    "balconies_space": balconiesSpace == null ? null : balconiesSpace,
     "number_of_bedrooms": numberOfBedrooms == null ? null : numberOfBedrooms,
-    "number_of_bathrooms": numberOfBathrooms == null ? null : numberOfBathrooms,
-    "number_of_garages": numberOfGarages == null ? null : numberOfGarages,
-    "number_of_parking_spaces": numberOfParkingSpaces == null ? null : numberOfParkingSpaces,
-    "pets_allowed": petsAllowed == null ? null : petsAllowed,
     "estate_description": estateDescription == null ? null : estateDescription,
     "estate_status": estateStatus == null ? null : estateStatus,
     "society": society == null ? null : society,
     "area": area == null ? null : area,
-    "broker_mobile": brokerMobile == null ? null : brokerMobile,
-    "broker_name": brokerName == null ? null : brokerName,
     "budget": budget == null ? null : budget,
     "furniture": furniture == null ? null : furniture,
   };
 }
+
