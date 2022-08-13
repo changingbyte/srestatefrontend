@@ -42,12 +42,7 @@ dependencies:
   url_launcher: ^6.0.3
   flutter_slider_drawer: ^2.0.0
   flutter_launcher_icons: ^0.9.0
-  #google_fonts: ^2.1.0
-  #tuple: ^1.0.3
-  #encrypt: any
   local_auth: any
-  #polygon_clipper: ^1.0.2
-  #tinycolor: ^1.0.3
   badges: ^2.0.1
   convex_bottom_bar: ^3.0.0
   flutter_statusbarcolor_ns: ^0.4.0
@@ -56,28 +51,14 @@ dependencies:
   package_info: any
   plugin_platform_interface: ^2.0.1
   http: ^0.13.0
-  #shared_preferences_linux: ^2.0.0
-  #shared_preferences_platform_interface: ^2.0.0
-  #shared_preferences_windows: ^2.0.0
   pattern_lock: ^2.0.0
   clay_containers: ^0.3.2
   connectivity_platform_interface: ^2.0.1
-  #flutter_local_notifications_platform_interface: ^4.0.0
   path_provider: ^2.0.2
-  #path_provider_linux: ^2.0.0
-  #path_provider_windows: ^2.0.1
-  #qr_flutter: ^4.0.0
-  #share_extend: ^2.0.0
-  #basic_utils: ^3.3.3
-  #http_parser: ^4.0.0
-  #path_provider_platform_interface: ^2.0.1
-  #xdg_directories: ^0.2.0
   font_awesome_flutter: ^10.1.0
   page_transition: ^2.0.2
-  #tmpl : ^1.0.0
-  #intl : ^0.16.1
   salomon_bottom_bar: ^3.3.0
-  slide_countdown_clock: ^1.0.3
+#  slide_countdown_clock: ^1.0.3
   flip_card: ^0.6.0
   flutter_icons: ^1.1.0
   carousel_slider: ^4.0.0

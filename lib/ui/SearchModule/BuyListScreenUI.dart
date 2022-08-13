@@ -1,9 +1,12 @@
 import 'package:croma_brokrage/controller/SearchModuleController.dart';
 import 'package:croma_brokrage/helper/PreferenceHelper.dart';
+import 'package:croma_brokrage/widgets/EstateCardList.dart';
 import 'package:croma_brokrage/widgets/Txt.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:multi_select_item/multi_select_item.dart';
 
+import '../../controller/HomeController.dart';
 import '../../utils/AppColors.dart';
 import '../../utils/AppCommonFunction.dart';
 import '../../utils/AppString.dart';
@@ -17,12 +20,16 @@ class BuyListScreenUI extends StatefulWidget {
 
 class _BuyListScreenUIState extends State<BuyListScreenUI> {
   SearchModuleController searchModuleController = Get.put(SearchModuleController());
+  HomeController homeController = Get.put(HomeController());
 
   @override
   void initState() {
     super.initState();
 
     Future.delayed(Duration.zero,(){
+      print("---SEARCH CLEAR---");
+      homeController.deselectItems();
+      homeController.selectedEstateList.clear();
       searchModuleController.progressDataLoading(true);
     });
 
@@ -36,6 +43,8 @@ class _BuyListScreenUIState extends State<BuyListScreenUI> {
         init: SearchModuleController(),
         builder: (SearchModuleController controller) {
           return
+
+
             controller.isDataLoading
             ? AppCommonFunction.circularIndicator()
             : controller.buyEstateList.length < 1
@@ -58,57 +67,58 @@ class _BuyListScreenUIState extends State<BuyListScreenUI> {
                       child: InkWell(
                         onTap: () {
 
-                        },
-                        child: Container(
-                          width: Get.width,
-                          child: Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            child: Row(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
+                          },
+                          child: Container(
+                            width: Get.width,
+                            child: Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: Row(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                children: [
 
-                                Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  mainAxisAlignment: MainAxisAlignment.start,
-                                  children: [
+                                  Column(
+                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    mainAxisAlignment: MainAxisAlignment.start,
+                                    children: [
 
-                                    Container(
-                                      width: Get.width/2,
-                                      child: Txt(controller.buyEstateList[index]["estate_name"].toString(),
-                                          fontSize: 20,color: AppColors.black,fontWeight: FontWeight.bold),
-                                    ),
+                                      Container(
+                                        width: Get.width/2,
+                                        child: Txt(controller.buyEstateList[index].estateName.toString(),
+                                            fontSize: 20,color: AppColors.black,fontWeight: FontWeight.bold),
+                                      ),
 
-                                    SizedBox(height: 13,),
+                                      SizedBox(height: 13,),
 
-                                    ListCardContainer(icon: Icons.location_on,text: controller.buyEstateList[index]["society"].toString()),
+                                      ListCardContainer(icon: Icons.location_on,text: controller.buyEstateList[index].society.toString()),
 
-                                    ListCardContainer(icon: Icons.home_work,text: controller.buyEstateList[index]["area"].toString()),
+                                      ListCardContainer(icon: Icons.home_work,text: controller.buyEstateList[index].area.toString()),
 
-                                    ListCardContainer(icon: Icons.photo_size_select_small_outlined,text: " ${controller.buyEstateList[index]["floor_space"].toString()}"),
+                                      ListCardContainer(icon: Icons.photo_size_select_small_outlined,text: " ${controller.buyEstateList[index].floorSpace.toString()}"),
 
-                                    ListCardContainer(icon: Icons.call,text: controller.buyEstateList[index]["broker_mobile"].toString()),
+                                      ListCardContainer(icon: Icons.call,text: controller.buyEstateList[index].id.toString()),
 
+                                    ],
+                                  ),
 
-                                  ],
-                                ),
+                                  Image.asset(AppString.imagesAssetPath+"ic_flat_img.jpg", height: 160,width: 140,fit: BoxFit.cover,),
 
-                                Image.asset(
-                                  controller.buyEstateList[index]["Images"] == null
-                                      ? AppString.imagesAssetPath+"ic_flat_img.jpg"
-                                      : controller.buyEstateList[index]["Images"],
-                                  height: 160,width: 140,fit: BoxFit.cover,),
-
-                              ],
+                                ],
+                              ),
                             ),
                           ),
                         ),
                       ),
-                    ),
-                ),
+
+                  ),
+
+
               );
             },
           );
+
+
+
         },
       ),
     );
@@ -134,9 +144,10 @@ class _BuyListScreenUIState extends State<BuyListScreenUI> {
     searchModuleController.buyEstateListApi(token: PreferenceHelper().getUserData().authToken!).then((value) {
 
       if(value != null){
-        if(value["success"].toString() == "true"){
-          if(value["data"].isNotEmpty){
-            searchModuleController.buyEstateList = value["data"];
+        if(value.success.toString() == "true"){
+          if(value.data!.isNotEmpty){
+            searchModuleController.buyEstateListResponse = value;
+            searchModuleController.buyEstateList = value.data!;
             searchModuleController.progressDataLoading(false);
           }
         }

@@ -76,7 +76,7 @@ class HomeController extends GetxController{
         },
         body: payload
       ).timeout(
-          Duration(seconds: 20),
+          Duration(seconds: 30),
           onTimeout: () async{
             progressDataLoading(false);
             AppCommonFunction.flutterToast("Temporary site in under maintenance!", false);
@@ -124,7 +124,7 @@ class HomeController extends GetxController{
             "Authorization" : "Token $token"
           },
       ).timeout(
-          Duration(seconds: 20),
+          Duration(seconds: 30),
           onTimeout: () async{
 
             AppCommonFunction.flutterToast("Temporary site in under maintenance!", false);
@@ -164,6 +164,10 @@ class HomeController extends GetxController{
       update();
   }
 
+  void deselectItems() {
+    myMultiSelectController.deselectAll();
+    update();
+  }
 
   void isToggle(int index){
     myMultiSelectController.toggle(index);

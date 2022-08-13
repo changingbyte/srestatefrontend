@@ -11,6 +11,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 import '../../helper/PreferenceHelper.dart';
+import '../../utils/FieldValidator.dart';
 
 class AddEstateScreenUI extends StatefulWidget {
   const AddEstateScreenUI({Key? key}) : super(key: key);
@@ -23,14 +24,11 @@ class _AddEstateScreenUIState extends State<AddEstateScreenUI> {
 
   String cityDropDownVal = "Select City";
   int radioListVal = 0;
-
+  final formKey = GlobalKey<FormState>();
   AddEstateController addEstateController = Get.put(AddEstateController());
 
-  TextEditingController sizeController = TextEditingController();
   TextEditingController budgetController = TextEditingController();
   TextEditingController societyController = TextEditingController();
-  TextEditingController areaController = TextEditingController();
-  TextEditingController noOfBedroomController = TextEditingController();
 
   TextEditingController whatsAppMsgController = TextEditingController(text: "   ");
 
@@ -60,240 +58,193 @@ class _AddEstateScreenUIState extends State<AddEstateScreenUI> {
                 return Stack(
                   alignment: Alignment.center,
                   children: [
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
+                    Form(
+                      key: formKey,
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
 
-                        Txt("Create by Whatsapp",fontSize: 20,color: AppColors.black,fontWeight: FontWeight.w600),
+                          Txt("Create by Whatsapp",fontSize: 20,color: AppColors.black,fontWeight: FontWeight.w600),
 
-                        TextFormInputField(
-                          controller: whatsAppMsgController,
-                          hintText: "  Enter whatsapp message",
-                          minLine: 3,
-                          maxLine: 5,
-                          onChanged: (val){
-                            print("VALUE  :: $val");
+                          TextFormInputField(
+                            controller: whatsAppMsgController,
+                            hintText: "  Enter whatsapp message",
+                            minLine: 3,
+                            maxLine: 5,
+                            onChanged: (val){
+                              //print("VALUE  :: $val");
 
-                            onChangeWhatsAppMsg(val);
+                              onChangeWhatsAppMsg(val);
 
-                          },
-                        ),
+                            },
+                          ),
 
-                        Txt("Property Type",fontSize: 20,color: AppColors.black,fontWeight: FontWeight.w600),
+                          Txt("Property Type",fontSize: 20,color: AppColors.black,fontWeight: FontWeight.w600),
 
-                        SizedBox(height: 20,),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceAround,
-                          children: [
+                          SizedBox(height: 20,),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
 
-                            FlipCard(
-                              key: flatKey,
-                              front: EstateTypeContainer(text: "FLAT",color: Colors.red,controller: controller,bgColor: Colors.white),
-                              back: EstateTypeContainer(text: "FLAT",color: Colors.red,controller: controller,bgColor: AppColors.redColor),
-                              onFlip: (){
-                                if(!flatKey.currentState!.isFront){
-                                  controller.estateType = "FLAT";
-                                }
-                                else{
-                                  controller.estateType = "";
-                                }
-
-                                if(!shopKey.currentState!.isFront){shopKey.currentState!.toggleCard();}
-                                if(!bunglowKey.currentState!.isFront){bunglowKey.currentState!.toggleCard();}
-                                if(!rowHouseKey.currentState!.isFront){rowHouseKey.currentState!.toggleCard();}
-                                if(!landKey.currentState!.isFront){landKey.currentState!.toggleCard();}
-                                if(!plotKey.currentState!.isFront){plotKey.currentState!.toggleCard();}
-                              },
-                            ),
-
-                            FlipCard(
-                              key: shopKey,
-                              front: EstateTypeContainer(text: "Shop",color: Colors.red,controller: controller,bgColor: Colors.white),
-                              back: EstateTypeContainer(text: "Shop",color: Colors.red,controller: controller,bgColor: AppColors.redColor),
-                              onFlip: (){
-                                if(!shopKey.currentState!.isFront){
-                                  controller.estateType = "Shop";
-                                }
-                                else{
-                                  controller.estateType = "";
-                                }
-                                if(!flatKey.currentState!.isFront){flatKey.currentState!.toggleCard();}
-                                if(!bunglowKey.currentState!.isFront){bunglowKey.currentState!.toggleCard();}
-                                if(!rowHouseKey.currentState!.isFront){rowHouseKey.currentState!.toggleCard();}
-                                if(!landKey.currentState!.isFront){landKey.currentState!.toggleCard();}
-                                if(!plotKey.currentState!.isFront){plotKey.currentState!.toggleCard();}
-                              },
-                            ),
-                            FlipCard(
-                                key: bunglowKey,
-                                front: EstateTypeContainer(text: "Bunglow",color: Colors.red,controller: controller,bgColor: Colors.white),
-                                back: EstateTypeContainer(text: "Bunglow",color: Colors.red,controller: controller,bgColor: AppColors.redColor),
-                                onFlip: (){
-                                  if(!bunglowKey.currentState!.isFront){
-                                    controller.estateType = "Bunglow";
-                                  }
-                                  else{
-                                    controller.estateType = "";
-                                  }
-                                  if(!flatKey.currentState!.isFront){flatKey.currentState!.toggleCard();}
-                                  if(!shopKey.currentState!.isFront){shopKey.currentState!.toggleCard();}
-                                  if(!rowHouseKey.currentState!.isFront){rowHouseKey.currentState!.toggleCard();}
-                                  if(!landKey.currentState!.isFront){landKey.currentState!.toggleCard();}
-                                  if(!plotKey.currentState!.isFront){plotKey.currentState!.toggleCard();}
+                              estateTypeContainer(
+                                text: "SHOP",
+                                onTap: () {
+                                  addEstateController.updateEstateType( "SHOP");
                                 },
-                            ),
-
-                          ],
-                        ),
-
-                        SizedBox(height: 15,),
-
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceAround,
-                          children: [
-                            FlipCard(
-                              key: rowHouseKey,
-                                front: EstateTypeContainer(text: "Row house",color: Colors.red,controller: controller,bgColor: Colors.white),
-                                back: EstateTypeContainer(text: "Row house",color: Colors.red,controller: controller,bgColor: AppColors.redColor),
-                                onFlip: (){
-                                  if(!rowHouseKey.currentState!.isFront){
-                                    controller.estateType = "Row house";
-                                  }
-                                  else{
-                                    controller.estateType = "";
-                                  }
-                                  if(!flatKey.currentState!.isFront){flatKey.currentState!.toggleCard();}
-                                  if(!bunglowKey.currentState!.isFront){bunglowKey.currentState!.toggleCard();}
-                                  if(!shopKey.currentState!.isFront){shopKey.currentState!.toggleCard();}
-                                  if(!landKey.currentState!.isFront){landKey.currentState!.toggleCard();}
-                                  if(!plotKey.currentState!.isFront){plotKey.currentState!.toggleCard();}
+                              ),
+                              estateTypeContainer(
+                                text: "LAND",
+                                onTap: () {
+                                  addEstateController.updateEstateType( "LAND");
                                 },
-                            ),
-                            FlipCard(
-                              key: landKey,
-                                front: EstateTypeContainer(text: "Land",color: Colors.red,controller: controller,bgColor: Colors.white),
-                                back: EstateTypeContainer(text: "Land",color: Colors.red,controller: controller,bgColor: AppColors.redColor),
-                              onFlip: (){
-                                if(!landKey.currentState!.isFront){
-                                  controller.estateType = "Land";
-                                }
-                                else{
-                                  controller.estateType = "";
-                                }
-                                if(!flatKey.currentState!.isFront){flatKey.currentState!.toggleCard();}
-                                if(!bunglowKey.currentState!.isFront){bunglowKey.currentState!.toggleCard();}
-                                if(!rowHouseKey.currentState!.isFront){rowHouseKey.currentState!.toggleCard();}
-                                if(!shopKey.currentState!.isFront){shopKey.currentState!.toggleCard();}
-                                if(!plotKey.currentState!.isFront){plotKey.currentState!.toggleCard();}
-                              },
-                            ),
-                            FlipCard(
-                              key: plotKey,
-                                front: EstateTypeContainer(text: "Plot",color: Colors.red,controller: controller,bgColor: Colors.white),
-                                back: EstateTypeContainer(text: "Plot",color: Colors.red,controller: controller,bgColor: AppColors.redColor),
-                              onFlip: (){
-                                if(!plotKey.currentState!.isFront){
-                                  controller.estateType = "Plot";
-                                }
-                                else{
-                                  controller.estateType = "";
-                                }
-                                if(!flatKey.currentState!.isFront){flatKey.currentState!.toggleCard();}
-                                if(!bunglowKey.currentState!.isFront){bunglowKey.currentState!.toggleCard();}
-                                if(!rowHouseKey.currentState!.isFront){rowHouseKey.currentState!.toggleCard();}
-                                if(!shopKey.currentState!.isFront){shopKey.currentState!.toggleCard();}
-                                if(!landKey.currentState!.isFront){landKey.currentState!.toggleCard();}
-                              },
-                            ),
-                          ],
-                        ),
+                              ),
+                              estateTypeContainer(
+                                text: "PLOT",
+                                onTap: () {
+                                  addEstateController.updateEstateType( "PLOT");
+                                },
+                              ),
 
-                        SizedBox(height: 30,),
-
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Txt("Details",fontSize: 20,color: AppColors.black,fontWeight: FontWeight.w600),
-                            Icon(Icons.info_rounded,),
-                          ],
-                        ),
-
-                        SizedBox(height: 5,),
-
-                        AppCommonFunction.FormContainer(sizeController,"Size (sqft)"),
-
-                        SizedBox(height: 5,),
-
-                        Container(
-                          padding: EdgeInsets.only(left: 8,right: 8),
-                          width: MediaQuery.of(context).size.width,
-                          child: DropdownButton(
-                            isExpanded: true,
-                            icon: Icon(
-                               Icons.arrow_drop_down_circle,
-                              color: AppColors.primaryColor,
-                            ),
-                            items: [
-                              DropdownMenuItem(value: "sell", child: Text("sell")),
-                              DropdownMenuItem(value: "buy", child: Text("buy")),
-                              DropdownMenuItem(value: "rent", child: Text("rent")),
                             ],
-                            hint: Txt(controller.estateStatusVal,color: AppColors.primaryColor,fontWeight: FontWeight.w600,fontSize: 18,
-                            ),
-                            onChanged: (value) {
-                              setState(() {
-                                controller.estateStatusVal = value.toString();
-                                //estate status ----
-                                if(radioListVal  == 3){
-                                  cityDropDownVal = "Select Designation";
+                          ),
+
+                          SizedBox(height: 15,),
+
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+
+                              estateTypeContainer(
+                                text: "FLAT",
+                                onTap: () {
+                                  addEstateController.updateEstateType( "FLAT");
+                                },
+                              ),
+                              estateTypeContainer(
+                                text: "BUNGALOW",
+                                onTap: () {
+                                  addEstateController.updateEstateType( "BUNGALOW");
+                                },
+                              ),
+                              estateTypeContainer(
+                                text: "ROW HOUSE",
+                                onTap: () {
+                                  addEstateController.updateEstateType( "ROW HOUSE");
+                                },
+                              ),
+
+
+                            ],
+                          ),
+
+                          SizedBox(height: 30,),
+
+
+                          Txt("Property Status",fontSize: 20,color: AppColors.black,fontWeight: FontWeight.w600),
+                          SizedBox(height: 15,),
+
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+
+                              estateTypeContainer(
+                                text: "BUY",
+                                onTap: () {
+                                  addEstateController.updateEstateStatus("BUY");
+                                },
+                              ),
+                              estateTypeContainer(
+                                text: "SELL",
+                                onTap: () {
+                                  addEstateController.updateEstateStatus("SELL");
+                                },
+                              ),
+                              estateTypeContainer(
+                                text: "RENT",
+                                onTap: () {
+                                  addEstateController.updateEstateStatus("RENT");
+                                },
+                              ),
+
+
+                            ],
+                          ),
+
+                          SizedBox(height: 30,),
+
+
+
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Txt("Details",fontSize: 20,color: AppColors.black,fontWeight: FontWeight.w600),
+                              Icon(Icons.info_rounded,),
+                            ],
+                          ),
+
+                          SizedBox(height: 5,),
+
+                          AppCommonFunction.FormContainer(addEstateController.sizeController,"Size (sqft)"),
+
+                          SizedBox(height: 5,),
+
+                          TextFormInputField(
+                            controller: addEstateController.areaController,
+                            hintText: "Area",
+                            validator: (value) {
+                              return FieldValidator.validateValueIsEmpty(value!);
+                            },
+                          ),
+
+                          SizedBox(height: 5,),
+
+                          AppCommonFunction.TextFormContainer(societyController,"Society"),
+
+                          SizedBox(height: 5,),
+
+                          TextFormInputField(
+                            controller: budgetController,
+                            hintText: "Budget (in Lakhs)",
+                          ),
+
+                          SizedBox(height: 5,),
+
+                          TextFormInputField(
+                            controller: controller.noOfBedroomController,
+                            hintText: "Number Of Badrooms",
+                            keyboardType: TextInputType.number,
+                          ),
+
+
+                          SizedBox(height: 50,),
+
+
+                          Center(
+                            child: RoundedButtonWidget(
+                              text: "Add",
+                              height: 45,
+                              width: Get.width/1.5,
+                              onPressed: () {
+
+                                if(formKey.currentState!.validate()){
+                                  if(controller.estateStatus == ""){
+                                    AppCommonFunction.flutterToast("Please select status", false);
+                                  }
+                                  else if(controller.estateType == ""){
+                                    AppCommonFunction.flutterToast("Please select Estate Type", false);
+                                  }
+                                  else{
+                                    addEstate();
+                                  }
                                 }
 
 
-                              });
-                            },
+                              },
+                            ),
                           ),
-                        ),
 
-
-                        SizedBox(height: 5,),
-
-                        AppCommonFunction.TextFormContainer(areaController,"Area"),
-
-                        SizedBox(height: 5,),
-
-                        AppCommonFunction.TextFormContainer(societyController,"Society"),
-
-                        SizedBox(height: 5,),
-
-                        TextFormInputField(
-                          controller: budgetController,
-                          hintText: "Budget (in Lakhs)",
-                        ),
-
-                        SizedBox(height: 5,),
-
-                        TextFormInputField(
-                          controller: noOfBedroomController,
-                          hintText: "Number Of Badrooms",
-                          keyboardType: TextInputType.number,
-                        ),
-
-
-                        SizedBox(height: 50,),
-
-
-                        Center(
-                          child: RoundedButtonWidget(
-                            text: "Add",
-                            height: 45,
-                            width: Get.width/1.5,
-                            onPressed: () {
-                              addEstate();
-                            },
-                          ),
-                        ),
-
-                      ],
+                        ],
+                      ),
                     ),
 
                     controller.isDataLoading
@@ -309,35 +260,58 @@ class _AddEstateScreenUIState extends State<AddEstateScreenUI> {
     );
   }
 
-  Widget EstateTypeContainer({required String text,required Color color,required AddEstateController controller,required Color bgColor}){
-    return Container(
-      height: 30,
-      width: 100,
-      decoration: BoxDecoration(
-          color: bgColor,
-          border: Border.all(color: color),
-          borderRadius: BorderRadius.all(Radius.circular(20))
-      ),
-      child: Center(
-        child: Txt(text,fontSize: 15,color:bgColor == AppColors.redColor ? Colors.white : AppColors.redColor ,fontWeight: FontWeight.w600),
+  Widget estateTypeContainer({required String text,GestureTapCallback? onTap,}){
+    return InkWell(
+      onTap: onTap,
+      child: Container(
+        width: Get.width/3.8,
+        padding: EdgeInsets.all(5),
+        alignment: Alignment.center,
+        decoration: BoxDecoration(
+          color: addEstateController.estateType.toUpperCase() == text.toUpperCase()  || addEstateController.estateStatus.toUpperCase() == text.toUpperCase() ? AppColors.primaryColor : Colors.white,
+          borderRadius: BorderRadius.all(Radius.circular(15)),
+          border: Border.all(color: AppColors.primaryColor,width: 1.5)
+        ),
+        child: Txt(text,
+            fontWeight: FontWeight.w500,
+            fontSize: 14,
+            color: addEstateController.estateType.toUpperCase() == text.toUpperCase() || addEstateController.estateStatus.toUpperCase() == text.toUpperCase() ? Colors.white : Colors.black87),
       ),
     );
   }
 
-
   onChangeWhatsAppMsg(String val){
     addEstateController.progressDataLoading(true);
-
     addEstateController.enterWhatsAppMsgApi(
       token: PreferenceHelper().getUserData().authToken,
       message: whatsAppMsgController.text,
     ).then((response){
       if(response != null){
+        addEstateController.readByWhatsApp = response;
         print("STRIx4NG  :: ${whatsAppMsgController.text}");
+
+        if(addEstateController.readByWhatsApp["data"][0]["number_of_bedrooms"].toString() != "null"){
+          //print("BEDROOMMM  : ${addEstateController.readByWhatsApp["data"][0]["number_of_bedrooms"][0].toString()}");
+          addEstateController.updateNoOfBedrooms(addEstateController.readByWhatsApp["data"][0]["number_of_bedrooms"][0].toString());
+        }
+        if(addEstateController.readByWhatsApp["data"][0]["area"].toString() != "null"){
+          //print("BEDROOMMM  : ${addEstateController.readByWhatsApp["data"][0]["area"][0].toString()}");
+          addEstateController.updateAreaController(addEstateController.readByWhatsApp["data"][0]["area"][0].toString());
+        }
+        if(addEstateController.readByWhatsApp["data"][0]["floor_space"].toString() != "null"){
+          //print("BEDROOMMM  : ${addEstateController.readByWhatsApp["data"][0]["floor_space"][0].toString()}");
+          addEstateController.updateSizeController(addEstateController.readByWhatsApp["data"][0]["floor_space"][0].toString());
+        }
+        if(addEstateController.readByWhatsApp["data"][0]["estate_status"].toString() != "null"){
+          //print("BEDROOMMM  : ${addEstateController.readByWhatsApp["data"][0]["estate_status"][0].toString()}");
+          addEstateController.updateEstateStatus(addEstateController.readByWhatsApp["data"][0]["estate_status"][0].toString());
+        }
+
+        addEstateController.progressDataLoading(false);
       }
     });
 
-    addEstateController.progressDataLoading(false);
+
   }
 
 
@@ -347,13 +321,13 @@ class _AddEstateScreenUIState extends State<AddEstateScreenUI> {
 
     addEstateController.addEstateApi(
       token: PreferenceHelper().getUserData().authToken,
-      floor_space: sizeController.text,
-      area: areaController.text,
+      floor_space: addEstateController.sizeController.text,
+      area: addEstateController.areaController.text,
       budget: int.parse(budgetController.text),
       society: societyController.text,
-      estate_status: addEstateController.estateStatusVal,
+      estate_status: addEstateController.estateStatus,
       city: "surat",
-      no_of_bedroom: int.parse(noOfBedroomController.text),
+      no_of_bedroom: int.parse(addEstateController.noOfBedroomController.text),
       estate_type: addEstateController.estateType
     ).then((resposne) {
 
@@ -365,7 +339,6 @@ class _AddEstateScreenUIState extends State<AddEstateScreenUI> {
         AppCommonFunction.flutterToast(resposne.message, false);
       }
 
-
       addEstateController.progressDataLoading(false);
 
     });
@@ -373,21 +346,13 @@ class _AddEstateScreenUIState extends State<AddEstateScreenUI> {
   }
 
   clearData(){
-    sizeController.clear();
+    addEstateController.sizeController.clear();
     budgetController.clear();
     societyController.clear();
-    areaController.clear();
-    noOfBedroomController.clear();
-    addEstateController.updateEstateStatusVal("Status");
+    addEstateController.areaController.clear();
+    addEstateController.noOfBedroomController.clear();
+
   }
 
 
-  cardCondition(){
-    if(!shopKey.currentState!.isFront){shopKey.currentState!.toggleCard();}
-    if(!bunglowKey.currentState!.isFront){bunglowKey.currentState!.toggleCard();}
-    if(!rowHouseKey.currentState!.isFront){rowHouseKey.currentState!.toggleCard();}
-    if(!landKey.currentState!.isFront){landKey.currentState!.toggleCard();}
-    if(!plotKey.currentState!.isFront){plotKey.currentState!.toggleCard();}
-  }
-  
 }

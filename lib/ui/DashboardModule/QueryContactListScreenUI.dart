@@ -57,7 +57,6 @@ class _QueryContactListScreenUIState extends State<QueryContactListScreenUI> {
 
     }
 
-
   }
 
   @override

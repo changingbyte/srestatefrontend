@@ -1,4 +1,5 @@
 import 'package:croma_brokrage/helper/PreferenceHelper.dart';
+import 'package:croma_brokrage/ui/DashboardModule/DashboardScreenUI.dart';
 import 'package:croma_brokrage/ui/DashboardModule/QueryContactListScreenUI.dart';
 import 'package:croma_brokrage/utils/AppColors.dart';
 import 'package:croma_brokrage/utils/AppCommonFunction.dart';
@@ -45,7 +46,7 @@ class _QueryScreenUIState extends State<QueryScreenUI> {
     print("LISTTTTTTT+++++++  ::  ${homeController.selectedEstateList.length}");
     if(homeController.selectedEstateList.isNotEmpty){
       homeController.selectedEstateList.forEach((element) {
-        //print("LISTTTTTTT-------   $element");
+        print("LISTTTTTTT-------   $element");
         queryController.estateIdList.add(element);
 
       });
@@ -156,6 +157,7 @@ class _QueryScreenUIState extends State<QueryScreenUI> {
                           valueChanged: (value){
                             //print("Whatsapp  $value");
                             controller.updateIsWhatsApp(value);
+                            controller.updateIsText(false);
                           }
                         ),
 
@@ -165,6 +167,7 @@ class _QueryScreenUIState extends State<QueryScreenUI> {
                           valueChanged: (value){
                             //print("Text  $value");
                             controller.updateIsText(value);
+                            controller.updateIsWhatsApp(false);
                           }
                         ),
 
@@ -177,7 +180,12 @@ class _QueryScreenUIState extends State<QueryScreenUI> {
                           onPressed: () {
 
                             if(formKey.currentState!.validate()){
-                              sendSMS();
+                              if(queryController.isText == false  && queryController.isWhatsApp == false ){
+                                AppCommonFunction.flutterToast("please select any message method", false);
+                              }
+                              else{
+                                sendSMS();
+                              }
                             }
 
                           },
@@ -285,11 +293,12 @@ class _QueryScreenUIState extends State<QueryScreenUI> {
       if(response != null){
         if(response.success.toString() == "true"){
           AppCommonFunction.flutterToast(response.message, true);
+          Get.offAll(()=> DashboardScreenUI() );
           clearData();
           queryController.progressDataLoading(false);
         }
         else{
-          //AppCommonFunction.flutterToast(response.message, false);
+          AppCommonFunction.flutterToast(response.error![0], false);
           queryController.progressDataLoading(false);
         }
       }
@@ -303,6 +312,10 @@ class _QueryScreenUIState extends State<QueryScreenUI> {
     queryController.estateIdList.clear();
     queryController.updateIsText(false);
     queryController.updateIsWhatsApp(false);
+
+    homeController.estateList.clear();
+    homeController.newEstateList.clear();
+    homeController.selectedEstateList.clear();
 
     setState((){});
 

@@ -1,14 +1,20 @@
+// ignore_for_file: unnecessary_null_comparison
+
 import 'dart:convert';
 import 'package:croma_brokrage/utils/AppCommonFunction.dart';
 import 'package:croma_brokrage/utils/AppString.dart';
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
+import 'package:multi_select_item/multi_select_item.dart';
+
+import '../model/BuyEstateListResponse.dart';
 
 
 class SearchModuleController extends GetxController{
+  MultiSelectController myMultiSelectController = MultiSelectController();
 
-  dynamic buyEstateListResponse;
-  dynamic buyEstateList = [];
+  late BuyEstateListResponse buyEstateListResponse;
+  List<EstateList> buyEstateList = [];
 
   dynamic saleEstateListResponse;
   dynamic saleEstateList = [];
@@ -17,7 +23,7 @@ class SearchModuleController extends GetxController{
 
 
 
-  Future<dynamic> buyEstateListApi({required String token}) async {
+  Future<BuyEstateListResponse> buyEstateListApi({required String token}) async {
     try{
       http.Response response = await http.get(
         Uri.parse("http://srestateapi.herokuapp.com/api/v1/property/estate/buy/"),
@@ -26,7 +32,7 @@ class SearchModuleController extends GetxController{
           "Authorization" : "Token $token"
         },
       ).timeout(
-          Duration(seconds: 10),
+          Duration(seconds: 30),
           onTimeout: () async{
             progressDataLoading(false);
             AppCommonFunction.flutterToast("Temporary site in under maintenance!", false);
@@ -34,11 +40,11 @@ class SearchModuleController extends GetxController{
             return Future.value();
           });
 
-      print("buy Estate List  ::  ${response.body}");
+      printWrapped("buy Estate List  ::  ${response.body}");
 
       if(response.statusCode == 200){
         if(response.body != null){
-          buyEstateListResponse = json.decode(response.body);
+          buyEstateListResponse = BuyEstateListResponse.fromJson(json.decode(response.body));
           progressDataLoading(false);
           return buyEstateListResponse;
         }
@@ -74,7 +80,7 @@ class SearchModuleController extends GetxController{
           "Authorization" : "Token $token"
         },
       ).timeout(
-          Duration(seconds: 10),
+          Duration(seconds: 30),
           onTimeout: () async{
             progressDataLoading(false);
             AppCommonFunction.flutterToast("Temporary site in under maintenance!", false);
@@ -114,6 +120,14 @@ class SearchModuleController extends GetxController{
 
     }
   }
+
+
+
+  void isToggle(int index){
+    myMultiSelectController.toggle(index);
+    update();
+  }
+
 
 
   void progressDataLoading(bool isProgress) {

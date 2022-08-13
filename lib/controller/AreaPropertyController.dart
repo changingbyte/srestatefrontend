@@ -27,7 +27,7 @@ class AreaPropertyController extends GetxController{
           "Authorization" : "Token $token"
         },
       ).timeout(
-          Duration(seconds: 10),
+          Duration(seconds: 30),
           onTimeout: () async{
             progressDataLoading(false);
             AppCommonFunction.flutterToast("Temporary site in under maintenance!", false);
@@ -75,7 +75,7 @@ class AreaPropertyController extends GetxController{
           "Authorization" : "Token $token"
         },
       ).timeout(
-          Duration(seconds: 10),
+          Duration(seconds: 30),
           onTimeout: () async{
             progressDataLoading(false);
             AppCommonFunction.flutterToast("Temporary site in under maintenance!", false);
@@ -134,7 +134,7 @@ class AreaPropertyController extends GetxController{
         },
         body: payload
       ).timeout(
-          Duration(seconds: 10),
+          Duration(seconds: 30),
           onTimeout: () async{
             progressDataLoading(false);
             AppCommonFunction.flutterToast("Temporary site in under maintenance!", false);

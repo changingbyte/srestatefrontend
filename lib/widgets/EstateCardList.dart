@@ -15,13 +15,11 @@ class EstateCardList extends StatelessWidget {
   List<EstateList> estateList;
   HomeController? homeController;
 
-
   EstateCardList({required this.estateList, this.homeController});
 
   @override
   Widget build(BuildContext context) {
-    return
-      ListView.builder(
+    return ListView.builder(
         itemCount: estateList.length,
         itemBuilder: (context, index) {
           if(homeController!.myMultiSelectController.isSelected(index)){

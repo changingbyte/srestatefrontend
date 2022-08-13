@@ -14,8 +14,6 @@ import 'package:flutter/services.dart';
 import 'package:flutter_statusbarcolor_ns/flutter_statusbarcolor_ns.dart';
 
 import 'package:get/get.dart';
-import 'package:slide_countdown_clock/slide_countdown_clock.dart';
-
 import 'package:keyboard_actions/keyboard_actions.dart';
 import 'package:sms_autofill/sms_autofill.dart';
 import 'package:sms_otp_auto_verify/sms_otp_auto_verify.dart';
@@ -38,22 +36,18 @@ class EnterOtpScreenUI extends StatefulWidget {
 class _EnterOtpScreenUIState extends State<EnterOtpScreenUI> {
 
   int timer = 1;
+  bool _isLoadingButton = false;
+  bool _enableButton = false;
+  String _otpCode = "";
+  int _otpCodeLength = 6;
   FocusNode _focusNode1 = FocusNode();
   OnBoardingController onBoardingController = Get.put(OnBoardingController());
   final formKey = GlobalKey<FormState>();
-  TextEditingController otpController = new TextEditingController();
-  TextEditingController numberController = new TextEditingController();
-  int _otpCodeLength = 6;
-  String _otpCode = "";
-  final _scaffoldKey = GlobalKey<ScaffoldState>();
-  final intRegex = RegExp(r'\d+', multiLine: true);
-  TextEditingController textEditingController = new TextEditingController(text: "");
-
-
+  //TextEditingController otpController = TextEditingController();
+  TextEditingController numberController = TextEditingController();
 
   @override
   void initState() {
-    //_listenOtp();
     Future.delayed(Duration.zero,(){
       numberController.text = widget.number;
     });
@@ -62,23 +56,11 @@ class _EnterOtpScreenUIState extends State<EnterOtpScreenUI> {
     super.initState();
   }
 
-  late TextEditingController textEditingController1;
-
   @override
   void dispose(){
     super.dispose();
     SmsAutoFill().unregisterListener();
   }
-
-
-  /*_listenOtp() async {
-   var temp = await SmsAutoFill().listenForCode;
-   String? signature = await SmsVerification.getAppSignature();
-
-   await SmsVerification.getAppSignature().then((otp) => textEditingController.text = otp!);
-
-   print("AUTO READ  ::  ${temp}");
-  }*/
 
   @override
   Widget build(BuildContext context) {
@@ -112,25 +94,21 @@ class _EnterOtpScreenUIState extends State<EnterOtpScreenUI> {
 
 
   Widget topContainer() {
-    return Container(
-
-      child: Column(
-
-        children: [
-          Align(
-            alignment: Alignment.topLeft,
-            child: Container(
-              margin: EdgeInsets.only(left: 18.0,top: 0),
-              child: WidgetBackArrow(onPressed: (){
-                Navigator.pop(context);
-              },),
-            ),
+    return Column(
+      children: [
+        Align(
+          alignment: Alignment.topLeft,
+          child: Container(
+            margin: EdgeInsets.only(left: 18.0,top: 0),
+            child: WidgetBackArrow(onPressed: (){
+              Navigator.pop(context);
+            },),
           ),
-          Container(
-            margin: EdgeInsets.only(left: 24.0,right: 12.0,top: 0),
-            child: AppCommonFunction.logoTextContainer("ic_main_logo.png",200,180),),
-        ],
-      ),
+        ),
+        Container(
+          margin: EdgeInsets.only(left: 24.0,right: 12.0,top: 0),
+          child: AppCommonFunction.logoTextContainer("ic_main_logo.png",200,180),),
+      ],
     );
   }
 
@@ -141,7 +119,7 @@ class _EnterOtpScreenUIState extends State<EnterOtpScreenUI> {
         SizedBox(height: 20,),
         Container(
           margin: EdgeInsets.only(left: 24,right: 24),
-          child: Txt("Check your email address and enter valid OTP",maxLines: 2,
+          child: Txt("Check your SMS and enter valid OTP",maxLines: 2,
               fontSize: 14.0,fontWeight: FontWeight.w400,color: AppColors.primaryColor
           ),
         ),
@@ -176,7 +154,7 @@ class _EnterOtpScreenUIState extends State<EnterOtpScreenUI> {
                   Padding(
                     padding: const EdgeInsets.only(left: 30,right: 30,top: 20,bottom: 10),
                     child: TextFieldPin(
-                        textController: textEditingController,
+                        textController: controller.otpController,
                         autoFocus: true,
                         codeLength: 6,
                         alignment: MainAxisAlignment.center,
@@ -195,29 +173,6 @@ class _EnterOtpScreenUIState extends State<EnterOtpScreenUI> {
                         }),
                   ),
 
-
-
-                  /*
-                  Padding(
-                    padding: const EdgeInsets.only(left: 30,right: 30,top: 10,bottom: 10),
-                    child: PinFieldAutoFill(
-                      controller: otpController,
-                      autoFocus: true,
-                      decoration: UnderlineDecoration(
-                          colorBuilder: FixedColorBuilder(AppColors.primaryColor)),
-                      currentCode: "      ",
-                      codeLength: 6,
-                      onCodeSubmitted: (code){
-
-                      },
-                      onCodeChanged: (code){
-                        if(code!.length == 6){
-                          FocusScope.of(context).requestFocus(FocusNode());
-                        }
-                      },
-                    ),
-                  ),
-*/
 
 
                   AbsorbPointer(
@@ -246,32 +201,6 @@ class _EnterOtpScreenUIState extends State<EnterOtpScreenUI> {
                   ),
 
 
-                  controller.isResendTimerShow
-                      ? Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      Txt("Resend Sms in ",color: AppColors.black,fontSize: 16),
-
-                      SlideCountdownClock(
-                        duration: Duration(minutes: timer),
-                        slideDirection: SlideDirection.Up,
-                        separator: ":",
-                        textStyle: TextStyle(
-                          fontSize: 16,
-                          color: AppColors.primaryColor,
-                          fontWeight: FontWeight.bold,
-                        ),
-                        shouldShowDays: false,
-                        onDone: () {
-                          controller.updateResendTimerShow(false);
-
-                        },
-                      ),
-
-                    ],
-                  )
-                      : Container(),
 
 
 
@@ -324,7 +253,7 @@ class _EnterOtpScreenUIState extends State<EnterOtpScreenUI> {
   }
 
   void otpCallUser(){
-      if(widget.otp == textEditingController.text){
+      if(widget.otp == onBoardingController.otpController.text){
 
         if(widget.statusCode == "200"){
           AppCommonFunction.flutterToast("Success", true);
@@ -381,8 +310,7 @@ class _EnterOtpScreenUIState extends State<EnterOtpScreenUI> {
   }
 
   void resetAllField() {
-    otpController.clear();
-    textEditingController.clear();
+    onBoardingController.otpController.clear();
   }
 
   KeyboardActionsConfig _buildConfig(BuildContext context) {
@@ -431,24 +359,48 @@ class _EnterOtpScreenUIState extends State<EnterOtpScreenUI> {
 
   /// listen sms
   _startListeningSms()  {
+    print("---OTP READING---");
+
     SmsVerification.startListeningSms().then((message) {
 
       if(message != null){
         print("OTP MSG  ::  ${message}");
         String otp = message.toString().substring(message.length-6,message.length);
 
-        print("START  :: ${message.length-6}");
-        print("END  :: ${message.length}");
+        onBoardingController.updateOtp(otp);
+        print("CONTROLLER  ::  ${onBoardingController.otpController.text}");
         print("LAST 6 DIGIT  :: ${otp}");
 
-        textEditingController.text = otp;
       }
 
     });
   }
 
+  _onOtpCallBack(String otpCode, bool isAutofill) {
+    setState(() {
+      this._otpCode = otpCode;
+      if (otpCode.length == _otpCodeLength && isAutofill) {
+        _enableButton = false;
+        _isLoadingButton = true;
+        _verifyOtpCode();
+      } else if (otpCode.length == _otpCodeLength && !isAutofill) {
+        _enableButton = true;
+        _isLoadingButton = false;
+      }else{
+        _enableButton = false;
+      }
+    });
+  }
+
   _verifyOtpCode() {
     FocusScope.of(context).requestFocus(new FocusNode());
+    Timer(Duration(milliseconds: 4000), () {
+      setState(() {
+        _isLoadingButton = false;
+        _enableButton = false;
+      });
+
+    });
   }
 
 

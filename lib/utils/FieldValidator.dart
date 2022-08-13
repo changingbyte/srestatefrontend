@@ -77,9 +77,9 @@ class FieldValidator {
   static String? validatePhoneNumber(String value) {
     if (value.isEmpty) {
       return "Please Enter Number";
-    }/*else if(value.length < 10){
+    }else if(value.length != 10){
       return "Enter valid Number";
-    }*/
+    }
     return null;
   }
 

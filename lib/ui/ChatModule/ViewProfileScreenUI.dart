@@ -167,7 +167,10 @@ class _ViewProfileScreenUIState extends State<ViewProfileScreenUI> {
 
   getChatProfile(){
     viewProfileController.progressDataLoading(true);
-    viewProfileController.chatProfileApi(token: PreferenceHelper().getUserData().authToken!,).then((value) {
+    viewProfileController.chatProfileApi(
+      absolute_url: viewProfileController.chatProfileData!.absoluteUrl!,
+      token: PreferenceHelper().getUserData().authToken!,
+    ).then((value) {
 
       if(value != null){
         if(value.success.toString() == "true"){

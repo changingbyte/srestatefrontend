@@ -39,7 +39,7 @@ class QueryController extends GetxController{
         },
         body: jsonPayload
       ).timeout(
-          Duration(seconds: 20),
+          Duration(seconds: 30),
           onTimeout: () async{
             progressDataLoading(false);
             AppCommonFunction.flutterToast("Temporary site in under maintenance!", false);

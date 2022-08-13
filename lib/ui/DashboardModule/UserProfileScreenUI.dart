@@ -54,13 +54,8 @@ class _UserProfileScreenUIState extends State<UserProfileScreenUI> {
 
 
                         SizedBox(height: 10),
-                        InkWell(
-                          onTap: () {
-                            Get.to(()=> ChatContactListScreenUI() );
-                          },
-                          child: CircleAvatar(
-                            radius: 60,
-                          ),
+                        CircleAvatar(
+                          radius: 60,
                         ),
                         SizedBox(height: 40),
 
@@ -80,7 +75,11 @@ class _UserProfileScreenUIState extends State<UserProfileScreenUI> {
                             mainAxisAlignment: MainAxisAlignment.spaceAround,
                             children: [
                               StateContainer(title: "Estates", value: viewBrokerProfileController.brokerProfileData!.estates.toString()),
-                              StateContainer(title: "Contacts", value: viewBrokerProfileController.brokerProfileData!.contacts.toString()),
+                              InkWell(
+                                onTap: () {
+                                  Get.to(()=> ChatContactListScreenUI() );
+                                },
+                                child: StateContainer(title: "Contacts", value: viewBrokerProfileController.brokerProfileData!.contacts.toString())),
                               StateContainer(title: "Balance", value: viewBrokerProfileController.brokerProfileData!.balance.toString()),
                             ],
                           ),

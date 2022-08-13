@@ -4,6 +4,7 @@ import 'package:croma_brokrage/model/NumberApiResponse.dart';
 import 'package:croma_brokrage/utils/ApiUtils.dart';
 import 'package:croma_brokrage/utils/AppCommonFunction.dart';
 import 'package:croma_brokrage/utils/AppString.dart';
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 
@@ -16,6 +17,7 @@ class OnBoardingController extends GetxController
   bool isResendTimerShow = false;
   var statusCode;
   late NumberApiResponse numberApiResponse;
+  TextEditingController otpController = TextEditingController();
 
 
 
@@ -30,7 +32,7 @@ class OnBoardingController extends GetxController
       },
       body: jsonPayload
     ).timeout(
-        Duration(seconds: 15),
+        Duration(seconds: 30),
         onTimeout: () async{
           progressDataLoading(false);
           AppCommonFunction.flutterToast("Temporary site in under maintenance!", false);
@@ -86,6 +88,12 @@ class OnBoardingController extends GetxController
     this.isAgreeTerms = isAgreeTerms1;
     update();
   }
+
+  void updateOtp(String otp) {
+    this.otpController.text = otp;
+    update();
+  }
+
 }
 
 

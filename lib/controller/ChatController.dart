@@ -31,7 +31,7 @@ class ChatController  extends GetxController{
           //"Authorization" : "Token $token"
         },
       ).timeout(
-          Duration(seconds: 20),
+          Duration(seconds: 30),
           onTimeout: () async{
             progressDataLoading(false);
             AppCommonFunction.flutterToast("Temporary site in under maintenance!", false);
@@ -86,7 +86,7 @@ class ChatController  extends GetxController{
         },
         body: payload
       ).timeout(
-          Duration(seconds: 20),
+          Duration(seconds: 30),
           onTimeout: () async{
             progressDataLoading(false);
             AppCommonFunction.flutterToast("Temporary site in under maintenance!", false);
@@ -142,7 +142,7 @@ class ChatController  extends GetxController{
         },
         body: payload
       ).timeout(
-          Duration(seconds: 20),
+          Duration(seconds: 30),
           onTimeout: () async{
             progressDataLoading(false);
             AppCommonFunction.flutterToast("Temporary site in under maintenance!", false);

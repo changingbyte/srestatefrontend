@@ -1,7 +1,6 @@
 import 'package:croma_brokrage/controller/DashboardController.dart';
 import 'package:croma_brokrage/helper/PreferenceHelper.dart';
 import 'package:croma_brokrage/ui/DashboardModule/HomeScreenUI.dart';
-import 'package:croma_brokrage/ui/DashboardModule/ProfileScreenUI.dart';
 import 'package:croma_brokrage/ui/DashboardModule/QueryScreenUI.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
@@ -48,6 +47,7 @@ class _DashboardScreenUIState extends State<DashboardScreenUI> {
 
   @override
   Widget build(BuildContext context) {
+    Size size = MediaQuery.of(context).size;
     return SafeArea(
       child: GetBuilder(
         init: HomeController(),
@@ -55,7 +55,6 @@ class _DashboardScreenUIState extends State<DashboardScreenUI> {
           return  Scaffold(
             key: _scaffoldKey,
             appBar: AppBar(
-                title: Txt(dashboardController.appBarTitle,color: Colors.white,fontSize: 20,fontWeight: FontWeight.bold),
                 flexibleSpace: Container(
                   decoration:  const BoxDecoration(
                     gradient: LinearGradient(

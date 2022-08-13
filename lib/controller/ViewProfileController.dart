@@ -14,17 +14,17 @@ class ViewProfileController extends GetxController{
 
 
 
-  Future<ChatProfileResponse> chatProfileApi({required String token}) async {
+  Future<ChatProfileResponse> chatProfileApi({required String token,required String absolute_url}) async {
     try{
 
       http.Response response = await http.get(
-        Uri.parse("http://srestateapi.herokuapp.com/chats/contact_details/8000802034/9426469653/"),
+        Uri.parse("$absolute_url"),
         headers: {
           //"Content-Type": "application/json",
           "Authorization" : "Token $token"
         },
       ).timeout(
-          Duration(seconds: 20),
+          Duration(seconds: 30),
           onTimeout: () async{
             progressDataLoading(false);
             AppCommonFunction.flutterToast("Temporary site in under maintenance!", false);

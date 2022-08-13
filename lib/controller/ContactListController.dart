@@ -26,7 +26,7 @@ class ContactListController extends GetxController{
           "Authorization" : "Token $token"
         },
       ).timeout(
-          Duration(seconds: 20),
+          Duration(seconds: 30),
           onTimeout: () async{
             progressDataLoading(false);
             AppCommonFunction.flutterToast("Temporary site in under maintenance!", false);

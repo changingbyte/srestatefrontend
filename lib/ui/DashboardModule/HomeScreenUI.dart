@@ -4,6 +4,7 @@ import 'package:croma_brokrage/ui/DashboardModule/AddEstateScreenUI.dart';
 import 'package:croma_brokrage/ui/EstateListScreenUI.dart';
 import 'package:croma_brokrage/utils/AppColors.dart';
 import 'package:croma_brokrage/utils/AppCommonFunction.dart';
+import 'package:croma_brokrage/widgets/EstateCardList.dart';
 import 'package:croma_brokrage/widgets/TextFormInputField.dart';
 import 'package:firebase_admob/firebase_admob.dart';
 import 'package:flutter/material.dart';
@@ -25,21 +26,21 @@ class HomeScreenUI extends StatefulWidget {
 }
 
 class _HomeScreenUIState extends State<HomeScreenUI> {
-  final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
   HomeController homeController = Get.put(HomeController());
   DashboardController dashboardController = Get.put(DashboardController());
   var budgetValue = SfRangeValues(0.0, 0.0);
-  SfRangeValues _values = SfRangeValues(0.0, 12.0);
 
   @override
   void initState() {
     super.initState();
-
     Future.delayed(Duration.zero,(){
+      print("---HOME CLEAR---");
+      homeController.deselectItems();
+      homeController.selectedEstateList.clear();
+
       getEstateApi();
       getFilterApi();
     });
-
 
   }
 
@@ -118,41 +119,9 @@ class _HomeScreenUIState extends State<HomeScreenUI> {
                           ? AppCommonFunction.circularIndicator()
                           : controller.estateList.length < 1
                             ? AppCommonFunction.noDataFound()
-                            : ListView.builder(
-                              itemCount: homeController.estateList.length,
-                              itemBuilder: (context, index) {
-
-                                if(homeController.myMultiSelectController.isSelected(index)){
-                                  controller.selectedEstateList.add(homeController.estateList[index].id!);
-                                }
-                                else{
-                                  for(int i=0; i< homeController.estateList.length; i++){
-                                    if(!homeController.myMultiSelectController.isSelected(index)){
-                                      controller.selectedEstateList.remove(homeController.estateList[index].id!);
-                                    }
-                                  }
-                                }
-
-
-
-                              return Container(
-                              padding: EdgeInsets.only(top: 5,bottom: 5),
-                              decoration: BoxDecoration(
-                                color: Colors.transparent,
-                                borderRadius: BorderRadius.circular(10),
-                              ),
-                              child: index != 0 && index % 6 == 0
-                                ? Column(
-                                  children: [
-                                    multiItemContainer(index: index,controller: controller),
-                                    SizedBox(height: 5),
-                                    AppCommonFunction.adsBanner(admobBannerSize: AdmobBannerSize.LARGE_BANNER),
-                                    SizedBox(height: 5),
-                                  ],
-                                )
-                                : multiItemContainer(index: index,controller: controller),
-                              );
-                            },
+                            : EstateCardList(
+                            estateList: controller.estateList,
+                            homeController: homeController,
                           ),
 
                       ),
@@ -169,7 +138,6 @@ class _HomeScreenUIState extends State<HomeScreenUI> {
   }
 
   Widget multiItemContainer({required int index,required HomeController controller}){
-
     return MultiSelectItem(
       isSelecting: homeController.myMultiSelectController.isSelecting,
       onSelected: () {
@@ -214,7 +182,7 @@ class _HomeScreenUIState extends State<HomeScreenUI> {
 
                       SizedBox(height: 13,),
 
-                      ListCardContainer(icon: Icons.location_on,text: controller.estateList[index].society.toString()),
+                      /*ListCardContainer(icon: Icons.location_on,text: controller.estateList[index].society.toString()),
 
                       ListCardContainer(icon: Icons.home_work,text: controller.estateList[index].area.toString()),
 
@@ -223,7 +191,7 @@ class _HomeScreenUIState extends State<HomeScreenUI> {
                       ListCardContainer(icon: Icons.photo_size_select_small_outlined,text: " ${controller.estateList[index].estateType.toString()}"),
 
                       ListCardContainer(icon: Icons.photo_size_select_small_outlined,text: " ${controller.estateList[index].estateStatus.toString()}"),
-
+*/
                     ],
                   ),
 
@@ -254,6 +222,7 @@ class _HomeScreenUIState extends State<HomeScreenUI> {
     );
   }
 
+/*
   Widget ListCardContainer({required IconData icon,required String text}){
     return Wrap(
       children: [
@@ -268,6 +237,7 @@ class _HomeScreenUIState extends State<HomeScreenUI> {
       ],
     );
   }
+*/
 
 
 

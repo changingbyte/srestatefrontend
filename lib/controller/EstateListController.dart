@@ -3,10 +3,12 @@ import 'dart:convert';
 import 'package:croma_brokrage/utils/AppCommonFunction.dart';
 import 'package:croma_brokrage/utils/AppString.dart';
 import 'package:http/http.dart' as http;
+import 'package:multi_select_item/multi_select_item.dart';
 
 
 class EstateListController extends GetxController{
-
+  MultiSelectController myMultiSelectController = MultiSelectController();
+  Set<int> selectedEstateList = {};
 
   dynamic estateListResponse;
   dynamic estateList = [];
@@ -26,7 +28,7 @@ class EstateListController extends GetxController{
         },
         body: jsonPayload
       ).timeout(
-          Duration(seconds: 10),
+          Duration(seconds: 30),
           onTimeout: () async{
             progressDataLoading(false);
             AppCommonFunction.flutterToast("Temporary site in under maintenance!", false);
@@ -64,6 +66,22 @@ class EstateListController extends GetxController{
       print("ERROR  ::  $e");
       throw Exception(AppString.somethingWentWrong);
     }
+  }
+
+
+  void selectAllItems() {
+    myMultiSelectController.toggleAll();
+    update();
+  }
+
+  void deselectItems() {
+    myMultiSelectController.deselectAll();
+    update();
+  }
+
+  void isToggle(int index){
+    myMultiSelectController.toggle(index);
+    update();
   }
 
 

@@ -20,7 +20,7 @@ class MessageBalanceController extends GetxController{
           "Authorization" : "Token $token",
         },
       ).timeout(
-          Duration(seconds: 10),
+          Duration(seconds: 30),
           onTimeout: () async{
             progressDataLoading(false);
             AppCommonFunction.flutterToast("Temporary site is under maintenance!", false);

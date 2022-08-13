@@ -19,6 +19,7 @@ class TextFormInputField extends StatelessWidget {
   final FormFieldSetter<String>? onSaved;
   final FocusNode? focusNode;
   ValueChanged<String>? onChanged;
+  VoidCallback? onEditingComplete;
 
   TextFormInputField({ this.hintText,
      this.controller,
@@ -33,6 +34,7 @@ class TextFormInputField extends StatelessWidget {
      this.enable = true,
      this.validator,
      this.onChanged,
+     this.onEditingComplete,
      this.onSaved,
      this.focusNode});
 
@@ -50,7 +52,7 @@ class TextFormInputField extends StatelessWidget {
           padding: const EdgeInsets.all(4.0),
           child: TextFormField(
             cursorColor: AppColors.primaryColor,
-            style: TextStyle(color: AppColors.primaryColor,fontWeight: FontWeight.bold),
+            style: TextStyle(color: AppColors.primaryColor,fontWeight: FontWeight.w400),
             validator: validator==null?null:validator,
             onSaved: onSaved==null?null:onSaved,
             onChanged: onChanged==null?null:onChanged,
@@ -63,9 +65,11 @@ class TextFormInputField extends StatelessWidget {
             enabled: enable,
             autofillHints: autofill,
             enableSuggestions: true,
+            onEditingComplete: onEditingComplete == null ? null : onEditingComplete,
             decoration:  InputDecoration(
               border: InputBorder.none,
               hintText: hintText,
+              fillColor: Colors.black12.withOpacity(0.05),
               contentPadding:  EdgeInsets.symmetric(vertical: 10.0,horizontal:8.0),
               hintStyle: TextStyle(color: AppColors.primaryColor), filled: true,
               disabledBorder:OutlineInputBorder(
