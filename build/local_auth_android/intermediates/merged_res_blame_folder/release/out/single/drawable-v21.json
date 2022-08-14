@@ -1,0 +1,26 @@
+[
+    {
+        "merged": "E:\\Flutter Projects\\srestatefrontend\\build\\local_auth_android\\intermediates\\res\\merged\\release\\drawable-v21\\notification_action_background.xml",
+        "source": "C:\\Users\\anila\\.gradle\\caches\\transforms-2\\files-2.1\\bf57ee6ef03cef43525091c12acf6534\\core-1.6.0\\res\\drawable-v21\\notification_action_background.xml"
+    },
+    {
+        "merged": "E:\\Flutter Projects\\srestatefrontend\\build\\local_auth_android\\intermediates\\res\\merged\\release\\drawable-v21\\abc_dialog_material_background.xml",
+        "source": "C:\\Users\\anila\\.gradle\\caches\\transforms-2\\files-2.1\\4c3d4789391f93321c2ae3389ec44fcc\\appcompat-1.2.0\\res\\drawable-v21\\abc_dialog_material_background.xml"
+    },
+    {
+        "merged": "E:\\Flutter Projects\\srestatefrontend\\build\\local_auth_android\\intermediates\\res\\merged\\release\\drawable-v21\\abc_action_bar_item_background_material.xml",
+        "source": "C:\\Users\\anila\\.gradle\\caches\\transforms-2\\files-2.1\\4c3d4789391f93321c2ae3389ec44fcc\\appcompat-1.2.0\\res\\drawable-v21\\abc_action_bar_item_background_material.xml"
+    },
+    {
+        "merged": "E:\\Flutter Projects\\srestatefrontend\\build\\local_auth_android\\intermediates\\res\\merged\\release\\drawable-v21\\abc_edit_text_material.xml",
+        "source": "C:\\Users\\anila\\.gradle\\caches\\transforms-2\\files-2.1\\4c3d4789391f93321c2ae3389ec44fcc\\appcompat-1.2.0\\res\\drawable-v21\\abc_edit_text_material.xml"
+    },
+    {
+        "merged": "E:\\Flutter Projects\\srestatefrontend\\build\\local_auth_android\\intermediates\\res\\merged\\release\\drawable-v21\\abc_btn_colored_material.xml",
+        "source": "C:\\Users\\anila\\.gradle\\caches\\transforms-2\\files-2.1\\4c3d4789391f93321c2ae3389ec44fcc\\appcompat-1.2.0\\res\\drawable-v21\\abc_btn_colored_material.xml"
+    },
+    {
+        "merged": "E:\\Flutter Projects\\srestatefrontend\\build\\local_auth_android\\intermediates\\res\\merged\\release\\drawable-v21\\abc_list_divider_material.xml",
+        "source": "C:\\Users\\anila\\.gradle\\caches\\transforms-2\\files-2.1\\4c3d4789391f93321c2ae3389ec44fcc\\appcompat-1.2.0\\res\\drawable-v21\\abc_list_divider_material.xml"
+    }
+]

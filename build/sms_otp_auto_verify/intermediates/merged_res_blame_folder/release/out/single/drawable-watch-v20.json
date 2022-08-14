@@ -1,0 +1,14 @@
+[
+    {
+        "merged": "E:\\Flutter Projects\\srestatefrontend\\build\\sms_otp_auto_verify\\intermediates\\res\\merged\\release\\drawable-watch-v20\\common_google_signin_btn_text_disabled.xml",
+        "source": "C:\\Users\\anila\\.gradle\\caches\\transforms-2\\files-2.1\\8783fa0481db5bcd0d9b9e84ad4a50bd\\jetified-play-services-auth-20.0.1\\res\\drawable-watch-v20\\common_google_signin_btn_text_disabled.xml"
+    },
+    {
+        "merged": "E:\\Flutter Projects\\srestatefrontend\\build\\sms_otp_auto_verify\\intermediates\\res\\merged\\release\\drawable-watch-v20\\common_google_signin_btn_text_dark_normal.xml",
+        "source": "C:\\Users\\anila\\.gradle\\caches\\transforms-2\\files-2.1\\8783fa0481db5bcd0d9b9e84ad4a50bd\\jetified-play-services-auth-20.0.1\\res\\drawable-watch-v20\\common_google_signin_btn_text_dark_normal.xml"
+    },
+    {
+        "merged": "E:\\Flutter Projects\\srestatefrontend\\build\\sms_otp_auto_verify\\intermediates\\res\\merged\\release\\drawable-watch-v20\\common_google_signin_btn_text_light_normal.xml",
+        "source": "C:\\Users\\anila\\.gradle\\caches\\transforms-2\\files-2.1\\8783fa0481db5bcd0d9b9e84ad4a50bd\\jetified-play-services-auth-20.0.1\\res\\drawable-watch-v20\\common_google_signin_btn_text_light_normal.xml"
+    }
+]

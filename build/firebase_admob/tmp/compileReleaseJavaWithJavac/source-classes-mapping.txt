@@ -1,0 +1,19 @@
+io/flutter/plugins/firebaseadmob/RewardedVideoAdWrapper.java
+ io.flutter.plugins.firebaseadmob.RewardedVideoAdWrapper
+ io.flutter.plugins.firebaseadmob.RewardedVideoAdWrapper$Status
+io/flutter/plugins/firebaseadmob/BuildConfig.java
+ io.flutter.plugins.firebaseadmob.BuildConfig
+io/flutter/plugins/firebaseadmob/FirebaseAdMobPlugin.java
+ io.flutter.plugins.firebaseadmob.FirebaseAdMobPlugin
+ io.flutter.plugins.firebaseadmob.FirebaseAdMobPlugin$NativeAdFactory
+io/flutter/plugins/firebaseadmob/AdRequestBuilderFactory.java
+ io.flutter.plugins.firebaseadmob.AdRequestBuilderFactory
+io/flutter/plugins/firebaseadmob/MobileAd.java
+ io.flutter.plugins.firebaseadmob.MobileAd
+ io.flutter.plugins.firebaseadmob.MobileAd$1
+ io.flutter.plugins.firebaseadmob.MobileAd$Banner
+ io.flutter.plugins.firebaseadmob.MobileAd$Interstitial
+ io.flutter.plugins.firebaseadmob.MobileAd$MobileAdWithView
+ io.flutter.plugins.firebaseadmob.MobileAd$Native
+ io.flutter.plugins.firebaseadmob.MobileAd$Native$1
+ io.flutter.plugins.firebaseadmob.MobileAd$Status
