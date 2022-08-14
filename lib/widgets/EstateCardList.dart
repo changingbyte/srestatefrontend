@@ -5,7 +5,7 @@ import 'package:get/get.dart';
 import 'package:multi_select_item/multi_select_item.dart';
 
 import '../controller/HomeController.dart';
-import '../model/EstateListResponse.dart';
+import '../model/EstateListCommonResponse.dart';
 import '../ui/DashboardModule/PropertyDetailsScreenUI.dart';
 import '../utils/AppColors.dart';
 import '../utils/AppString.dart';
@@ -13,39 +13,38 @@ import 'Txt.dart';
 
 class EstateCardList extends StatelessWidget {
   List<EstateList> estateList;
-  HomeController? homeController;
-
-  EstateCardList({required this.estateList, this.homeController});
+  HomeController homeController;
+  Axis? scrollDirection;
+  EstateCardList({required this.estateList, this.scrollDirection = Axis.vertical, required this.homeController});
 
   @override
   Widget build(BuildContext context) {
     return ListView.builder(
+        scrollDirection: scrollDirection!,
         itemCount: estateList.length,
         itemBuilder: (context, index) {
-          if(homeController!.myMultiSelectController.isSelected(index)){
-            homeController!.selectedEstateList.add(estateList[index].id!);
+          if(homeController.myMultiSelectController.isSelected(index)){
+            homeController.selectedEstateList.add(estateList[index].id!);
           }
           else{
             for(int i=0; i< estateList.length; i++){
-              if(!homeController!.myMultiSelectController.isSelected(index)){
-                homeController!.selectedEstateList.remove(estateList[index].id!);
+              if(!homeController.myMultiSelectController.isSelected(index)){
+                homeController.selectedEstateList.remove(estateList[index].id!);
               }
             }
           }
 
           return MultiSelectItem(
-            isSelecting: homeController!.myMultiSelectController.isSelecting,
+            isSelecting: homeController.myMultiSelectController.isSelecting,
             onSelected: () {
-                homeController!.isToggle(index);
+              homeController.isToggle(index);
             },
             child: Card(
               elevation: 10,
-              color: homeController!.myMultiSelectController.isSelected(index)
+              color: homeController.myMultiSelectController.isSelected(index)
                   ? Colors.grey.shade400
                   : Colors.white,
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.all(Radius.circular(7)),
-              ),
+              shape: RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(7)),),
               child: InkWell(
                 onTap: () {
                   Get.to(() => PropertyDetailsScreenUI(estateList: estateList[index],),);
@@ -58,7 +57,6 @@ class EstateCardList extends StatelessWidget {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-
                         Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           mainAxisAlignment: MainAxisAlignment.start,

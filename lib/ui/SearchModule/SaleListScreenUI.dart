@@ -1,4 +1,5 @@
 import 'package:croma_brokrage/helper/PreferenceHelper.dart';
+import 'package:croma_brokrage/widgets/EstateCardList.dart';
 import 'package:croma_brokrage/widgets/Txt.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -42,10 +43,17 @@ class _SaleListScreenUIState extends State<SaleListScreenUI> {
         init: SearchModuleController(),
         builder: (SearchModuleController controller) {
           return controller.isDataLoading
-              ? AppCommonFunction.circularIndicator()
-              : controller.saleEstateList.length < 1
-                  ? AppCommonFunction.noDataFound()
-                  : ListView.builder(
+            ? AppCommonFunction.circularIndicator()
+            : controller.saleEstateList.length < 1
+              ? AppCommonFunction.noDataFound()
+              : EstateCardList(
+                  homeController: homeController,
+                  estateList: controller.saleEstateList,
+                );
+
+
+              /*
+          ListView.builder(
                       itemCount: controller.saleEstateList.length,
                       itemBuilder: (context, index) {
 
@@ -134,6 +142,10 @@ class _SaleListScreenUIState extends State<SaleListScreenUI> {
                         );
                       },
                     );
+          */
+
+
+
         },
       ),
     );
@@ -168,9 +180,9 @@ class _SaleListScreenUIState extends State<SaleListScreenUI> {
   getEstateBuyListApi() {
     searchModuleController.saleEstateListApi(token: PreferenceHelper().getUserData().authToken!).then((value) {
       if (value != null) {
-        if (value["success"].toString() == "true") {
-          if (value["data"].isNotEmpty) {
-            searchModuleController.saleEstateList = value["data"];
+        if (value.success.toString() == "true") {
+          if (value.data!.isNotEmpty) {
+            searchModuleController.saleEstateList = value.data!;
             searchModuleController.progressDataLoading(false);
           }
         } else {

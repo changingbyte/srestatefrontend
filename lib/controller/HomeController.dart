@@ -7,13 +7,13 @@ import 'package:croma_brokrage/utils/AppString.dart';
 import 'package:http/http.dart' as http;
 import 'package:multi_select_item/multi_select_item.dart';
 
-import '../model/EstateListResponse.dart';
+import '../model/EstateListCommonResponse.dart';
 import '../model/FilterDataResponse.dart';
 
 class HomeController extends GetxController{
 
   MultiSelectController myMultiSelectController = MultiSelectController();
-  late EstateListResponse estateListResponse;
+  late EstateListCommonResponse estateListResponse;
   late FilterDataResponse filterDataResponse;
 
   List<EstateList> estateList = [];
@@ -44,7 +44,7 @@ class HomeController extends GetxController{
   String filterBHKTitle = "BHK";
 
 
-  Future<EstateListResponse> estateListApi({required String token,List<String>? area,List<String>? estate_status,List<String>? no_of_bedrooms,
+  Future<EstateListCommonResponse> estateListApi({required String token,List<String>? area,List<String>? estate_status,List<String>? no_of_bedrooms,
     List<String>? apartment,List<String>? budget, List<String>? furniture}) async {
 
     /*print("area  ::  $area");
@@ -87,7 +87,7 @@ class HomeController extends GetxController{
 
       if(response.statusCode == 200){
         if(response.body != null){
-          estateListResponse = EstateListResponse.fromJson(json.decode(response.body));
+          estateListResponse = EstateListCommonResponse.fromJson(json.decode(response.body));
           progressDataLoading(false);
           return estateListResponse;
         }

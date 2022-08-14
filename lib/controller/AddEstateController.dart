@@ -12,7 +12,6 @@ import '../model/AddEstateResponse.dart';
 
 
 class AddEstateController extends GetxController{
-
   bool isDataLoading = false;
   late AddEstateResponse addEstateResponse;
   var readByWhatsApp;
@@ -20,11 +19,9 @@ class AddEstateController extends GetxController{
   TextEditingController areaController = TextEditingController();
   TextEditingController sizeController = TextEditingController();
 
-
   String estateStatusVal = "Status";
   String estateType = "";
   String estateStatus = "";
-
 
   Future<AddEstateResponse> addEstateApi({String? token,String? estate_name,String? city, int? budget,String? estate_type, String? floor_space,
     String? estate_status, String? society,String? area,int? no_of_bedroom,
@@ -49,9 +46,7 @@ class AddEstateController extends GetxController{
         "area": area,
         "furniture" : "",
         "budget" : budget
-
-      }); 
-
+      });
 
       http.Response response = await http.post(
         Uri.parse("http://srestateapi.herokuapp.com/api/v1/property/estate/create/"),
@@ -89,7 +84,6 @@ class AddEstateController extends GetxController{
         throw Exception(AppString.somethingWentWrong);
       }
 
-
     }
     catch (e){
       progressDataLoading(false);
@@ -99,8 +93,6 @@ class AddEstateController extends GetxController{
 
     }
   }
-
-
 
 
   Future<dynamic> enterWhatsAppMsgApi({String? token,String? message}) async {
@@ -132,13 +124,12 @@ class AddEstateController extends GetxController{
           return readByWhatsApp;
         }
         else{
-          progressDataLoading(false);
           return AppCommonFunction.flutterToast(AppString.somethingWentWrong, false);
         }
       }
       else{
         progressDataLoading(false);
-        AppCommonFunction.flutterToast(AppString.somethingWentWrong, false);
+        //AppCommonFunction.flutterToast(AppString.somethingWentWrong, false);
         throw Exception(AppString.somethingWentWrong);
       }
 

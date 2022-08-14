@@ -4,12 +4,12 @@
 
 import 'dart:convert';
 
-EstateListResponse estateListResponseFromJson(String str) => EstateListResponse.fromJson(json.decode(str));
+EstateListCommonResponse estateListResponseFromJson(String str) => EstateListCommonResponse.fromJson(json.decode(str));
 
-String estateListResponseToJson(EstateListResponse data) => json.encode(data.toJson());
+String estateListResponseToJson(EstateListCommonResponse data) => json.encode(data.toJson());
 
-class EstateListResponse {
-  EstateListResponse({
+class EstateListCommonResponse {
+  EstateListCommonResponse({
     this.success,
     this.error,
     this.message,
@@ -21,7 +21,7 @@ class EstateListResponse {
   String? message;
   List<EstateList>? data;
 
-  factory EstateListResponse.fromJson(Map<String, dynamic> json) => EstateListResponse(
+  factory EstateListCommonResponse.fromJson(Map<String, dynamic> json) => EstateListCommonResponse(
     success: json["success"] == null ? null : json["success"],
     error: json["error"] == null ? null : List<dynamic>.from(json["error"].map((x) => x)),
     message: json["message"] == null ? null : json["message"],

@@ -12,8 +12,9 @@ import 'package:get/get.dart';
 import '../../controller/HomeController.dart';
 import '../../controller/PropertyDetailsController.dart';
 import '../../helper/PreferenceHelper.dart';
-import '../../model/EstateListResponse.dart';
+import '../../model/EstateListCommonResponse.dart';
 import '../../utils/AppCommonFunction.dart';
+import '../../widgets/EstateCardList.dart';
 import '../../widgets/Txt.dart';
 
 
@@ -30,6 +31,7 @@ class PropertyDetailsScreenUI extends StatefulWidget {
 
 class _PropertyDetailsScreenUIState extends State<PropertyDetailsScreenUI> {
   PropertyDetailsController propertyDetailsController = Get.put(PropertyDetailsController());
+  HomeController homeController = Get.put(HomeController());
   CarouselController carouselController = CarouselController();
   var lat = 0.0000;
   var long = 0.0000;
@@ -49,19 +51,44 @@ class _PropertyDetailsScreenUIState extends State<PropertyDetailsScreenUI> {
         init: PropertyDetailsController(),
         builder: (PropertyDetailsController controller) {
           return Scaffold(
-            appBar: AppBar(
-              title: Txt("Estate Details",color: Colors.white,fontSize: 18),
-              backgroundColor: AppColors.primaryColor,
-            ),
-            body:
-
-            controller.isDataLoading
+            body: controller.isDataLoading
                 ? AppCommonFunction.circularIndicator()
                 : Stack(
               children: [
                 SingleChildScrollView(
                   child: Column(
                     children: [
+
+                      /*AppBar(
+                        toolbarHeight: 60,
+                        title: Txt("Estate Details",color: Colors.white,fontSize: 18),
+                        backgroundColor: AppColors.primaryColor,
+                      ),*/
+
+
+                      Container(
+                        height: 60,
+                        padding: EdgeInsets.all(8.0),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            InkWell(
+                              onTap: () {
+                                Get.back();
+                              },
+                              child: Padding(
+                                padding: EdgeInsets.all(8.0),
+                                child: Icon(Icons.arrow_back_ios,color: AppColors.primaryColor,),
+                              ),
+                            ),
+
+                            Padding(
+                              padding: EdgeInsets.only(right: 8.0),
+                              child: Icon(Icons.share,color: Colors.blueAccent,),
+                            ),
+                          ],
+                        ),
+                      ),
 
                       CarouselSlider(
                         carouselController: carouselController,
@@ -90,241 +117,85 @@ class _PropertyDetailsScreenUIState extends State<PropertyDetailsScreenUI> {
 
 
                       Padding(
-                        padding: const EdgeInsets.all(8.0),
+                        padding: const EdgeInsets.all(12.0),
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
 
-                            Container(
-                              height: 120,
-                              child: ListView(
-                                scrollDirection: Axis.horizontal,
-                                children: [
-
-                                  Column(
-                                    children: [
-                                      FaIcon(FontAwesomeIcons.city),
-                                      Txt("${widget.estateList.city}"),
-                                    ],
-                                  ),
-
-
-                                  SizedBox(width: 30),
-
-
-                                  Column(
-                                    children: [
-                                      FaIcon(FontAwesomeIcons.locationArrow),
-                                      Txt("${widget.estateList.area}"),
-                                    ],
-                                  ),
-
-
-                                  SizedBox(width: 30),
-
-                                  Column(
-                                    children: [
-                                      FaIcon(FontAwesomeIcons.building),
-                                      Txt("${widget.estateList.society}"),
-                                    ],
-                                  ),
-
-                                  SizedBox(width: 30),
-
-                                  Column(
-                                    children: [
-                                      FaIcon(FontAwesomeIcons.rupeeSign),
-                                      Txt("${widget.estateList.budget}"),
-                                    ],
-                                  ),
-
-
-
-                                ],
-                              ),
+                            SizedBox(height: 8),
+                            Txt("Address",fontSize: 14),
+                            SizedBox(height: 3),
+                            Wrap(
+                              children: [
+                                Txt("${widget.estateList.society.toString().isEmpty ? "N/A" : widget.estateList.society.toString()}",fontSize: 17,fontWeight: FontWeight.w500),
+                              ],
                             ),
 
-
-                            /*
-                          Container(
-                            decoration: BoxDecoration(
-                              border: Border.all(width: 1)
-                            ),
-                            child: Padding(
-                              padding: const EdgeInsets.all(8.0),
-                              child: Column(
-                                children: [
-                                  Row(
-                                    mainAxisAlignment: MainAxisAlignment.spaceAround,
-                                    children: [
-                                      CardTextContainer(icon: Icons.photo_size_select_small_outlined,text: widget.estateList.floorSpace.toString()),
-
-                                      CardTextContainer(icon: Icons.location_on,text: widget.estateList.city.toString()),
-                                    ],
-                                  ),
-
-                                  SizedBox(height: 5,),
-
-                                  Row(
-                                    mainAxisAlignment: MainAxisAlignment.spaceAround,
-                                    children: [
-                                      CardTextContainer(icon: FontAwesomeIcons.layerGroup,text: widget.estateList.area.toString()),
-
-                                      CardTextContainer(icon: Icons.home_work,text: widget.estateList.society.toString()),
-                                    ],
-                                  ),
-
-                                  SizedBox(height: 5,),
-
-                                  Row(
-                                    mainAxisAlignment: MainAxisAlignment.spaceAround,
-                                    children: [
-                                      CardTextContainer(icon: Icons.description,text: widget.estateList.estateDescription.toString()),
-                                    ],
-                                  ),
-
-                                ],
-                              ),
-                            ),
-                          ),
-*/
-
-
-                            Padding(
-                              padding: const EdgeInsets.only(left: 8.0,right: 8.0),
-                              child: Row(
-                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                children: [
-                                  Padding(
-                                    padding: const EdgeInsets.only(left: 5.0,top: 10,bottom: 10),
-                                    child: Txt("Available",fontSize: 18,fontWeight: FontWeight.w500),
-                                  ),
-
-                                  Switch(
-                                    value:  widget.estateList.estateStatus == "available" ? true :  false,
-                                    activeColor: AppColors.primaryColor,
-                                    onChanged:(value) {
-                                    },),
-                                ],
-                              ),
+                            Divider(thickness: 1,endIndent: 5,indent: 5),
+                            Txt("Description",fontSize: 14),
+                            SizedBox(height: 3),
+                            Wrap(
+                              children: [
+                                Txt("${widget.estateList.estateDescription.toString().isEmpty ? "N/A": widget.estateList.estateDescription.toString()}",
+                                    fontSize: 16,fontWeight: FontWeight.w500,maxLines: 7,overflow: TextOverflow.ellipsis),
+                              ],
                             ),
 
-                            SizedBox(
-                              height: 30,
+                            Divider(thickness: 1,endIndent: 5,indent: 5),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceAround,
+                              children: [
+                                widget.estateList.numberOfBedrooms == 0
+                                  ? estateDetailContainer(icon: FontAwesomeIcons.treeCity, text: widget.estateList.city.toString())
+                                  : estateDetailContainer(icon: FontAwesomeIcons.bed, text: widget.estateList.numberOfBedrooms.toString()),
+                                Container(height: 40,width: 1,color: Colors.black38),
+                                estateDetailContainer(icon: Icons.currency_rupee, text: widget.estateList.budget.toString()),
+                                Container(height: 40,width: 1,color: Colors.black38),
+                                estateDetailContainer(icon: FontAwesomeIcons.maximize, text: widget.estateList.floorSpace.toString()),
+
+                              ],
                             ),
-
-                            Center(
-                              child: RoundedButtonWidget(
-                                text: "Share",
-                                height: 45,
-                                width: Get.width/1.5,
-                                onPressed: () {
-                                  AppCommonFunction.flutterToast("Navigate", true);
-                                  Get.to(()=> PropertyDetailsScreenUI(estateList: widget.estateList,),);
-                                },
-                              ),
+                            Divider(thickness: 1,endIndent: 20,indent: 20),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceAround,
+                              children: [
+                                estateDetailContainer(icon: FontAwesomeIcons.cartFlatbed, text: widget.estateList.estateStatus.toString()),
+                                Container(height: 40,width: 1,color: Colors.black38),
+                                estateDetailContainer(icon: FontAwesomeIcons.locationArrow, text: widget.estateList.area.toString()),
+                                Container(height: 40,width: 1,color: Colors.black38),
+                                estateDetailContainer(icon: FontAwesomeIcons.city, text: widget.estateList.estateType.toString()),
+                              ],
                             ),
-
-                            SizedBox(height: 10),
-
-                            /*
-                          Center(
-                            child: RoundedButtonWidget(
-                              text: "View in Map",
-                              height: 45,
-                              width: Get.width/1.5,
-                              onPressed: () {
-
-                              },
-                            ),
-                          ),
-                          */
+                            Divider(thickness: 1,endIndent: 20,indent: 20),
 
 
+                            SizedBox(height: 20),
 
                             Container(
-                                height: 80,
-                                child:
-                                controller.suggestionResponse.data!.isNotEmpty
+                                height: 220,
+                                child: controller.suggestionResponse.data!.isNotEmpty
                                   ? Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
                                     Padding(
-                                      padding: EdgeInsets.only(left:18.0,top: 10,bottom: 0),
-                                      child: Txt("Suggestion",fontSize: 25,fontWeight: FontWeight.bold),
+                                      padding: EdgeInsets.only(left:12.0,top: 10,bottom: 0),
+                                      child: Txt("Suggestion",fontSize: 22,fontWeight: FontWeight.bold),
                                     ),
                                     Expanded(
-                                      child: ListView.builder(
-                                        itemCount: controller.suggestionResponse.data!.length,
-                                        itemBuilder: (context, index) {
-                                          return Container(
-                                            padding: EdgeInsets.only(top: 0,bottom: 5,left: 10,right: 10),
-                                            decoration: BoxDecoration(
-                                              color: Colors.transparent,
-                                              borderRadius: BorderRadius.circular(10),
-                                            ),
-                                            child: Card(
-                                              elevation: 8,
-                                              color: Colors.white,
-                                              shape: RoundedRectangleBorder(
-                                                borderRadius: BorderRadius.all(Radius.circular(7)),
-                                              ),
-                                              child: InkWell(
-                                                onTap: () {
-
-                                                },
-                                                child: Container(
-                                                  width: Get.width,
-                                                  child: Padding(
-                                                    padding: const EdgeInsets.all(8.0),
-                                                    child: Row(
-                                                      crossAxisAlignment: CrossAxisAlignment.start,
-                                                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                                      children: [
-
-                                                        Column(
-                                                          crossAxisAlignment: CrossAxisAlignment.start,
-                                                          mainAxisAlignment: MainAxisAlignment.start,
-                                                          children: [
-
-                                                            Container(
-                                                              width: Get.width/2,
-                                                              child: Txt(controller.suggestionResponse.data![index].estateName!.toString(),
-                                                                  fontSize: 20,color: AppColors.black,fontWeight: FontWeight.bold),
-                                                            ),
-
-                                                            SizedBox(height: 13,),
-
-                                                            ListCardContainer(icon: Icons.location_on,text: "${controller.suggestionResponse.data![index].society!}"),
-
-                                                            ListCardContainer(icon: Icons.home_work,text: "${controller.suggestionResponse.data![index].area!}"),
-
-                                                            ListCardContainer(icon: Icons.photo_size_select_small_outlined,text: "floor_space"),
-
-
-                                                          ],
-                                                        ),
-
-                                                        Image.asset(AppString.imagesAssetPath+"ic_flat_img.jpg",
-                                                          height: 160,width: 140,fit: BoxFit.cover,),
-
-                                                      ],
-                                                    ),
-                                                  ),
-                                                ),
-                                              ),
-                                            ),
-                                          );
-                                        },
+                                      child: EstateCardList(
+                                        estateList: controller.suggestionResponse.data!,
+                                        scrollDirection: Axis.horizontal,
+                                        homeController: homeController,
                                       ),
+
                                     ),
                                   ],
                                 )
                                   : Container(),
 
+                              ),
 
-                              )
-
+                            SizedBox(height: 10),
 
                           ],
                         ),
@@ -391,8 +262,6 @@ class _PropertyDetailsScreenUIState extends State<PropertyDetailsScreenUI> {
         else{
           AppCommonFunction.flutterToast(AppString.somethingWentWrong, false);
         }
-
-
       }
       else{
         AppCommonFunction.flutterToast(AppString.somethingWentWrong, false);
@@ -400,5 +269,20 @@ class _PropertyDetailsScreenUIState extends State<PropertyDetailsScreenUI> {
 
     });
   }
+
+  Widget estateDetailContainer({required IconData icon, required String text}){
+    return Container(
+      height: 60,
+      width: 100,
+      child: Column(
+        children: [
+          FaIcon(icon),
+          SizedBox(height: 5),
+          Txt(text,overflow: TextOverflow.ellipsis),
+        ],
+      ),
+    );
+  }
+
 
 }

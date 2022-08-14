@@ -10,24 +10,27 @@ class DashboardController extends GetxController{
 
     if(index == 0){
       appBarTitle = "Estates";
+      bottomSelectedIndex = 0;
     }
     else if(index == 1){
       appBarTitle = "Search";
+      bottomSelectedIndex = 1;
     }
     else if(index == 2){
-      appBarTitle = "Add Balance";
+      appBarTitle = "Add Estate";
+      bottomSelectedIndex = 2;
+    }
+    else if(index == 3){
+      appBarTitle = "Chat";
+      bottomSelectedIndex = 3;
+    }
+    else if(index == 4){
+      appBarTitle = "Profile";
+      bottomSelectedIndex = 4;
     }
     else{
-      appBarTitle = "Profile";
+      appBarTitle = "";
     }
-
-    update();
-  }
-
-
-  void updateAppBarTitle(String title){
-    appBarTitle=title;
-    //print("appBarTitle="+appBarTitle.toString());
     update();
   }
 

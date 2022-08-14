@@ -5,17 +5,19 @@ import 'package:croma_brokrage/utils/AppString.dart';
 import 'package:http/http.dart' as http;
 import 'package:multi_select_item/multi_select_item.dart';
 
+import '../model/EstateListCommonResponse.dart';
+
 
 class EstateListController extends GetxController{
   MultiSelectController myMultiSelectController = MultiSelectController();
   Set<int> selectedEstateList = {};
 
-  dynamic estateListResponse;
-  dynamic estateList = [];
+  late EstateListCommonResponse estateListResponse;
+  List<EstateList> estateList = [];
   bool isDataLoading = true;
 
 
-  Future<dynamic> estateListApi({required String token,required String estateName}) async {
+  Future<EstateListCommonResponse> estateListApi({required String token,required String estateName}) async {
     try{
       var jsonPayload = jsonEncode( { 'estate_type': ['$estateName']  });
 
@@ -42,7 +44,7 @@ class EstateListController extends GetxController{
 
       if(response.statusCode == 200){
         if(response.body != null){
-          estateListResponse = json.decode(response.body);
+          estateListResponse = EstateListCommonResponse.fromJson(json.decode(response.body));
           // print("estateListResponse  ::  $estateListResponse");
           progressDataLoading(false);
           return estateListResponse;

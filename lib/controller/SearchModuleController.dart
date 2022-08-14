@@ -7,23 +7,20 @@ import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 import 'package:multi_select_item/multi_select_item.dart';
 
-import '../model/BuyEstateListResponse.dart';
-
+import '../model/EstateListCommonResponse.dart';
 
 class SearchModuleController extends GetxController{
   MultiSelectController myMultiSelectController = MultiSelectController();
 
-  late BuyEstateListResponse buyEstateListResponse;
+  late EstateListCommonResponse buyEstateListResponse;
   List<EstateList> buyEstateList = [];
 
-  dynamic saleEstateListResponse;
-  dynamic saleEstateList = [];
+  late EstateListCommonResponse saleEstateListResponse;
+  List<EstateList> saleEstateList = [];
 
   bool isDataLoading = true;
 
-
-
-  Future<BuyEstateListResponse> buyEstateListApi({required String token}) async {
+  Future<EstateListCommonResponse> buyEstateListApi({required String token}) async {
     try{
       http.Response response = await http.get(
         Uri.parse("http://srestateapi.herokuapp.com/api/v1/property/estate/buy/"),
@@ -44,7 +41,7 @@ class SearchModuleController extends GetxController{
 
       if(response.statusCode == 200){
         if(response.body != null){
-          buyEstateListResponse = BuyEstateListResponse.fromJson(json.decode(response.body));
+          buyEstateListResponse = EstateListCommonResponse.fromJson(json.decode(response.body));
           progressDataLoading(false);
           return buyEstateListResponse;
         }
@@ -70,8 +67,7 @@ class SearchModuleController extends GetxController{
     }
   }
 
-
-  Future<dynamic> saleEstateListApi({required String token}) async {
+  Future<EstateListCommonResponse> saleEstateListApi({required String token}) async {
     try{
       http.Response response = await http.get(
         Uri.parse("http://srestateapi.herokuapp.com/api/v1/property/estate/sell/"),
@@ -88,13 +84,11 @@ class SearchModuleController extends GetxController{
             return Future.value();
           });
 
-
       print("sale Estate List  ::  ${response.body}");
-
 
       if(response.statusCode == 200){
         if(response.body != null){
-          saleEstateListResponse = json.decode(response.body);
+          saleEstateListResponse = EstateListCommonResponse.fromJson(json.decode(response.body));
           // print("estateListResponse  ::  $estateListResponse");
           progressDataLoading(false);
           return saleEstateListResponse;

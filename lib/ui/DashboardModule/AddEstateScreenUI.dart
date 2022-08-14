@@ -45,10 +45,6 @@ class _AddEstateScreenUIState extends State<AddEstateScreenUI> {
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
-        appBar: AppBar(
-          title: Txt("Add Estate",color: Colors.white,fontSize: 18),
-          backgroundColor: AppColors.primaryColor,
-        ),
         body: SingleChildScrollView(
           child: Padding(
             padding: const EdgeInsets.all(12.0),
@@ -71,10 +67,12 @@ class _AddEstateScreenUIState extends State<AddEstateScreenUI> {
                             hintText: "  Enter whatsapp message",
                             minLine: 3,
                             maxLine: 5,
+                            borderRadius: 10,
                             onChanged: (val){
                               //print("VALUE  :: $val");
-
-                              onChangeWhatsAppMsg(val);
+                              if(val.toString().length >= 2){
+                                onChangeWhatsAppMsg(val);
+                              }
 
                             },
                           ),
@@ -281,6 +279,7 @@ class _AddEstateScreenUIState extends State<AddEstateScreenUI> {
   }
 
   onChangeWhatsAppMsg(String val){
+    print("STRIx4NG  :: ${val}");
     addEstateController.progressDataLoading(true);
     addEstateController.enterWhatsAppMsgApi(
       token: PreferenceHelper().getUserData().authToken,
@@ -288,7 +287,6 @@ class _AddEstateScreenUIState extends State<AddEstateScreenUI> {
     ).then((response){
       if(response != null){
         addEstateController.readByWhatsApp = response;
-        print("STRIx4NG  :: ${whatsAppMsgController.text}");
 
         if(addEstateController.readByWhatsApp["data"][0]["number_of_bedrooms"].toString() != "null"){
           //print("BEDROOMMM  : ${addEstateController.readByWhatsApp["data"][0]["number_of_bedrooms"][0].toString()}");
@@ -305,6 +303,10 @@ class _AddEstateScreenUIState extends State<AddEstateScreenUI> {
         if(addEstateController.readByWhatsApp["data"][0]["estate_status"].toString() != "null"){
           //print("BEDROOMMM  : ${addEstateController.readByWhatsApp["data"][0]["estate_status"][0].toString()}");
           addEstateController.updateEstateStatus(addEstateController.readByWhatsApp["data"][0]["estate_status"][0].toString());
+        }
+        if(addEstateController.readByWhatsApp["data"][0]["estate_type"].toString() != "null"){
+          //print("BEDROOMMM  : ${addEstateController.readByWhatsApp["data"][0]["estate_type"][0].toString()}");
+          addEstateController.updateEstateStatus(addEstateController.readByWhatsApp["data"][0]["estate_type"][0].toString());
         }
 
         addEstateController.progressDataLoading(false);

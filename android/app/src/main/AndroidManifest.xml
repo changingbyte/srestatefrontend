@@ -11,6 +11,7 @@
         android:label="croma_brokrage"
         android:name="${applicationName}"
         android:screenOrientation="portrait"
+        android:allowBackup="false"
         android:icon="@mipmap/ic_launcher">
 
         <meta-data

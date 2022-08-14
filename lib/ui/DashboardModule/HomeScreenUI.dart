@@ -8,12 +8,13 @@ import 'package:croma_brokrage/widgets/EstateCardList.dart';
 import 'package:croma_brokrage/widgets/TextFormInputField.dart';
 import 'package:firebase_admob/firebase_admob.dart';
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
 import 'package:multi_select_item/multi_select_item.dart';
 import 'package:syncfusion_flutter_sliders/sliders.dart';
 import '../../controller/DashboardController.dart';
 import '../../controller/HomeController.dart';
-import '../../model/EstateListResponse.dart';
+import '../../model/EstateListCommonResponse.dart';
 import '../../utils/AppString.dart';
 import '../../widgets/Txt.dart';
 import 'PropertyDetailsScreenUI.dart';
@@ -57,31 +58,14 @@ class _HomeScreenUIState extends State<HomeScreenUI> {
       body: Column(
         children: [
 
-          Container(
-            height: 60,
-            child: ListView(
-              scrollDirection: Axis.horizontal,
-              children: [
-
-                AppCommonFunction.RedirectEstateType("flat"),
-                AppCommonFunction.RedirectEstateType("shop"),
-                AppCommonFunction.RedirectEstateType("plot"),
-                AppCommonFunction.RedirectEstateType("bunglow"),
-                AppCommonFunction.RedirectEstateType("rowhouse"),
-                AppCommonFunction.RedirectEstateType("land"),
-
-              ],
-            ),
-          ),
-
           Row(
             children: [
               Expanded(
                 child: Padding(
                   padding: const EdgeInsets.all(8.0),
                   child: TextFormInputField(
-                    hintText: "Search Your Query",
-                    iconSuffix: Icons.search,
+                    hintText: "Search Estates",
+                    iconPrefix: Icons.search,
                     onChanged: (val){
                       onItemSearch(val,homeController.newEstateList,homeController);
                     },
@@ -92,17 +76,39 @@ class _HomeScreenUIState extends State<HomeScreenUI> {
               InkWell(
                   onTap: () {
                     showDialog(
-                        context: context,
-                        builder: (BuildContext context) => filterDialog()
+                      context: context,
+                      builder: (BuildContext context) => filterDialog()
                     );
                   },
-                  child: Padding(
-                    padding: const EdgeInsets.only(left: 5,right: 10,top: 10,bottom: 10),
-                    child: Icon(Icons.filter_alt_outlined,color: AppColors.primaryColor,size: 24),
+                  child: Container(
+                    margin: const EdgeInsets.only(right: 10),
+                    padding: const EdgeInsets.only(left: 8,right: 8,top: 8,bottom: 8),
+                    decoration: BoxDecoration(
+                      color: AppColors.primaryColor,
+                      borderRadius: BorderRadius.all(Radius.circular(10))
+                    ),
+                    child: Icon(Icons.filter_alt_outlined,color: AppColors.white,size: 24),
                   )
               ),
             ],
           ),
+
+
+          Container(
+            height: 110,
+            child: ListView(
+              scrollDirection: Axis.horizontal,
+              children: [
+                AppCommonFunction.CardContainer(text: "flat",icon: FontAwesomeIcons.building),
+                AppCommonFunction.CardContainer(text: "shop",icon: FontAwesomeIcons.shop),
+                AppCommonFunction.CardContainer(text: "plot",icon: FontAwesomeIcons.houseChimney),
+                AppCommonFunction.CardContainer(text: "bunglow",icon: FontAwesomeIcons.houseChimney),
+                AppCommonFunction.CardContainer(text: "rowhouse",icon: FontAwesomeIcons.houseMedicalCircleExclamation),
+                AppCommonFunction.CardContainer(text: "land",icon: FontAwesomeIcons.houseChimney),
+              ],
+            ),
+          ),
+
 
           Expanded(
             child: GetBuilder(
@@ -137,247 +143,137 @@ class _HomeScreenUIState extends State<HomeScreenUI> {
     );
   }
 
-  Widget multiItemContainer({required int index,required HomeController controller}){
-    return MultiSelectItem(
-      isSelecting: homeController.myMultiSelectController.isSelecting,
-      onSelected: () {
-        setState(() {
-          homeController.isToggle(index);
-        });
-
-      },
-      child: Card(
-        elevation: 10,
-        color: homeController.myMultiSelectController.isSelected(index)
-            ? Colors.grey.shade400
-            : Colors.white,
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.all(Radius.circular(7)),
-        ),
-        child: InkWell(
-          onTap: () {
-              Get.to(() =>
-                  PropertyDetailsScreenUI(estateList: controller.estateList[index],),
-              );
-          },
-          child: Container(
-            width: Get.width,
-            child: Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Row(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    children: [
-
-                      Container(
-                        width: Get.width/2,
-                        child: Txt(controller.estateList[index].estateName.toString(),
-                            fontSize: 20,color: AppColors.black,fontWeight: FontWeight.bold),
-                      ),
-
-                      SizedBox(height: 13,),
-
-                      /*ListCardContainer(icon: Icons.location_on,text: controller.estateList[index].society.toString()),
-
-                      ListCardContainer(icon: Icons.home_work,text: controller.estateList[index].area.toString()),
-
-                      ListCardContainer(icon: Icons.photo_size_select_small_outlined,text: " ${controller.estateList[index].floorSpace.toString()}"),
-
-                      ListCardContainer(icon: Icons.photo_size_select_small_outlined,text: " ${controller.estateList[index].estateType.toString()}"),
-
-                      ListCardContainer(icon: Icons.photo_size_select_small_outlined,text: " ${controller.estateList[index].estateStatus.toString()}"),
-*/
-                    ],
-                  ),
-
-                  Image.asset(AppString.imagesAssetPath+"ic_flat_img.jpg",
-                    height: 160,width: 140,fit: BoxFit.cover,),
-
-                ],
-              ),
-            ),
-          ),
-        ),
-      ),
-    );
-  }
-
-  Widget CardContainer({required String text}){
-    return Card(
-      color: AppColors.primaryColor,
-      elevation: 20,
-      shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.all(Radius.circular(10),
-          )),
-      child: Container(
-        width: 100,
-        decoration: BoxDecoration(borderRadius: BorderRadius.all(Radius.circular(10))),
-        child: Center(child: Txt(text,fontSize: 16,color: AppColors.white,fontWeight: FontWeight.bold),)
-      ),
-    );
-  }
-
-/*
-  Widget ListCardContainer({required IconData icon,required String text}){
-    return Wrap(
-      children: [
-        Icon(icon,color: AppColors.primaryColor,size: 17,),
-        SizedBox(width: 5,),
-        Container(
-          width: Get.width/2.5,
-          child: Txt(text,fontSize: 16,color: AppColors.black,fontWeight: FontWeight.w600,
-            maxLines: 4,overflow: TextOverflow.ellipsis,
-          ),
-        ),
-      ],
-    );
-  }
-*/
-
-
 
   Widget filterDialog() {
     return Dialog(
         backgroundColor: Colors.transparent,
-        child: Container(
-
-          child: Center(
-            child: GetBuilder(
-              init: HomeController(),
-              builder: (HomeController controller) {
-                return Card(
-                  shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(8)),
-                  color: AppColors.white,
-                  child: Container(
-                    width: MediaQuery.of(context).size.width,
-                    decoration: BoxDecoration(
-
-                      border: Border.all(color: AppColors.primaryColor.withOpacity(0.5)),
-                      borderRadius: BorderRadius.all(Radius.circular(8)),
-                    ),
-
-                    child: Form(
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        mainAxisSize: MainAxisSize.min,
-                        children: <Widget>[
-                          Container(
-                            padding: EdgeInsets.only(bottom: 12, top: 12, left:12,),
-                            width: MediaQuery.of(context).size.width,
-                            alignment: Alignment.center,
-                            decoration: BoxDecoration(
-                                color:AppColors.primaryColor,
-                                borderRadius: BorderRadius.only(
-                                    topRight: Radius.circular(8),
-                                    topLeft: Radius.circular(8))),
-                            child: Padding(
-                              padding: EdgeInsets.only(left: 8),
-                              child: Text(
-                                "Filter",
-                                textAlign: TextAlign.center,
-                                style: TextStyle(
-                                    fontSize:20,
-                                    fontWeight: FontWeight.w500,
-                                    color: AppColors.white),
-                              ),
-                            ),
+        child: Center(
+          child: GetBuilder(
+            init: HomeController(),
+            builder: (HomeController controller) {
+              return Card(
+                shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(8)),
+                color: AppColors.white,
+                child: Container(
+                  width: MediaQuery.of(context).size.width,
+                  decoration: BoxDecoration(
+                    border: Border.all(color: AppColors.primaryColor.withOpacity(0.5)),
+                    borderRadius: BorderRadius.all(Radius.circular(8)),
+                  ),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    mainAxisSize: MainAxisSize.min,
+                    children: <Widget>[
+                      Container(
+                        padding: EdgeInsets.only(bottom: 12, top: 12, left:12,),
+                        width: MediaQuery.of(context).size.width,
+                        alignment: Alignment.center,
+                        decoration: BoxDecoration(
+                            color:AppColors.primaryColor,
+                            borderRadius: BorderRadius.only(
+                                topRight: Radius.circular(8),
+                                topLeft: Radius.circular(8))),
+                        child: Padding(
+                          padding: EdgeInsets.only(left: 8),
+                          child: Text(
+                            "Filter",
+                            textAlign: TextAlign.center,
+                            style: TextStyle(
+                                fontSize:20,
+                                fontWeight: FontWeight.w500,
+                                color: AppColors.white),
                           ),
+                        ),
+                      ),
 
-                          filterDropdownWidget(
-                            title: controller.filterAreaListTitle.toString(),
-                            list: controller.filterAreaList,
-                            onChanged: (newValue){
-                              controller.updateAreaListTitle(newValue);
-                            }
-                          ),
+                      filterDropdownWidget(
+                        title: controller.filterAreaListTitle.toString(),
+                        list: controller.filterAreaList,
+                        onChanged: (newValue){
+                          controller.updateAreaListTitle(newValue);
+                        }
+                      ),
 
-                          SizedBox(height: 10),
+                      SizedBox(height: 10),
 
-                          filterDropdownWidget(
-                              title: controller.filterPropertyTypeTitle.toString(),
-                              list: controller.filterPropertyTypeList,
-                              onChanged: (newValue){
-                                controller.updatePropertyTypeTitle(newValue);
-                              }
-                          ),
-
-
-                          SizedBox(height: 10),
-
-                          filterDropdownWidget(
-                              title: controller.filterFurnitureTitle.toString(),
-                              list: controller.filterFurnitureList,
-                              onChanged: (newValue){
-                                controller.updateFurnitureTitle(newValue);
-                              }
-                          ),
+                      filterDropdownWidget(
+                          title: controller.filterPropertyTypeTitle.toString(),
+                          list: controller.filterPropertyTypeList,
+                          onChanged: (newValue){
+                            controller.updatePropertyTypeTitle(newValue);
+                          }
+                      ),
 
 
-                          SizedBox(height: 10),
+                      SizedBox(height: 10),
+
+                      filterDropdownWidget(
+                          title: controller.filterFurnitureTitle.toString(),
+                          list: controller.filterFurnitureList,
+                          onChanged: (newValue){
+                            controller.updateFurnitureTitle(newValue);
+                          }
+                      ),
 
 
-                          filterDropdownWidget(
-                              title: controller.filterEstateCategoryTitle.toString(),
-                              list: controller.filterEstateCategoryList,
-                              onChanged: (newValue){
-                                controller.updateEstateCategoryTitle(newValue);
-                              }
-                          ),
+                      SizedBox(height: 10),
 
-                          SizedBox(height: 10),
 
-                          filterDropdownWidget(
-                              title: controller.filterBHKTitle.toString(),
-                              list: controller.filterBHKList,
-                              onChanged: (newValue){
-                                controller.updateBHKTitle(newValue.toString());
-                              }
-                          ),
+                      filterDropdownWidget(
+                          title: controller.filterEstateCategoryTitle.toString(),
+                          list: controller.filterEstateCategoryList,
+                          onChanged: (newValue){
+                            controller.updateEstateCategoryTitle(newValue);
+                          }
+                      ),
 
-                          SizedBox(height: 10),
+                      SizedBox(height: 10),
 
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.end,
-                            children: [
+                      filterDropdownWidget(
+                          title: controller.filterBHKTitle.toString(),
+                          list: controller.filterBHKList,
+                          onChanged: (newValue){
+                            controller.updateBHKTitle(newValue.toString());
+                          }
+                      ),
 
-                              TextButton(
-                                  onPressed: () {
+                      SizedBox(height: 10),
 
-                                    controller.progressDataLoading(true);
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.end,
+                        children: [
 
-                                    getEstateApi(
-                                      area: [controller.filterAreaListTitle],
-                                      furniture: [controller.filterFurnitureTitle],
-                                      no_of_bedrooms: [controller.filterBHKTitle],
-                                      estateStatus: [controller.filterEstateCategoryTitle],
-                                    );
+                          TextButton(
+                              onPressed: () {
 
-                                    Get.back();
-                                  },
-                                  child: Text("Ok")),
+                                controller.progressDataLoading(true);
 
-                              TextButton(
-                                  onPressed: () {
-                                    Get.back();
-                                  },
-                                  child: Text("Cancel")),
+                                getEstateApi(
+                                  area: [controller.filterAreaListTitle],
+                                  furniture: [controller.filterFurnitureTitle],
+                                  no_of_bedrooms: [controller.filterBHKTitle],
+                                  estateStatus: [controller.filterEstateCategoryTitle],
+                                );
 
-                            ],
-                          ),
+                                Get.back();
+                              },
+                              child: Text("Ok")),
+
+                          TextButton(
+                              onPressed: () {
+                                Get.back();
+                              },
+                              child: Text("Cancel")),
 
                         ],
                       ),
-                    ),
+
+                    ],
                   ),
-                );
-              },
-            ),
+                ),
+              );
+            },
           ),
         ));
   }
@@ -393,7 +289,6 @@ class _HomeScreenUIState extends State<HomeScreenUI> {
     if(furniture!.contains("Furniture Type") ){furniture.clear();}
     if(no_of_bedrooms!.contains("BHK")){no_of_bedrooms.clear();}
     if(estateStatus!.contains("Estate Status")){estateStatus.clear();}
-
 
 
     homeController.estateListApi(

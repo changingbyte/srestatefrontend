@@ -47,15 +47,10 @@ class _UserProfileScreenUIState extends State<UserProfileScreenUI> {
 
                         SizedBox(height: 20),
 
-                        Container(
-                            padding: EdgeInsets.only(left: 20),
-                            alignment: Alignment.centerLeft,
-                            child: Txt("My Profile",fontSize: 24,fontWeight: FontWeight.bold)),
-
-
-                        SizedBox(height: 10),
                         CircleAvatar(
                           radius: 60,
+                          backgroundColor: Colors.blue,
+                          child: Icon(Icons.account_circle,size: 100),
                         ),
                         SizedBox(height: 40),
 

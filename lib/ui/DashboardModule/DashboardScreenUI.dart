@@ -1,5 +1,7 @@
 import 'package:croma_brokrage/controller/DashboardController.dart';
 import 'package:croma_brokrage/helper/PreferenceHelper.dart';
+import 'package:croma_brokrage/ui/ChatModule/ChatContactListScreenUI.dart';
+import 'package:croma_brokrage/ui/DashboardModule/AddEstateScreenUI.dart';
 import 'package:croma_brokrage/ui/DashboardModule/HomeScreenUI.dart';
 import 'package:croma_brokrage/ui/DashboardModule/QueryScreenUI.dart';
 import 'package:flutter/material.dart';
@@ -47,87 +49,98 @@ class _DashboardScreenUIState extends State<DashboardScreenUI> {
 
   @override
   Widget build(BuildContext context) {
-    Size size = MediaQuery.of(context).size;
     return SafeArea(
       child: GetBuilder(
         init: HomeController(),
         builder: (HomeController controller) {
           return  Scaffold(
             key: _scaffoldKey,
-            appBar: AppBar(
-                flexibleSpace: Container(
-                  decoration:  const BoxDecoration(
-                    gradient: LinearGradient(
-                      begin: Alignment.topCenter,
-                      end: Alignment.bottomRight,
-                      colors: <Color>[
-                        AppColors.primaryColor,
-                        AppColors.primaryColor,
-                        AppColors.primaryAccent
-                      ],
-
-                    ),
-                  ),
-                ),
-                actions: [
-                  (controller.myMultiSelectController.isSelecting)
-                      ? Row(
-                        children: [
-                          IconButton(
-                            icon: Icon(Icons.select_all,size: 24),
-                            onPressed: homeController.selectAllItems,
-                          ),
-                          IconButton(
-                            icon: Icon(FontAwesomeIcons.shareSquare,size: 20),
-                            onPressed:(){
-                              Get.to(()=> QueryScreenUI() );
-                            },
-                          )
-                        ],
-                      )
-                      : InkWell(
-                          onTap: () {
-                            Get.to(()=> MessageBalanceScreenUI() );
-                          },
-                          child: Row(
-                            children: [
-                              GetBuilder(
-                                init: MessageBalanceController(),
-                                builder: (MessageBalanceController controller) {
-                                  return Text(controller.textBalance != null ? controller.textBalance.toString() : "0",style: TextStyle(color: AppColors.white,fontSize:20,fontWeight: FontWeight.bold),);
-                                },
-                              ),
-                              SizedBox(width: 5,),
-                              Icon(Icons.messenger_outlined,color:  AppColors.white,),
-                            ],
-                          ),
-                        ),
-
-                  SizedBox(width: 8),
-                ]
-            ),
-
-
             bottomNavigationBar: SalomonBottomBar(
               currentIndex: dashboardController.bottomSelectedIndex,
               items:[
                 BottomBarItem(text: "Home",icon: Icons.home),
                 BottomBarItem(text: "Search",icon: Icons.search),
-                BottomBarItem(text: "New",icon: Icons.add_box),
+                BottomBarItem(text: "Estate",icon: Icons.add_box),
+                BottomBarItem(text: "Chat",icon: Icons.chat_rounded),
                 BottomBarItem(text: "Profile",icon: Icons.account_box),
               ],
               onTap: (index) {
                 _onItemTapped(index,dashboardController);
               },
             ),
-            body: PageView(
-              controller: pageController,
+            body: Column(
               children: [
-                HomeScreenUI(),
-                SearchModuleScreenUI(),
-                MessageBalanceScreenUI(),
-                UserProfileScreenUI(),
+                controller.myMultiSelectController.isSelecting
+                  ? AppBar(
+                  toolbarHeight: 60,
+                  title: Text("Selected Estates"),
+                  backgroundColor: AppColors.primaryColor,
+                  actions: [
+                    Row(
+                      children: [
+                        IconButton(
+                          icon: Icon(Icons.select_all,size: 24),
+                          onPressed: homeController.selectAllItems,
+                        ),
+                        IconButton(
+                          icon: Icon(FontAwesomeIcons.shareSquare,size: 20),
+                          onPressed:(){
+                            Get.to(()=> QueryScreenUI() );
+                          },
+                        )
+                      ],
+                    ),
+                    SizedBox(width: 8),
+                  ]
+                )
+                  : Container(
+                    height: 60,
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Txt(dashboardController.appBarTitle,fontSize: 20,fontWeight: FontWeight.w600),
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: InkWell(
+                            onTap: () {
+                              Get.to(()=> MessageBalanceScreenUI() );
+                            },
+                            child: Row(
+                              children: [
+                                GetBuilder(
+                                  init: MessageBalanceController(),
+                                  builder: (MessageBalanceController controller) {
+                                    return Text(controller.textBalance != null ? controller.textBalance.toString() : "0",style: TextStyle(color: AppColors.primaryColor,fontSize:20,fontWeight: FontWeight.bold),);
+                                  },
+                                ),
+                                SizedBox(width: 5,),
+                                Icon(Icons.messenger_outlined,color:  AppColors.primaryColor,),
+                              ],
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
 
+                Expanded(
+                  child: PageView(
+                    reverse: false,
+                    physics: NeverScrollableScrollPhysics(),
+                    controller: pageController,
+                    children: [
+                      HomeScreenUI(),
+                      SearchModuleScreenUI(),
+                      AddEstateScreenUI(),
+                      ChatContactListScreenUI(),
+                      UserProfileScreenUI(),
+
+                    ],
+                  ),
+                ),
               ],
             ),
           );

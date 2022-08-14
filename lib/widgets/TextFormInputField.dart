@@ -20,6 +20,7 @@ class TextFormInputField extends StatelessWidget {
   final FocusNode? focusNode;
   ValueChanged<String>? onChanged;
   VoidCallback? onEditingComplete;
+  double borderRadius;
 
   TextFormInputField({ this.hintText,
      this.controller,
@@ -31,6 +32,7 @@ class TextFormInputField extends StatelessWidget {
      this.autofill,
      this.minLine,
      this.maxLine,
+    this.borderRadius = 50,
      this.enable = true,
      this.validator,
      this.onChanged,
@@ -73,16 +75,16 @@ class TextFormInputField extends StatelessWidget {
               contentPadding:  EdgeInsets.symmetric(vertical: 10.0,horizontal:8.0),
               hintStyle: TextStyle(color: AppColors.primaryColor), filled: true,
               disabledBorder:OutlineInputBorder(
-                  borderRadius: BorderRadius.all(Radius.circular(50.0)),
+                  borderRadius: BorderRadius.all(Radius.circular(borderRadius)),
                   borderSide: BorderSide(color: Colors.transparent,width: 0.5)),
               focusedBorder: OutlineInputBorder(
-                  borderRadius: BorderRadius.all(Radius.circular(50.0)),
+                  borderRadius: BorderRadius.all(Radius.circular(borderRadius)),
                   borderSide: BorderSide(color: Colors.transparent,width: 0.5)),
               enabledBorder: OutlineInputBorder(
-                  borderRadius: BorderRadius.all(Radius.circular(50.0)),
+                  borderRadius: BorderRadius.all(Radius.circular(borderRadius)),
                   borderSide: BorderSide(color: Colors.transparent,width: 0.5)),
               errorBorder: OutlineInputBorder(
-                  borderRadius: BorderRadius.all(Radius.circular(50.0)),
+                  borderRadius: BorderRadius.all(Radius.circular(borderRadius)),
                   borderSide: BorderSide(color: Colors.transparent,width: 0.5)),
               prefixIcon: iconPrefix==null? null: Icon(iconPrefix,color: AppColors.primaryColor),
               suffixIcon:  iconSuffix==null? null: InkWell(

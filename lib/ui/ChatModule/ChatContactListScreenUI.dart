@@ -35,25 +35,6 @@ class _ChatContactListScreenUIState extends State<ChatContactListScreenUI> {
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
-        appBar: AppBar(
-          leading: Container(),
-            title: Txt("Query History",color: Colors.white,fontSize: 20,fontWeight: FontWeight.bold),
-            flexibleSpace: Container(
-              decoration:  const BoxDecoration(
-                gradient: LinearGradient(
-                  begin: Alignment.topCenter,
-                  end: Alignment.bottomRight,
-                  colors: <Color>[
-                    AppColors.primaryColor,
-                    AppColors.primaryColor,
-                    AppColors.primaryAccent
-                  ],
-
-                ),
-              ),
-            ),
-
-        ),
         body: Padding(
           padding: const EdgeInsets.all(8.0),
           child:

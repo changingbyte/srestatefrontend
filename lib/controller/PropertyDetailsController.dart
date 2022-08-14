@@ -1,3 +1,4 @@
+import 'package:croma_brokrage/model/EstateListCommonResponse.dart';
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
@@ -8,10 +9,10 @@ import '../utils/AppString.dart';
 
 class PropertyDetailsController extends GetxController{
   bool isDataLoading = true;
-  late SuggestionResponse suggestionResponse;
+  late EstateListCommonResponse suggestionResponse;
+  //List<EstateList> suggestionList = [];
 
-
-  Future<SuggestionResponse> suggestionListApi({required String token,required String id}) async {
+  Future<EstateListCommonResponse> suggestionListApi({required String token,required String id}) async {
     try{
       http.Response response = await http.get(
         Uri.parse("http://srestateapi.herokuapp.com/api/v1/property/estate/details/$id/"),
@@ -30,7 +31,7 @@ class PropertyDetailsController extends GetxController{
 
       if(response.statusCode == 200){
         if(response.body != null){
-          suggestionResponse = SuggestionResponse.fromJson(json.decode(response.body));
+          suggestionResponse = EstateListCommonResponse.fromJson(json.decode(response.body));
           progressDataLoading(false);
           return suggestionResponse;
         }

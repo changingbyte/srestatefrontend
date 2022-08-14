@@ -6,6 +6,7 @@ import 'package:croma_brokrage/widgets/TextFormInputField.dart';
 import 'package:firebase_admob/firebase_admob.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:intl/intl.dart';
 import 'package:lottie/lottie.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -135,16 +136,30 @@ class AppCommonFunction {
     );
   }
 
-  static Widget CardContainer({required String text}){
-    return Card(
-      color: AppColors.primaryColor,
-      elevation: 20,
-      shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.all(Radius.circular(10),)),
-      child: Container(
-        width: 100,
-        decoration: BoxDecoration(borderRadius: BorderRadius.all(Radius.circular(10))),
-        child: Center(child: Txt(text,fontSize: 16,color: AppColors.white,fontWeight: FontWeight.bold),),
+  static Widget CardContainer({required String text,required IconData icon}){
+    return Container(
+      padding: EdgeInsets.only(left: 7, right: 7),
+      child: InkWell(
+        onTap: () {
+          Get.to(()=> EstateListScreenUI(estateName: text,));
+        },
+        child: Column(
+          children: [
+            Card(
+              color: AppColors.primaryColor.withOpacity(0.3),
+              elevation: 25,
+              shape: RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(10),)),
+              child: Container(
+                height: 65,
+                width: 65,
+                alignment: Alignment.center,
+                child: FaIcon(icon,color: Colors.white,size: 30),
+              ),
+            ),
+            SizedBox(height: 5),
+            Center(child: Txt(text,fontSize: 17,color: AppColors.primaryColor,fontWeight: FontWeight.w600),),
+          ],
+        ),
       ),
     );
   }
@@ -162,15 +177,6 @@ static TextFormContainer(TextEditingController controller, String text){
   return  TextFormInputField(
     controller: controller,
     hintText: text,
-  );
-}
-
-static RedirectEstateType(estatename){
-  return  InkWell(
-    onTap: () {
-      Get.to(()=> EstateListScreenUI(estateName: estatename,));
-    },
-    child: CardContainer(text: estatename)
   );
 }
 

@@ -9,6 +9,7 @@ import 'package:multi_select_item/multi_select_item.dart';
 import '../../utils/AppString.dart';
 import '../controller/EstateListController.dart';
 import '../controller/HomeController.dart';
+import '../widgets/EstateCardList.dart';
 import '../widgets/Txt.dart';
 import 'DashboardModule/PropertyDetailsScreenUI.dart';
 import 'DashboardModule/QueryScreenUI.dart';
@@ -87,9 +88,18 @@ class _EstateListScreenUIState extends State<EstateListScreenUI> {
                                   ? Center(child: CircularProgressIndicator())
                                   : controller.estateList.length < 1
                                   ? Center(
-                                child: Txt("No Data Found!", color: AppColors.primaryColor, fontSize: 20, fontWeight: FontWeight.bold),
-                              )
-                                  : ListView.builder(
+                                      child: Txt("No Data Found!", color: AppColors.primaryColor, fontSize: 20, fontWeight: FontWeight.bold),
+                                    )
+                                  :
+
+                              EstateCardList(
+                                homeController: homeController,
+                                estateList: controller.estateList,
+                              ),
+
+
+/*
+                              ListView.builder(
                                 itemCount: estateListController.estateList.length,
                                 itemBuilder: (context, index) {
 
@@ -171,6 +181,13 @@ class _EstateListScreenUIState extends State<EstateListScreenUI> {
                                   );
                                 },
                               ),
+*/
+
+
+
+
+
+
                             ),
                           ],
                         );
@@ -208,9 +225,9 @@ class _EstateListScreenUIState extends State<EstateListScreenUI> {
   getEstateApi() {
     estateListController.estateListApi(token: PreferenceHelper().getUserData().authToken!, estateName: widget.estateName).then((value) {
       if (value != null) {
-        if (value["success"].toString() == "true") {
-          if (value["data"].isNotEmpty) {
-            estateListController.estateList = value["data"];
+        if (value.success.toString() == "true") {
+          if (value.data!.isNotEmpty) {
+            estateListController.estateList = value.data!;
             print("Estate Listtttt  ::  ${estateListController.estateList}");
 
             estateListController.progressDataLoading(false);

@@ -1,5 +1,6 @@
 // ignore_for_file: invalid_use_of_visible_for_testing_member
 
+import 'dart:async';
 import 'dart:convert';
 
 import 'package:croma_brokrage/helper/PreferenceHelper.dart';
@@ -10,8 +11,10 @@ import 'package:croma_brokrage/widgets/TextFormInputField.dart';
 import 'package:croma_brokrage/widgets/WidgetButton.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_datetime_picker/flutter_datetime_picker.dart';
+import 'package:flutter_keyboard_visibility/flutter_keyboard_visibility.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:keyboard_visibility/keyboard_visibility.dart';
 import 'package:web_socket_channel/io.dart';
 import 'package:web_socket_channel/status.dart' as status;
 
@@ -33,10 +36,15 @@ class ChatScreenUI extends StatefulWidget {
 
 class _ChatScreenUIState extends State<ChatScreenUI> {
   var channel;
+  late StreamSubscription<bool> keyboardSubscription;
 
   TextEditingController msgController  = TextEditingController();
   ChatController chatController = Get.put(ChatController());
   ScrollController scrollController = new ScrollController();
+
+  KeyboardVisibilityNotification _keyboardVisibility = new KeyboardVisibilityNotification();
+  late int _keyboardVisibilitySubscriberId;
+  late bool _keyboardState;
 
 
   @override
@@ -73,7 +81,34 @@ class _ChatScreenUIState extends State<ChatScreenUI> {
       setState((){});
 
 
+      var keyboardVisibilityController = KeyboardVisibilityController();
+
+      print('Keyboard visibility direct query: ${keyboardVisibilityController.isVisible}');
+
+      keyboardSubscription = keyboardVisibilityController.onChange.listen((bool visible) {
+        print('Keyboard visibility update. Is visible: $visible');
+      });
+
+      KeyboardVisibilityNotification().addNewListener(
+        onChange: (bool visible) {
+          print("AAAAA"+visible.toString());
+        },
+      );
+
     });
+
+
+    _keyboardState = _keyboardVisibility.isKeyboardVisible;
+
+    setState((){});
+
+    _keyboardVisibilitySubscriberId = _keyboardVisibility.addNewListener(
+      onChange: (bool visible) {
+        setState(() {
+          _keyboardState = visible;
+        });
+      },
+    );
   }
 
   getMessage(){
@@ -101,6 +136,7 @@ class _ChatScreenUIState extends State<ChatScreenUI> {
     return SafeArea(
         child: Scaffold(
           appBar: AppBar(
+            backgroundColor: AppColors.primaryColor,
             leading: InkWell(
               onTap: () {
                 Get.to(()=> ViewProfileScreenUI(contactNumber: widget.reciver,) );
@@ -117,18 +153,6 @@ class _ChatScreenUIState extends State<ChatScreenUI> {
                 Get.to(()=> ViewProfileScreenUI(contactNumber: widget.reciver,) );
               },
               child: Text(widget.reciver)),
-            flexibleSpace: Container(
-              decoration: BoxDecoration(
-                gradient: LinearGradient(
-                    begin: Alignment.topLeft,
-                    end: Alignment.bottomRight,
-                    colors: [
-                      AppColors.primaryColor,
-                      Colors.black,
-                    ]
-                ),
-              ),
-            ),
           ),
           body: GetBuilder(
             init: ChatController(),
@@ -234,8 +258,8 @@ class _ChatScreenUIState extends State<ChatScreenUI> {
                               ),
                            ),
                               enterMessageContainer(),
-                      ],
-                )),
+                            ],
+                          )),
 
                       controller.isStackDataLoading
                         ? AppCommonFunction.circularIndicator()
@@ -274,7 +298,7 @@ class _ChatScreenUIState extends State<ChatScreenUI> {
                               showModalBottomSheet(
                                 context: context,
                                 barrierColor: Colors.transparent,
-                                backgroundColor: Colors.grey,
+                                backgroundColor: AppColors.blueColor,
                                 elevation: 10,
                                 shape: RoundedRectangleBorder(
                                   borderRadius: BorderRadius.circular(10.0),
@@ -291,23 +315,25 @@ class _ChatScreenUIState extends State<ChatScreenUI> {
                                             onTap: (){
                                               showModalBottomSheet(
                                                 context: context,
-
                                                 barrierColor: Colors.transparent,
-                                                backgroundColor: Colors.indigoAccent,
-                                                elevation: 10,
+                                                backgroundColor: AppColors.blueColor,
+                                                elevation: 50,
                                                 shape: RoundedRectangleBorder(
                                                   borderRadius: BorderRadius.circular(10.0),
                                                 ),
                                                 builder: (BuildContext context) {
                                                   return SizedBox(
-                                                    height: 250,
+                                                    height:
+                                                    _keyboardState
+                                                      ? 650
+                                                      : 250,
                                                     child: Center(
                                                       child: Column(
                                                         children: <Widget>[
 
                                                           SizedBox(height: 10),
 
-                                                          Txt("Set Reminder",fontWeight: FontWeight.w600,fontSize: 22),
+                                                          Txt("Set Reminder",fontWeight: FontWeight.w600,fontSize: 22,color: AppColors.white),
 
                                                           Padding(
                                                             padding: EdgeInsets.only(top: 12,bottom: 12),
@@ -324,7 +350,7 @@ class _ChatScreenUIState extends State<ChatScreenUI> {
 
                                                                   Padding(
                                                                     padding: EdgeInsets.only(left: 10.0),
-                                                                    child: Txt("${controller.selectedDateTime}",fontSize: 18,fontWeight: FontWeight.w500,),
+                                                                    child: Txt("${controller.selectedDateTime}",fontSize: 18,fontWeight: FontWeight.w500,color: Colors.white),
                                                                   ),
 
                                                                   InkWell(
@@ -344,7 +370,7 @@ class _ChatScreenUIState extends State<ChatScreenUI> {
                                                                       height: 40,
                                                                       padding: EdgeInsets.only(left: 12,right: 12),
                                                                       decoration: BoxDecoration(
-                                                                          color: Colors.deepPurple,
+                                                                          color: AppColors.blueColor,
                                                                           borderRadius: BorderRadius.only(
                                                                             bottomRight: Radius.circular(10),
                                                                             topRight: Radius.circular(10),
@@ -388,7 +414,7 @@ class _ChatScreenUIState extends State<ChatScreenUI> {
                                               children: [
                                                 CircleAvatar(radius: 30),
                                                 SizedBox(height: 5),
-                                                Txt("Reminder",fontWeight: FontWeight.w600),
+                                                Txt("Reminder",fontWeight: FontWeight.w600,color: Colors.white),
                                               ],
                                             ),
                                           ),
@@ -401,7 +427,7 @@ class _ChatScreenUIState extends State<ChatScreenUI> {
                                               children: [
                                                 CircleAvatar(radius: 30),
                                                 SizedBox(height: 5),
-                                                Txt("Properties",fontWeight: FontWeight.w600),
+                                                Txt("Properties",fontWeight: FontWeight.w600,color: Colors.white),
                                               ],
                                             ),
                                           ),
