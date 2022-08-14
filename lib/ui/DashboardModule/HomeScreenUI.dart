@@ -65,6 +65,7 @@ class _HomeScreenUIState extends State<HomeScreenUI> {
                   padding: const EdgeInsets.all(8.0),
                   child: TextFormInputField(
                     hintText: "Search Estates",
+
                     iconPrefix: Icons.search,
                     onChanged: (val){
                       onItemSearch(val,homeController.newEstateList,homeController);

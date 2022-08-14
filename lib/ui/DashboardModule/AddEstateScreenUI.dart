@@ -1,4 +1,5 @@
 import 'package:croma_brokrage/controller/AddEstateController.dart';
+import 'package:croma_brokrage/controller/HomeController.dart';
 import 'package:croma_brokrage/ui/DashboardModule/DashboardScreenUI.dart';
 import 'package:croma_brokrage/utils/AppColors.dart';
 import 'package:croma_brokrage/utils/AppCommonFunction.dart';
@@ -26,10 +27,7 @@ class _AddEstateScreenUIState extends State<AddEstateScreenUI> {
   int radioListVal = 0;
   final formKey = GlobalKey<FormState>();
   AddEstateController addEstateController = Get.put(AddEstateController());
-
-  TextEditingController budgetController = TextEditingController();
-  TextEditingController societyController = TextEditingController();
-
+  HomeController homeController = Get.put(HomeController());
   TextEditingController whatsAppMsgController = TextEditingController(text: "   ");
 
   FlipCardController flipCardController = FlipCardController();
@@ -40,6 +38,17 @@ class _AddEstateScreenUIState extends State<AddEstateScreenUI> {
   final rowHouseKey = GlobalKey<FlipCardState>();
   final landKey = GlobalKey<FlipCardState>();
   final plotKey = GlobalKey<FlipCardState>();
+
+  @override
+  void initState() {
+    super.initState();
+    getFilterApi();
+  }
+  static const List<String> _kOptions = <String>[
+    'aardvark',
+    'bobcat',
+    'chameleon',
+  ];
 
   @override
   Widget build(BuildContext context) {
@@ -68,15 +77,19 @@ class _AddEstateScreenUIState extends State<AddEstateScreenUI> {
                             minLine: 3,
                             maxLine: 5,
                             borderRadius: 10,
-                            onChanged: (val){
-                              //print("VALUE  :: $val");
-                              if(val.toString().length >= 2){
-                                onChangeWhatsAppMsg(val);
-                              }
-
-                            },
                           ),
-
+                          Align(
+                            alignment: Alignment.topRight,
+                            child: RoundedButtonWidget(
+                              height: 40,
+                              width: 60,
+                              text: "Add",
+                              onPressed: () {
+                                if(whatsAppMsgController.text.toString().length >= 2){
+                                  onChangeWhatsAppMsg(whatsAppMsgController.text.toString());
+                                }
+                            },),
+                          ),
                           Txt("Property Type",fontSize: 20,color: AppColors.black,fontWeight: FontWeight.w600),
 
                           SizedBox(height: 20,),
@@ -186,6 +199,20 @@ class _AddEstateScreenUIState extends State<AddEstateScreenUI> {
 
                           SizedBox(height: 5,),
 
+                          /*Autocomplete<String>(
+                            optionsBuilder: (TextEditingValue textEditingValue) {
+                              if (textEditingValue.text == '') {
+                                return const Iterable<String>.empty();
+                              }
+                              return _kOptions.where((String option) {
+                                return option.contains(textEditingValue.text.toLowerCase());
+                              });
+                            },
+                            onSelected: (String selection) {
+                              debugPrint('You just selected $selection');
+                            },
+                          ),*/
+
                           TextFormInputField(
                             controller: addEstateController.areaController,
                             hintText: "Area",
@@ -196,12 +223,12 @@ class _AddEstateScreenUIState extends State<AddEstateScreenUI> {
 
                           SizedBox(height: 5,),
 
-                          AppCommonFunction.TextFormContainer(societyController,"Society"),
+                          AppCommonFunction.TextFormContainer(addEstateController.societyController,"Society"),
 
                           SizedBox(height: 5,),
 
                           TextFormInputField(
-                            controller: budgetController,
+                            controller: controller.budgetController,
                             hintText: "Budget (in Lakhs)",
                           ),
 
@@ -302,11 +329,19 @@ class _AddEstateScreenUIState extends State<AddEstateScreenUI> {
         }
         if(addEstateController.readByWhatsApp["data"][0]["estate_status"].toString() != "null"){
           //print("BEDROOMMM  : ${addEstateController.readByWhatsApp["data"][0]["estate_status"][0].toString()}");
-          addEstateController.updateEstateStatus(addEstateController.readByWhatsApp["data"][0]["estate_status"][0].toString());
+          addEstateController.updateEstateStatus(addEstateController.readByWhatsApp["data"][0]["estate_status"][0].toString().toUpperCase());
         }
         if(addEstateController.readByWhatsApp["data"][0]["estate_type"].toString() != "null"){
           //print("BEDROOMMM  : ${addEstateController.readByWhatsApp["data"][0]["estate_type"][0].toString()}");
-          addEstateController.updateEstateStatus(addEstateController.readByWhatsApp["data"][0]["estate_type"][0].toString());
+          addEstateController.updateEstateType(addEstateController.readByWhatsApp["data"][0]["estate_type"][0].toString().toUpperCase());
+        }
+        if(addEstateController.readByWhatsApp["data"][0]["budget"].toString() != "null"){
+          //print("BEDROOMMM  : ${addEstateController.readByWhatsApp["data"][0]["estate_type"][0].toString()}");
+          addEstateController.updateEstateBudget(addEstateController.readByWhatsApp["data"][0]["budget"][0].toString().toUpperCase());
+        }
+        if(addEstateController.readByWhatsApp["data"][0]["apartment"].toString() != "null"){
+          //print("BEDROOMMM  : ${addEstateController.readByWhatsApp["data"][0]["estate_type"][0].toString()}");
+          addEstateController.updateEstateSociety(addEstateController.readByWhatsApp["data"][0]["apartment"][0].toString().toUpperCase());
         }
 
         addEstateController.progressDataLoading(false);
@@ -316,7 +351,11 @@ class _AddEstateScreenUIState extends State<AddEstateScreenUI> {
 
   }
 
+  getFilterApi(){
+    homeController.filterApi(token: PreferenceHelper().getUserData().authToken!).then((value){
 
+    });
+  }
 
   addEstate(){
     addEstateController.progressDataLoading(true);
@@ -325,8 +364,8 @@ class _AddEstateScreenUIState extends State<AddEstateScreenUI> {
       token: PreferenceHelper().getUserData().authToken,
       floor_space: addEstateController.sizeController.text,
       area: addEstateController.areaController.text,
-      budget: int.parse(budgetController.text),
-      society: societyController.text,
+      budget: int.parse(addEstateController.budgetController.text),
+      society: addEstateController.societyController.text,
       estate_status: addEstateController.estateStatus,
       city: "surat",
       no_of_bedroom: int.parse(addEstateController.noOfBedroomController.text),
@@ -349,8 +388,8 @@ class _AddEstateScreenUIState extends State<AddEstateScreenUI> {
 
   clearData(){
     addEstateController.sizeController.clear();
-    budgetController.clear();
-    societyController.clear();
+    addEstateController.budgetController.clear();
+    addEstateController.societyController.clear();
     addEstateController.areaController.clear();
     addEstateController.noOfBedroomController.clear();
 

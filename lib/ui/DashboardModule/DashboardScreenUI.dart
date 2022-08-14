@@ -65,7 +65,7 @@ class _DashboardScreenUIState extends State<DashboardScreenUI> {
                 BottomBarItem(text: "Profile",icon: Icons.account_box),
               ],
               onTap: (index) {
-                _onItemTapped(index,dashboardController);
+                onItemTapped(index,dashboardController,pageController!);
               },
             ),
             body: Column(
@@ -158,11 +158,12 @@ class _DashboardScreenUIState extends State<DashboardScreenUI> {
   }
 
 
-  void _onItemTapped(int index,DashboardController dashboardController) {
+  void onItemTapped(int index,DashboardController dashboardController,PageController pageController) {
     print("Page Index  ::  $index");
+    print("Page Index  ::  $pageController");
 
     dashboardController.updateBottomSelectedIndex(index);
-    pageController!.animateToPage(index,
+    pageController.animateToPage(index,
         duration: Duration(milliseconds: 500), curve: Curves.ease);
     FocusScope.of(context).requestFocus(new FocusNode());
     setState(() {

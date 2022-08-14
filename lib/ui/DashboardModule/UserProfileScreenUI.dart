@@ -1,4 +1,6 @@
+import 'package:croma_brokrage/controller/DashboardController.dart';
 import 'package:croma_brokrage/ui/AreaPropertyScreenUI.dart';
+import 'package:croma_brokrage/ui/DashboardModule/DashboardScreenUI.dart';
 import 'package:croma_brokrage/widgets/RoundedButtonWidget.dart';
 import 'package:croma_brokrage/widgets/Txt.dart';
 import 'package:flutter/material.dart';
@@ -6,9 +8,11 @@ import 'package:get/get.dart';
 
 import '../../controller/ViewBrokerProfileController.dart';
 import '../../helper/PreferenceHelper.dart';
+import '../../utils/AppColors.dart';
 import '../../utils/AppCommonFunction.dart';
 import '../../utils/AppString.dart';
 import '../ChatModule/ChatContactListScreenUI.dart';
+import 'AreaProfileTypeScreenUI.dart';
 
 class UserProfileScreenUI extends StatefulWidget {
   const UserProfileScreenUI({Key? key}) : super(key: key);
@@ -20,6 +24,8 @@ class UserProfileScreenUI extends StatefulWidget {
 class _UserProfileScreenUIState extends State<UserProfileScreenUI> {
   
   ViewBrokerProfileController viewBrokerProfileController = Get.put(ViewBrokerProfileController());
+  DashboardController dashboardController = Get.put(DashboardController());
+  PageController? pageController;
 
   @override
   void initState() {
@@ -31,28 +37,28 @@ class _UserProfileScreenUIState extends State<UserProfileScreenUI> {
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
-        body: SingleChildScrollView(
-          child: Center(
-            child: Container(
-              height: Get.height,
-              width: Get.width,
-              child: GetBuilder(
-                init: ViewBrokerProfileController(),
-                builder: (ViewBrokerProfileController controller) {
-                  return controller.isDataLoading
-                    ? Center(child: AppCommonFunction.circularIndicator(),)
-                    : Column(
+        body: Center(
+          child: Container(
+            height: Get.height,
+            width: Get.width,
+            child: GetBuilder(
+              init: ViewBrokerProfileController(),
+              builder: (ViewBrokerProfileController controller) {
+                return controller.isDataLoading
+                  ? Center(child: AppCommonFunction.circularIndicator(),)
+                  : SingleChildScrollView(
+                    child: Column(
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
 
                         SizedBox(height: 20),
 
                         CircleAvatar(
-                          radius: 60,
-                          backgroundColor: Colors.blue,
-                          child: Icon(Icons.account_circle,size: 100),
+                          radius: 40,
+                          backgroundColor: Colors.white,
+                          child: Icon(Icons.account_circle,size: 80),
                         ),
-                        SizedBox(height: 40),
+                        SizedBox(height: 20),
 
                         Txt(viewBrokerProfileController.brokerProfileData!.name.toString(),fontSize: 22,fontWeight: FontWeight.w600),
                         SizedBox(height: 8),
@@ -62,7 +68,7 @@ class _UserProfileScreenUIState extends State<UserProfileScreenUI> {
 
                         Container(
                           decoration: BoxDecoration(
-                            color: Color(0xFFFC8862),
+                            //color: Color(0xFFFC8862),
                             //borderRadius: BorderRadius.all(Radius.circular(10))
                           ),
                           padding: EdgeInsets.all(10),
@@ -72,23 +78,43 @@ class _UserProfileScreenUIState extends State<UserProfileScreenUI> {
                               StateContainer(title: "Estates", value: viewBrokerProfileController.brokerProfileData!.estates.toString()),
                               InkWell(
                                 onTap: () {
-                                  Get.to(()=> ChatContactListScreenUI() );
+                                  /*pageController = PageController(initialPage:3,keepPage: false);
+                                  //DashboardScreenUI().createState().onItemTapped(3,dashboardController,pageController!);
+                                  dashboardController.updateBottomSelectedIndex(3);
+*/
+                                  setState(() {
+
+                                  });
+                                 // Get.to(()=> ChatContactListScreenUI() );
                                 },
-                                child: StateContainer(title: "Contacts", value: viewBrokerProfileController.brokerProfileData!.contacts.toString())),
+                                child: StateContainer(title: "Contacts", value: viewBrokerProfileController.brokerProfileData!.contacts.toString())
+                              ),
                               StateContainer(title: "Balance", value: viewBrokerProfileController.brokerProfileData!.balance.toString()),
                             ],
                           ),
                         ),
 
-
-                        viewBrokerProfileController.brokerProfileData!.area!.isEmpty
-                            ? Container()
-                            : Container(
+                        SizedBox(height: 10),
+                        Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                          child: Divider(color: AppColors.grayColor,thickness: 1),
+                        ),
+                        SizedBox(height: 5),
+                        Container(
                             alignment: Alignment.centerLeft,
                             padding: EdgeInsets.only(left: 20),
-                            child: Txt("Area",fontSize: 20,fontWeight: FontWeight.w600,)),
-
+                            child: Txt("Detail",fontSize: 22,fontWeight: FontWeight.bold,color: AppColors.primaryColor,)),
+                        SizedBox(height: 5),
                         viewBrokerProfileController.brokerProfileData!.area!.isEmpty
+                            ? Container()
+                            : detailContainer("Area",viewBrokerProfileController.brokerProfileData!.area!),
+                        SizedBox(height: 5),
+                        viewBrokerProfileController.brokerProfileData!.estate_type!.isEmpty
+                            ? Container()
+                            : detailContainer("Type",viewBrokerProfileController.brokerProfileData!.estate_type!),
+
+
+                        /*viewBrokerProfileController.brokerProfileData!.area!.isEmpty
                             ? Container()
                             : Container(
                           height: 140,
@@ -118,17 +144,10 @@ class _UserProfileScreenUIState extends State<UserProfileScreenUI> {
                               );
                             },),
                         ),
+*/
 
-                        SizedBox(height: 15,),
 
-                        viewBrokerProfileController.brokerProfileData!.estate_type!.isEmpty
-                            ? Container()
-                            : Container(
-                            alignment: Alignment.centerLeft,
-                            padding: EdgeInsets.only(left: 20),
-                            child: Txt("Type",fontSize: 20,fontWeight: FontWeight.w600,)),
-
-                        viewBrokerProfileController.brokerProfileData!.estate_type!.isEmpty
+                        /*viewBrokerProfileController.brokerProfileData!.estate_type!.isEmpty
                             ? Container()
                             : Container(
                           height: 140,
@@ -158,8 +177,45 @@ class _UserProfileScreenUIState extends State<UserProfileScreenUI> {
                               );
                             },),
                         ),
+*/
 
+                        SizedBox(height: 10),
 
+                        Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                          child: Divider(color: AppColors.grayColor,thickness: 1),
+                        ),
+
+                        Container(
+                            alignment: Alignment.centerLeft,
+                            padding: EdgeInsets.only(left: 20),
+                            child: Txt("Others",fontSize: 22,fontWeight: FontWeight.bold,color: AppColors.primaryColor,)),
+                        SizedBox(height: 5),
+                        Row(
+                          children: [
+                            Container(
+                                alignment: Alignment.centerLeft,
+                                padding: EdgeInsets.only(left: 30),
+                                child: Txt("Terms & Condition",fontSize: 18,fontWeight: FontWeight.w600,)),
+                            Spacer(),
+                            Icon(Icons.keyboard_arrow_right),
+                            SizedBox(width: 5,)
+
+                          ],
+                        ),
+                        SizedBox(height: 5),
+                        Row(
+                          children: [
+                            Container(
+                                alignment: Alignment.centerLeft,
+                                padding: EdgeInsets.only(left: 30),
+                                child: Txt("Privacy Policy",fontSize: 18,fontWeight: FontWeight.w600,)),
+                            Spacer(),
+                            Icon(Icons.keyboard_arrow_right),
+                            SizedBox(width: 5,)
+
+                          ],
+                        ),
 
                         viewBrokerProfileController.brokerProfileData!.estate_type!.isEmpty && viewBrokerProfileController.brokerProfileData!.area!.isEmpty
                           ? Expanded(
@@ -174,15 +230,35 @@ class _UserProfileScreenUIState extends State<UserProfileScreenUI> {
                         SizedBox(height: 100),
 
                       ]
+                ),
                   );
-                },
+              },
 
-              ),
             ),
-
-
           ),
+
+
         ),
+      ),
+    );
+  }
+
+  Widget detailContainer(String title, List data){
+    return InkWell(
+      onTap: () => Get.to(AreaProfileTypeScreenUI(
+        title: title,
+        data: data,)),
+      child: Row(
+        children: [
+          Container(
+              alignment: Alignment.centerLeft,
+              padding: EdgeInsets.only(left: 30),
+              child: Txt(title,fontSize: 18,fontWeight: FontWeight.w600,color: AppColors.black.withOpacity(0.8))),
+          Spacer(),
+          Icon(Icons.keyboard_arrow_right),
+          SizedBox(width: 5,)
+
+        ],
       ),
     );
   }
@@ -190,9 +266,9 @@ class _UserProfileScreenUIState extends State<UserProfileScreenUI> {
   Widget StateContainer({required String title,required String value}){
     return Column(
       children: [
-        Txt(title,fontSize: 20,fontWeight: FontWeight.w500),
-        SizedBox(height: 8),
-        Txt(value,fontSize: 17,fontWeight: FontWeight.w500),
+        Txt(value,fontSize: 20,fontWeight: FontWeight.w700),
+        /*SizedBox(height: 8),*/
+        Txt(title,fontSize: 18,fontWeight: FontWeight.w500),
       ],
     );
   }

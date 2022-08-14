@@ -73,7 +73,7 @@ class TextFormInputField extends StatelessWidget {
               hintText: hintText,
               fillColor: Colors.black12.withOpacity(0.05),
               contentPadding:  EdgeInsets.symmetric(vertical: 10.0,horizontal:8.0),
-              hintStyle: TextStyle(color: AppColors.primaryColor), filled: true,
+              hintStyle: TextStyle(color: AppColors.grayColor), filled: true,
               disabledBorder:OutlineInputBorder(
                   borderRadius: BorderRadius.all(Radius.circular(borderRadius)),
                   borderSide: BorderSide(color: Colors.transparent,width: 0.5)),

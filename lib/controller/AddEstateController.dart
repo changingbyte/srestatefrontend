@@ -16,11 +16,14 @@ class AddEstateController extends GetxController{
   late AddEstateResponse addEstateResponse;
   var readByWhatsApp;
   TextEditingController noOfBedroomController = TextEditingController();
+  TextEditingController budgetController = TextEditingController();
+  TextEditingController societyController = TextEditingController();
   TextEditingController areaController = TextEditingController();
   TextEditingController sizeController = TextEditingController();
 
   String estateStatusVal = "Status";
   String estateType = "";
+  String estateBudget = "";
   String estateStatus = "";
 
   Future<AddEstateResponse> addEstateApi({String? token,String? estate_name,String? city, int? budget,String? estate_type, String? floor_space,
@@ -147,6 +150,16 @@ class AddEstateController extends GetxController{
 
   void updateEstateType(String type){
     estateType = type;
+    update();
+  }
+
+  void updateEstateBudget(String type){
+    budgetController.text = type;
+    update();
+  }
+
+  void updateEstateSociety(String type){
+    societyController.text = type;
     update();
   }
 
