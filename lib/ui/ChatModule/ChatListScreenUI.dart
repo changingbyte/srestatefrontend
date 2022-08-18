@@ -92,7 +92,10 @@ class _ContactListScreenUIState extends State<ContactListScreenUI> {
                                     crossAxisAlignment: CrossAxisAlignment.start,
                                     children: [
                                       Txt("${controller.contactListResponse.results![index].lastMessage!.receiverName}",fontWeight: FontWeight.w600,fontSize: 18),
-                                      Txt("${controller.contactListResponse.results![index].lastMessage!.description}",maxLines: 1,overflow: TextOverflow.ellipsis),
+                                      Txt("${controller.contactListResponse.results![index].lastMessage!.description}",maxLines: 1,overflow: TextOverflow.ellipsis,fontSize: 14 ),
+                                      Align( alignment: Alignment.centerRight, child: Container( color: Colors.red, child: Txt("${controller.contactListResponse.results![index].unseen}",maxLines: 1,overflow: TextOverflow.ellipsis),),),
+                                      
+
                                     ],
                                   ),
                                 ],

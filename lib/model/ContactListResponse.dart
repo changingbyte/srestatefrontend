@@ -41,7 +41,8 @@ class Results {
       this.lastMessage, 
       this.contact, 
       this.owner, 
-      this.websocketUrl,});
+      this.websocketUrl,
+      this.unseen,});
 
   Results.fromJson(dynamic json) {
     id = json['id'];
@@ -50,6 +51,8 @@ class Results {
     contact = json['contact'];
     owner = json['owner'];
     websocketUrl = json['websocket_url'];
+    unseen = json['unseen'];
+    
   }
   int? id;
   int? timestamp;
@@ -57,6 +60,7 @@ class Results {
   String? contact;
   String? owner;
   String? websocketUrl;
+  int? unseen;
 
   Map<String, dynamic> toJson() {
     final map = <String, dynamic>{};
@@ -68,6 +72,7 @@ class Results {
     map['contact'] = contact;
     map['owner'] = owner;
     map['websocket_url'] = websocketUrl;
+    map['unseen'] = unseen;
     return map;
   }
 
