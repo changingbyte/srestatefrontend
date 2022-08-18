@@ -41,7 +41,7 @@ class OnBoardingController extends GetxController
 
     print("Enter Number  ::  ${response.body}");
      statusCode = response.statusCode;
-    if(response.statusCode == 200){
+    if(response.statusCode == 200 || response.statusCode == 201){
       if(response.body != null){
         numberApiResponse = NumberApiResponse.fromJson(json.decode(response.body));
         progressDataLoading(false);
