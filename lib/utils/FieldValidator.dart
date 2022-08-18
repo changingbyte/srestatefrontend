@@ -1,3 +1,5 @@
+import 'dart:html';
+
 import 'AppString.dart';
 
 class FieldValidator {
@@ -59,6 +61,27 @@ class FieldValidator {
   static String? validateValueIsEmpty(String value) {
     if (value.isEmpty) {
       return "Value is Required";
+    }
+    return null;
+  }
+
+  static String? validateRentValue(String value, String estate_status) {
+    if (estate_status.isEmpty) {
+      return "Value is Required";
+    }
+    else if (estate_status.toUpperCase() == "RENT")
+    {
+      if (value.isEmpty) {
+      return "Value is Required";
+      }
+      else if ((value.toLowerCase() != "available") || (value != "required"))
+      {
+        return "Value should be in available or required ";
+      }
+
+      else {
+        return null;
+      }
     }
     return null;
   }
