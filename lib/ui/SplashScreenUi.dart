@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 import '../helper/PreferenceHelper.dart';
+import '../widgets/Txt.dart';
 import 'DashboardModule/DashboardScreenUI.dart';
 import 'EnterNumberScreenUI.dart';
 
@@ -25,7 +26,7 @@ class _SplashScreenUiState extends State<SplashScreenUi> with TickerProviderStat
     //PreferenceHelper().saveIsUserLoggedIn(true);
     //print("USER LOGGED IN  ::  ${PreferenceHelper().getIsUserLoggedIn()}");
 
-    Future.delayed(Duration(seconds: 5,),(){
+    Future.delayed(Duration(seconds: 3,),(){
       if(PreferenceHelper().getIsUserLoggedIn()){
         Get.off(()=> DashboardScreenUI(),);
       }
@@ -59,23 +60,7 @@ class _SplashScreenUiState extends State<SplashScreenUi> with TickerProviderStat
                 ),
                 Container(
                   height: 80,
-                  child: AnimatedText(
-                    alignment: Alignment.center,
-                    speed: Duration(milliseconds: 1000),
-                    controller: AnimatedTextController.loop,
-                    displayTime: Duration(milliseconds: 1000),
-                    repeatCount: 1,
-                    wordList: ['Welcome', 'To The', 'Broker Book'],
-                    textStyle: TextStyle(
-                        color: AppColors.primaryColor,
-                        fontSize: 35,
-                        fontWeight: FontWeight.w700),
-                    onAnimate: (index) {
-                    },
-                    onFinished: () {
-                      print("Animtion finished");
-                    },
-                  ),
+                  child: Txt("Broker Book",fontSize: 28,fontWeight: FontWeight.w600,color: AppColors.primaryColor),
                 ),
               ],
             ),

@@ -1,6 +1,8 @@
 // ignore_for_file: must_be_immutable
 
 import 'package:carousel_slider/carousel_slider.dart';
+import 'package:croma_brokrage/ui/DashboardModule/QueryContactListScreenUI.dart';
+import 'package:croma_brokrage/ui/DashboardModule/QueryScreenUI.dart';
 import 'package:croma_brokrage/ui/MapScreenUI.dart';
 import 'package:croma_brokrage/utils/AppColors.dart';
 import 'package:croma_brokrage/utils/AppString.dart';
@@ -82,9 +84,16 @@ class _PropertyDetailsScreenUIState extends State<PropertyDetailsScreenUI> {
                               ),
                             ),
 
-                            Padding(
-                              padding: EdgeInsets.only(right: 8.0),
-                              child: Icon(Icons.share,color: Colors.blueAccent,),
+                            InkWell(
+                              onTap: () {
+                                print("Estate ID  ::  ${widget.estateList.id}");
+                                homeController.selectedEstateList.add(widget.estateList.id!);
+                                Get.to(()=> QueryScreenUI() );
+                              },
+                              child: Padding(
+                                padding: EdgeInsets.only(right: 8.0),
+                                child: Icon(Icons.share,color: Colors.blueAccent,),
+                              ),
                             ),
                           ],
                         ),

@@ -136,35 +136,6 @@ class AppCommonFunction {
     );
   }
 
-  static Widget CardContainer({required String text,required IconData icon}){
-    return Container(
-      padding: EdgeInsets.only(left: 7, right: 7),
-      child: InkWell(
-        onTap: () {
-          Get.to(()=> EstateListScreenUI(estateName: text,));
-        },
-        child: Column(
-          children: [
-            Card(
-              color: AppColors.primaryColor.withOpacity(0.3),
-              elevation: 25,
-              shape: RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(10),)),
-              child: Container(
-                height: 65,
-                width: 65,
-                alignment: Alignment.center,
-                child: FaIcon(icon,color: Colors.white,size: 30),
-              ),
-            ),
-            SizedBox(height: 5),
-            Center(child: Txt(text,fontSize: 17,color: AppColors.primaryColor,fontWeight: FontWeight.w600),),
-          ],
-        ),
-      ),
-    );
-  }
-
-
 
 static FormContainer(TextEditingController controller, String text) {
     return  TextFormInputField(
@@ -211,7 +182,8 @@ static adsBanner({required AdmobBannerSize admobBannerSize}){
 
 
 static String timestampToDatetime(int timestamp){
-  var date = DateFormat('MM/dd/yyyy').format(DateTime.fromMicrosecondsSinceEpoch(timestamp));
+  var date = DateFormat('dd/MM/yyyy, hh:mm a').format(DateTime.fromMillisecondsSinceEpoch(timestamp * 1000));
+  print("DATEEE  ::  ${date}");
   return date;
 }
 

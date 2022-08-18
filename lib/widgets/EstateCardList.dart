@@ -15,7 +15,8 @@ class EstateCardList extends StatelessWidget {
   List<EstateList> estateList;
   HomeController homeController;
   Axis? scrollDirection;
-  EstateCardList({required this.estateList, this.scrollDirection = Axis.vertical, required this.homeController});
+  String? page;
+  EstateCardList({required this.estateList, this.scrollDirection = Axis.vertical, required this.homeController,this.page});
 
   @override
   Widget build(BuildContext context) {
@@ -42,8 +43,8 @@ class EstateCardList extends StatelessWidget {
             child: Card(
               elevation: 10,
               color: homeController.myMultiSelectController.isSelected(index)
-                  ? Colors.grey.shade400
-                  : Colors.white,
+                ? Colors.grey.shade400
+                : Colors.white,
               shape: RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(7)),),
               child: InkWell(
                 onTap: () {
@@ -63,32 +64,32 @@ class EstateCardList extends StatelessWidget {
                           children: [
 
                             estateList[index].area!.isEmpty
-                                ? Container()
-                                : ListCardContainer(icon: Icons.location_on,text: estateList[index].area!),
+                              ? Container()
+                              : ListCardContainer(icon: Icons.location_on,text: estateList[index].area!),
 
                             SizedBox(height: 7),
 
                             estateList[index].estateType!.isEmpty
-                                ? Container()
-                                : ListCardContainer(icon: Icons.home_work,text: estateList[index].estateType!),
+                              ? Container()
+                              : ListCardContainer(icon: Icons.home_work,text: estateList[index].estateType!),
 
                             SizedBox(height: 7),
 
                             estateList[index].estateStatus!.isEmpty
-                                ? Container()
-                                : ListCardContainer(icon: Icons.account_balance_sharp,text: estateList[index].estateStatus!),
+                              ? Container()
+                              : ListCardContainer(icon: Icons.account_balance_sharp,text: estateList[index].estateStatus!),
 
                             SizedBox(height: 7),
 
                             estateList[index].budget!.toString() == "0"
-                                ? Container()
-                                : ListCardContainer(icon: Icons.currency_rupee,text: estateList[index].budget!.toString()),
+                              ? Container()
+                              : ListCardContainer(icon: Icons.currency_rupee,text: estateList[index].budget!.toString()),
 
                             SizedBox(height: 7),
 
                             estateList[index].numberOfBedrooms!.toString() == "0"
-                                ? Container()
-                                : ListCardContainer(icon: Icons.add_business_outlined,text: estateList[index].numberOfBedrooms.toString(),),
+                              ? Container()
+                              : ListCardContainer(icon: Icons.add_business_outlined,text: estateList[index].numberOfBedrooms.toString(),),
 
                           ],
                         ),

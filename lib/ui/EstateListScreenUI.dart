@@ -28,47 +28,52 @@ class _EstateListScreenUIState extends State<EstateListScreenUI> {
   HomeController homeController = Get.put(HomeController());
 
 
-  ///SELECTED TITLE BAR DISPLAY IN THIS SCREEN IS PENDING...
+  ///when select 1 estate, 2 estate selected (issue pending)
   @override
   void initState() {
     super.initState();
     getEstateApi();
+    Future.delayed(Duration.zero,(){
+      print("---ESTATE LIST CLEAR---");
+      homeController.deselectItems();
+      homeController.estateList.clear();
+      homeController.selectedEstateList.clear();
+    });
+
   }
 
   @override
   Widget build(BuildContext context) {
     return SafeArea(
       child: GetBuilder(
-        init: EstateListController(),
-        builder: (EstateListController controller) {
+        builder: (HomeController homeController) {
           return Scaffold(
             appBar: AppBar(
               backgroundColor: AppColors.primaryColor,
               title: Text(widget.estateName),
               centerTitle: true,
               actions: [
-                (controller.myMultiSelectController.isSelecting)
+                (homeController.myMultiSelectController.isSelecting)
                     ? Row(
                   children: [
                     IconButton(
-                      icon: Icon(Icons.select_all,size: 24),
-                      onPressed: controller.selectAllItems,
+                      icon: Icon(Icons.select_all, size: 24),
+                      onPressed: homeController.selectAllItems,
                     ),
                     IconButton(
-                      icon: Icon(FontAwesomeIcons.shareSquare,size: 20),
-                      onPressed:(){
-                        Get.to(()=> QueryScreenUI() );
+                      icon: Icon(FontAwesomeIcons.shareFromSquare, size: 20),
+                      onPressed: () {
+                        Get.to(() => QueryScreenUI());
                       },
                     )
                   ],
                 )
                     : Container(),
-
                 SizedBox(width: 8),
               ],
             ),
             body: Padding(
-              padding: const EdgeInsets.all(8.0),
+              padding: EdgeInsets.all(8.0),
               child: Column(
                 children: [
                   TextFormInputField(
@@ -78,119 +83,16 @@ class _EstateListScreenUIState extends State<EstateListScreenUI> {
                   Expanded(
                     child: GetBuilder(
                       init: EstateListController(),
-                      builder: (EstateListController controller) {
-                        return controller.isDataLoading
-                            ? Center(child: CircularProgressIndicator())
-                            : Column(
-                          children: [
-                            Expanded(
-                              child: controller.estateList == null
-                                  ? Center(child: CircularProgressIndicator())
-                                  : controller.estateList.length < 1
-                                  ? Center(
-                                      child: Txt("No Data Found!", color: AppColors.primaryColor, fontSize: 20, fontWeight: FontWeight.bold),
-                                    )
-                                  :
-
-                              EstateCardList(
-                                homeController: homeController,
-                                estateList: controller.estateList,
-                              ),
-
-
-/*
-                              ListView.builder(
-                                itemCount: estateListController.estateList.length,
-                                itemBuilder: (context, index) {
-
-                                  if(controller.myMultiSelectController.isSelected(index)){
-                                    controller.selectedEstateList.add(controller.estateList[index]['id']);
-                                  }
-                                  else{
-                                    for(int i=0; i< controller.estateList.length; i++){
-                                      if(!controller.myMultiSelectController.isSelected(index)){
-                                        controller.selectedEstateList.remove(controller.estateList[index]['id']);
-                                      }
-                                    }
-                                  }
-
-
-                                  return MultiSelectItem(
-                                    isSelecting: controller.myMultiSelectController.isSelecting,
-                                    onSelected: () {
-                                      setState(() {
-                                        controller.isToggle(index);
-                                      });
-                                    },
-                                    child: Padding(
-                                      padding: const EdgeInsets.only(top: 3, bottom: 5),
-                                      child: InkWell(
-                                        onTap: () {},
-                                        child: Card(
-                                          elevation: 10,
-                                          color:  controller.myMultiSelectController.isSelected(index)
-                                              ? Colors.grey.shade400
-                                              : Colors.white,
-                                          child: Container(
-                                            width: Get.width,
-                                            child: Padding(
-                                              padding: const EdgeInsets.all(8.0),
-                                              child: Row(
-                                                crossAxisAlignment: CrossAxisAlignment.start,
-                                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                                children: [
-                                                  Column(
-                                                    crossAxisAlignment: CrossAxisAlignment.start,
-                                                    mainAxisAlignment: MainAxisAlignment.start,
-                                                    children: [
-                                                      Container(
-                                                        width: Get.width / 2,
-                                                        child: Txt(estateListController.estateList[index]["estate_name"],
-                                                          fontSize: 20, color: AppColors.black, fontWeight: FontWeight.bold),
-                                                      ),
-
-                                                      SizedBox(height: 13),
-
-                                                      ListCardContainer(
-                                                        icon: Icons.location_on, text: controller.estateList[index]["city"].toString()),
-                                                      ListCardContainer(
-                                                        icon: Icons.home_work, text: controller.estateList[index]["area"].toString()),
-                                                      ListCardContainer(
-                                                        icon: Icons.home, text: controller.estateList[index]["estate_type"].toString()),
-                                                      ListCardContainer(
-                                                        icon: Icons.account_circle, text: controller.estateList[index]["id"].toString()),
-                                                      ListCardContainer(
-                                                        icon: Icons.description, text: " ${controller.estateList[index]["estate_description"].toString()}"),
-                                                    ],
-                                                  ),
-                                                  Image.asset(
-                                                    controller.estateList[index]["Images"] == null
-                                                      ? AppString.imagesAssetPath + "ic_flat_img.jpg"
-                                                      : controller.estateList[index]["Images"],
-                                                    height: 160,
-                                                    width: 140,
-                                                    fit: BoxFit.cover,
-                                                  ),
-                                                ],
-                                              ),
-                                            ),
-                                          ),
-                                        ),
-                                      ),
-                                    ),
-                                  );
-                                },
-                              ),
-*/
-
-
-
-
-
-
-                            ),
-                          ],
-                        );
+                      builder: (EstateListController estateListController) {
+                        return estateListController.isDataLoading
+                          ? Center(child: CircularProgressIndicator())
+                          : estateListController.estateList.isEmpty
+                              ? AppCommonFunction.noDataFound()
+                              : EstateCardList(
+                            homeController: homeController,
+                            estateList: estateListController.estateList,
+                            page: "estateType",
+                          );
                       },
                     ),
                   ),
@@ -210,13 +112,8 @@ class _EstateListScreenUIState extends State<EstateListScreenUI> {
         SizedBox(width: 5),
         Container(
           width: Get.width / 2.5,
-          child: Txt(text,
-            fontSize: 16,
-            color: AppColors.black,
-            fontWeight: FontWeight.w600,
-            maxLines: 4,
-            overflow: TextOverflow.ellipsis,
-          ),
+          child: Txt(text, fontSize: 16, color: AppColors.black,
+            fontWeight: FontWeight.w600, maxLines: 4, overflow: TextOverflow.ellipsis,),
         ),
       ],
     );

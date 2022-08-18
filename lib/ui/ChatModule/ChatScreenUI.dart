@@ -19,8 +19,10 @@ import 'package:web_socket_channel/io.dart';
 import 'package:web_socket_channel/status.dart' as status;
 
 import '../../controller/ChatController.dart';
+import '../../controller/HomeController.dart';
 import '../../model/ChatListResponse.dart';
 import '../../utils/AppColors.dart';
+import '../../widgets/EstateCardList.dart';
 import '../../widgets/Txt.dart';
 import '../ViewChatImageScreenUi.dart';
 
@@ -28,7 +30,8 @@ class ChatScreenUI extends StatefulWidget {
   String reciver;
   String webSocketUrl;
   String sender;
-  ChatScreenUI({required this.reciver,required this.webSocketUrl,required this.sender});
+  String abs_url;
+  ChatScreenUI({required this.reciver,required this.webSocketUrl,required this.sender,required this.abs_url});
 
   @override
   State<ChatScreenUI> createState() => _ChatScreenUIState();
@@ -40,6 +43,7 @@ class _ChatScreenUIState extends State<ChatScreenUI> {
 
   TextEditingController msgController  = TextEditingController();
   ChatController chatController = Get.put(ChatController());
+  HomeController homeController = Get.put(HomeController());
   ScrollController scrollController = new ScrollController();
 
   KeyboardVisibilityNotification _keyboardVisibility = new KeyboardVisibilityNotification();
@@ -63,7 +67,7 @@ class _ChatScreenUIState extends State<ChatScreenUI> {
       chatController.chatDataList.add(ChatListData(
         id: 0,
         description: desc['message'],
-        timestamp: 1657368029,
+        timestamp: desc['timestamp'],
         receiverName: receiverMsg,
         senderName: senderMsg,
         seen: true,
@@ -80,11 +84,7 @@ class _ChatScreenUIState extends State<ChatScreenUI> {
       );
       setState((){});
 
-
       var keyboardVisibilityController = KeyboardVisibilityController();
-
-      print('Keyboard visibility direct query: ${keyboardVisibilityController.isVisible}');
-
       keyboardSubscription = keyboardVisibilityController.onChange.listen((bool visible) {
         print('Keyboard visibility update. Is visible: $visible');
       });
@@ -94,12 +94,9 @@ class _ChatScreenUIState extends State<ChatScreenUI> {
           print("AAAAA"+visible.toString());
         },
       );
-
     });
 
-
     _keyboardState = _keyboardVisibility.isKeyboardVisible;
-
     setState((){});
 
     _keyboardVisibilitySubscriberId = _keyboardVisibility.addNewListener(
@@ -120,16 +117,13 @@ class _ChatScreenUIState extends State<ChatScreenUI> {
             chatController.chatListResponse = response;
             chatController.chatDataList = response.data!;
             chatController.progressDataLoading(false);
-
             scrollDown();
-
           }
         }
         chatController.progressDataLoading(false);
     });
 
   }
-
 
   @override
   Widget build(BuildContext context) {
@@ -139,7 +133,7 @@ class _ChatScreenUIState extends State<ChatScreenUI> {
             backgroundColor: AppColors.primaryColor,
             leading: InkWell(
               onTap: () {
-                Get.to(()=> ViewProfileScreenUI(contactNumber: widget.reciver,) );
+                Get.to(()=> ViewProfileScreenUI(contactNumber: widget.reciver,abs_url: widget.abs_url,) );
               },
               child: Padding(
                 padding: const EdgeInsets.all(5.0),
@@ -150,7 +144,7 @@ class _ChatScreenUIState extends State<ChatScreenUI> {
             ),
             title: InkWell(
               onTap: () {
-                Get.to(()=> ViewProfileScreenUI(contactNumber: widget.reciver,) );
+                Get.to(()=> ViewProfileScreenUI(contactNumber: widget.reciver,abs_url: widget.abs_url,) );
               },
               child: Text(widget.reciver)),
           ),
@@ -420,7 +414,34 @@ class _ChatScreenUIState extends State<ChatScreenUI> {
                                           ),
                                           InkWell(
                                             onTap: (){
-                                              Get.offAll(()=> DashboardScreenUI() );
+                                              showModalBottomSheet(
+                                                context: context,
+                                                barrierColor: Colors.transparent,
+                                                backgroundColor: AppColors.blueColor,
+                                                elevation: 50,
+                                                shape: RoundedRectangleBorder(
+                                                  borderRadius: BorderRadius.circular(10.0),
+                                                ),
+                                                builder: (BuildContext context) {
+                                                  return SizedBox(
+                                                    height: 650,
+                                                    child: Center(
+                                                      child: Column(
+                                                        children: <Widget>[
+
+                                                          SizedBox(height: 10),
+
+                                                          EstateCardList(
+                                                            homeController: homeController,
+                                                            estateList: homeController.estateList,
+                                                          ),
+
+                                                        ],
+                                                      ),
+                                                    ),
+                                                  );
+                                                },
+                                              );
                                             },
                                             child: Column(
                                               mainAxisAlignment: MainAxisAlignment.center,
@@ -456,7 +477,7 @@ class _ChatScreenUIState extends State<ChatScreenUI> {
             SizedBox(width: 10,),
             InkWell(
               onTap: () {
-                channel.sink.add(json.encode({"message":"${msgController.text}","sender" : "7984702696",'sent':'True'}));
+                channel.sink.add(json.encode({"message":"${msgController.text}","sender" : "${widget.sender}",'sent':'True',"message_type":"message"}));
 
                 msgController.clear();
                 setState((){});

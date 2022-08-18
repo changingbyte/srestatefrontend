@@ -392,12 +392,8 @@ class _AddEstateScreenUIState extends State<AddEstateScreenUI> {
     addEstateController.societyController.clear();
     addEstateController.areaController.clear();
     addEstateController.noOfBedroomController.clear();
-
   }
 
 
 }
-
-
-// 15 - 8 - 22
 

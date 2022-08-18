@@ -5,6 +5,7 @@ import 'package:croma_brokrage/ui/DashboardModule/AddEstateScreenUI.dart';
 import 'package:croma_brokrage/ui/DashboardModule/HomeScreenUI.dart';
 import 'package:croma_brokrage/ui/DashboardModule/QueryScreenUI.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
 
@@ -68,80 +69,84 @@ class _DashboardScreenUIState extends State<DashboardScreenUI> {
                 onItemTapped(index,dashboardController,pageController!);
               },
             ),
-            body: Column(
-              children: [
-                controller.myMultiSelectController.isSelecting
-                  ? AppBar(
-                  toolbarHeight: 60,
-                  title: Text("Selected Estates"),
-                  backgroundColor: AppColors.primaryColor,
-                  actions: [
-                    Row(
-                      children: [
-                        IconButton(
-                          icon: Icon(Icons.select_all,size: 24),
-                          onPressed: homeController.selectAllItems,
-                        ),
-                        IconButton(
-                          icon: Icon(FontAwesomeIcons.shareSquare,size: 20),
-                          onPressed:(){
-                            Get.to(()=> QueryScreenUI() );
-                          },
-                        )
-                      ],
-                    ),
-                    SizedBox(width: 8),
-                  ]
-                )
-                  : Container(
-                    height: 60,
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: Txt(dashboardController.appBarTitle,fontSize: 20,fontWeight: FontWeight.w600),
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: InkWell(
-                            onTap: () {
-                              Get.to(()=> MessageBalanceScreenUI() );
+            body: WillPopScope(
+
+              onWillPop: _onWillPop,
+              child: Column(
+                children: [
+                  controller.myMultiSelectController.isSelecting
+                    ? AppBar(
+                    toolbarHeight: 60,
+                    title: Text("Selected Estates"),
+                    backgroundColor: AppColors.primaryColor,
+                    actions: [
+                      Row(
+                        children: [
+                          IconButton(
+                            icon: Icon(Icons.select_all,size: 24),
+                            onPressed: homeController.selectAllItems,
+                          ),
+                          IconButton(
+                            icon: Icon(FontAwesomeIcons.shareFromSquare,size: 20),
+                            onPressed:(){
+                              Get.to(()=> QueryScreenUI() );
                             },
-                            child: Row(
-                              children: [
-                                GetBuilder(
-                                  init: MessageBalanceController(),
-                                  builder: (MessageBalanceController controller) {
-                                    return Text(controller.textBalance != null ? controller.textBalance.toString() : "0",style: TextStyle(color: AppColors.primaryColor,fontSize:20,fontWeight: FontWeight.bold),);
-                                  },
-                                ),
-                                SizedBox(width: 5,),
-                                Icon(Icons.messenger_outlined,color:  AppColors.primaryColor,),
-                              ],
+                          )
+                        ],
+                      ),
+                      SizedBox(width: 8),
+                    ]
+                  )
+                    : Container(
+                      height: 60,
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: Txt(dashboardController.appBarTitle,fontSize: 20,fontWeight: FontWeight.w600),
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: InkWell(
+                              onTap: () {
+                                Get.to(()=> MessageBalanceScreenUI() );
+                              },
+                              child: Row(
+                                children: [
+                                  GetBuilder(
+                                    init: MessageBalanceController(),
+                                    builder: (MessageBalanceController controller) {
+                                      return Text(controller.textBalance != null ? controller.textBalance.toString() : "0",style: TextStyle(color: AppColors.primaryColor,fontSize:20,fontWeight: FontWeight.bold),);
+                                    },
+                                  ),
+                                  SizedBox(width: 5,),
+                                  Icon(Icons.messenger_outlined,color:  AppColors.primaryColor,),
+                                ],
+                              ),
                             ),
                           ),
-                        ),
+                        ],
+                      ),
+                    ),
+
+                  Expanded(
+                    child: PageView(
+                      reverse: false,
+                      physics: NeverScrollableScrollPhysics(),
+                      controller: pageController,
+                      children: [
+                        HomeScreenUI(),
+                        SearchModuleScreenUI(),
+                        AddEstateScreenUI(),
+                        ChatContactListScreenUI(),
+                        UserProfileScreenUI(),
+
                       ],
                     ),
                   ),
-
-                Expanded(
-                  child: PageView(
-                    reverse: false,
-                    physics: NeverScrollableScrollPhysics(),
-                    controller: pageController,
-                    children: [
-                      HomeScreenUI(),
-                      SearchModuleScreenUI(),
-                      AddEstateScreenUI(),
-                      ChatContactListScreenUI(),
-                      UserProfileScreenUI(),
-
-                    ],
-                  ),
-                ),
-              ],
+                ],
+              ),
             ),
           );
         },
@@ -201,5 +206,153 @@ class _DashboardScreenUIState extends State<DashboardScreenUI> {
   }
 
 
+  Future<bool> _onWillPop() {
+    showDialog(
+        context: context,
+        builder: (BuildContext context)=> exitAppConfirmationDialog()
+    );
+    return Future<bool>.value(true);
+  }
+
+
+
+
+  Widget exitAppConfirmationDialog() {
+    return Dialog(
+        backgroundColor: Colors.transparent,
+        child: Container(
+          height: 220,
+          child: Center(
+            child: Card(
+              shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(16)),
+              color: AppColors.white,
+              child: Container(
+                width: MediaQuery.of(context).size.width,
+                decoration: BoxDecoration(
+
+                  border: Border.all(color: AppColors.primaryColor.withOpacity(0.5)),
+                  borderRadius: BorderRadius.all(Radius.circular(16)),
+                ),
+
+                child: Form(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    mainAxisSize: MainAxisSize.min,
+                    children: <Widget>[
+                      new  Container(
+
+                        padding: EdgeInsets.only(
+                          bottom: 12,
+                          top: 12,
+                          left:12,
+                        ),
+                        width: MediaQuery.of(context).size.width,
+                        alignment: Alignment.center,
+                        decoration: new BoxDecoration(
+                            color:AppColors.primaryColor,
+                            borderRadius: BorderRadius.only(
+                                topRight: Radius.circular(16),
+                                topLeft: Radius.circular(16))),
+                        child: Padding(
+                          padding: EdgeInsets.only(left: 8),
+                          child: Text(
+                            AppString.APP_NAME,
+                            textAlign: TextAlign.center,
+                            style: TextStyle(
+                                fontSize:20,
+                                fontWeight: FontWeight.w500,
+                                color: AppColors.white),
+                          ),
+                        ),
+                      ),
+
+
+
+                      Center(
+                        child: Container(
+                          color: AppColors.white,
+                          padding: EdgeInsets.all(12),
+                          child: new Text(
+                            "Are you sure you want to exit application?",
+                            textAlign: TextAlign.center,
+                            style: new TextStyle(
+                                fontSize: 16, color: AppColors.primaryColor),
+                          ),
+                        ),
+                      ),
+                      new Container(
+                        margin: EdgeInsets.only(top: 16),
+                        height:3,
+                        color: AppColors.primaryColor,
+                      ),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: <Widget>[
+                          Expanded(
+                            child: InkWell(
+                              onTap: () {
+                                Get.back(canPop: true);
+
+                              },
+                              child: Container(
+                                height: 44,
+                                padding: EdgeInsets.only(
+                                    top: 12,
+                                    bottom:12),
+                                child: Center(
+                                  child: new Text(
+                                    'No',
+                                    style: TextStyle(
+                                        fontSize: 16,
+                                        color:AppColors.primaryColor,
+                                        fontWeight: FontWeight.w500),
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ),
+                          new Container(
+                            width: 3,
+                            height: 40,
+                            color: AppColors.primaryColor,
+                          ),
+                          Expanded(
+                            child: InkWell(
+                              onTap: () {
+                                SystemNavigator.pop();
+                              },
+                              child: Container(
+                                height: 44,
+                                padding: EdgeInsets.only(
+                                    top: 12,
+                                    bottom: 12),
+                                child: Center(
+                                  child: new Text(
+                                    'Yes',
+                                    style: TextStyle(
+                                        fontSize:16,
+                                        color: AppColors.primaryColor,
+                                        fontWeight: FontWeight.w500),
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            ),
+          ),
+        ));
+  }
+
+
+
 }
 
+// commited on 18-8 10:53

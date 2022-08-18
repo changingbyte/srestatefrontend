@@ -1,4 +1,6 @@
 
+import 'EstateListCommonResponse.dart';
+
 class ChatProfileResponse {
   ChatProfileResponse({
       this.success, 
@@ -46,7 +48,7 @@ class ChatProfileData {
       this.websocketUrl, 
       this.contact, 
       this.owner, 
-      this.eststateList,});
+      this.estateList,});
 
   ChatProfileData.fromJson(dynamic json) {
     id = json['id'];
@@ -57,9 +59,9 @@ class ChatProfileData {
     contact = json['contact'];
     owner = json['owner'];
     if (json['eststate_list'] != null) {
-      eststateList = [];
+      estateList = [];
       json['eststate_list'].forEach((v) {
-        eststateList?.add(EststateList.fromJson(v));
+        estateList?.add(EstateList.fromJson(v));
       });
     }
   }
@@ -70,7 +72,7 @@ class ChatProfileData {
   String? websocketUrl;
   String? contact;
   String? owner;
-  List<EststateList>? eststateList;
+  List<EstateList>? estateList;
 
   Map<String, dynamic> toJson() {
     final map = <String, dynamic>{};
@@ -83,8 +85,8 @@ class ChatProfileData {
     map['websocket_url'] = websocketUrl;
     map['contact'] = contact;
     map['owner'] = owner;
-    if (eststateList != null) {
-      map['eststate_list'] = eststateList?.map((v) => v.toJson()).toList();
+    if (estateList != null) {
+      map['eststate_list'] = estateList?.map((v) => v.toJson()).toList();
     }
     return map;
   }
@@ -92,98 +94,6 @@ class ChatProfileData {
 }
 
 
-class EststateList {
-  EststateList({
-      this.id, 
-      this.estateName, 
-      this.city, 
-      this.estateType, 
-      this.furniture, 
-      this.floorSpace, 
-      this.numberOfBalconies, 
-      this.numberOfBedrooms, 
-      this.numberOfBathrooms, 
-      this.numberOfGarages, 
-      this.numberOfParkingSpaces, 
-      this.petsAllowed, 
-      this.estateDescription, 
-      this.estateStatus, 
-      this.isDeleted, 
-      this.society, 
-      this.area, 
-      this.brokerMobile, 
-      this.brokerName, 
-      this.budget,});
-
-  EststateList.fromJson(dynamic json) {
-    id = json['id'];
-    estateName = json['estate_name'];
-    city = json['city'];
-    estateType = json['estate_type'];
-    furniture = json['furniture'];
-    floorSpace = json['floor_space'];
-    numberOfBalconies = json['number_of_balconies'];
-    numberOfBedrooms = json['number_of_bedrooms'];
-    numberOfBathrooms = json['number_of_bathrooms'];
-    numberOfGarages = json['number_of_garages'];
-    numberOfParkingSpaces = json['number_of_parking_spaces'];
-    petsAllowed = json['pets_allowed'];
-    estateDescription = json['estate_description'];
-    estateStatus = json['estate_status'];
-    isDeleted = json['is_deleted'];
-    society = json['society'];
-    area = json['area'];
-    brokerMobile = json['broker_mobile'];
-    brokerName = json['broker_name'];
-    budget = json['budget'];
-  }
-  int? id;
-  String? estateName;
-  String? city;
-  String? estateType;
-  String? furniture;
-  int? floorSpace;
-  dynamic numberOfBalconies;
-  int? numberOfBedrooms;
-  dynamic numberOfBathrooms;
-  dynamic numberOfGarages;
-  dynamic numberOfParkingSpaces;
-  dynamic petsAllowed;
-  String? estateDescription;
-  String? estateStatus;
-  bool? isDeleted;
-  String? society;
-  String? area;
-  String? brokerMobile;
-  String? brokerName;
-  int? budget;
-
-  Map<String, dynamic> toJson() {
-    final map = <String, dynamic>{};
-    map['id'] = id;
-    map['estate_name'] = estateName;
-    map['city'] = city;
-    map['estate_type'] = estateType;
-    map['furniture'] = furniture;
-    map['floor_space'] = floorSpace;
-    map['number_of_balconies'] = numberOfBalconies;
-    map['number_of_bedrooms'] = numberOfBedrooms;
-    map['number_of_bathrooms'] = numberOfBathrooms;
-    map['number_of_garages'] = numberOfGarages;
-    map['number_of_parking_spaces'] = numberOfParkingSpaces;
-    map['pets_allowed'] = petsAllowed;
-    map['estate_description'] = estateDescription;
-    map['estate_status'] = estateStatus;
-    map['is_deleted'] = isDeleted;
-    map['society'] = society;
-    map['area'] = area;
-    map['broker_mobile'] = brokerMobile;
-    map['broker_name'] = brokerName;
-    map['budget'] = budget;
-    return map;
-  }
-
-}
 
 class LastMessage {
   LastMessage({

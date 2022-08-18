@@ -37,13 +37,10 @@ class _ChatContactListScreenUIState extends State<ChatContactListScreenUI> {
       child: Scaffold(
         body: Padding(
           padding: const EdgeInsets.all(8.0),
-          child:
-
-          GetBuilder(
+          child: GetBuilder(
             init: ContactListController(),
             builder: (ContactListController controller) {
-              return
-                controller.isDataLoading
+              return controller.isDataLoading
                 ? AppCommonFunction.circularIndicator()
                 : controller.contactListResponse.results!.isEmpty
                   ? AppCommonFunction.noDataFound()
@@ -54,10 +51,13 @@ class _ChatContactListScreenUIState extends State<ChatContactListScreenUI> {
                     padding: const EdgeInsets.all(6.0),
                     child: InkWell(
                       onTap: () {
+                        print("ABS URL  ::  ${controller.contactListResponse.results![index].absoluteUrl!}");
+
                         Get.to(()=> ChatScreenUI(
                           reciver: controller.contactListResponse.results![index].lastMessage!.receiverName!,
                           webSocketUrl: controller.contactListResponse.results![index].websocketUrl!,
                           sender: controller.contactListResponse.results![index].owner!,
+                          abs_url: controller.contactListResponse.results![index].absoluteUrl!,
                         )
                         );
                       },
@@ -77,7 +77,9 @@ class _ChatContactListScreenUIState extends State<ChatContactListScreenUI> {
                                       Txt("${controller.contactListResponse.results![index].lastMessage == ""
                                           ? ""
                                           : controller.contactListResponse.results![index].lastMessage!.receiverName}",fontWeight: FontWeight.w600,fontSize: 18),
-                                      Txt("${controller.contactListResponse.results![index].lastMessage!.description}",maxLines: 1,overflow: TextOverflow.ellipsis),
+                                      Container(
+                                          width: Get.width/1.5,
+                                          child: Txt("${controller.contactListResponse.results![index].lastMessage!.description}",maxLines: 1,overflow: TextOverflow.ellipsis)),
                                     ],
                                   ),
                                 ],

@@ -65,7 +65,6 @@ class _HomeScreenUIState extends State<HomeScreenUI> {
                   padding: const EdgeInsets.all(8.0),
                   child: TextFormInputField(
                     hintText: "Search Estates",
-
                     iconPrefix: Icons.search,
                     onChanged: (val){
                       onItemSearch(val,homeController.newEstateList,homeController);
@@ -100,12 +99,12 @@ class _HomeScreenUIState extends State<HomeScreenUI> {
             child: ListView(
               scrollDirection: Axis.horizontal,
               children: [
-                AppCommonFunction.CardContainer(text: "flat",icon: FontAwesomeIcons.building),
-                AppCommonFunction.CardContainer(text: "shop",icon: FontAwesomeIcons.shop),
-                AppCommonFunction.CardContainer(text: "plot",icon: FontAwesomeIcons.houseChimney),
-                AppCommonFunction.CardContainer(text: "bunglow",icon: FontAwesomeIcons.houseChimney),
-                AppCommonFunction.CardContainer(text: "rowhouse",icon: FontAwesomeIcons.houseMedicalCircleExclamation),
-                AppCommonFunction.CardContainer(text: "land",icon: FontAwesomeIcons.houseChimney),
+                CardContainer(text: "flat",icon: FontAwesomeIcons.building),
+                CardContainer(text: "shop",icon: FontAwesomeIcons.shop),
+                CardContainer(text: "plot",icon: FontAwesomeIcons.houseChimney),
+                CardContainer(text: "bunglow",icon: FontAwesomeIcons.houseChimney),
+                CardContainer(text: "rowhouse",icon: FontAwesomeIcons.houseMedicalCircleExclamation),
+                CardContainer(text: "land",icon: FontAwesomeIcons.houseChimney),
               ],
             ),
           ),
@@ -119,21 +118,12 @@ class _HomeScreenUIState extends State<HomeScreenUI> {
                   padding: const EdgeInsets.all(8.0),
                   child: controller.isDataLoading
                       ? AppCommonFunction.circularIndicator()
-                      : Column(
-                        children: [
-                          Expanded(
-                          child: controller.estateList == null
-                          ? AppCommonFunction.circularIndicator()
-                          : controller.estateList.length < 1
-                            ? AppCommonFunction.noDataFound()
-                            : EstateCardList(
-                            estateList: controller.estateList,
-                            homeController: homeController,
-                          ),
-
+                      : controller.estateList.isEmpty
+                        ? AppCommonFunction.noDataFound()
+                        : EstateCardList(
+                        estateList: controller.estateList,
+                        homeController: homeController,
                       ),
-                    ],
-                  ),
                 );
               },
             ),
@@ -144,6 +134,34 @@ class _HomeScreenUIState extends State<HomeScreenUI> {
     );
   }
 
+
+  Widget CardContainer({required String text,required IconData icon}){
+    return Container(
+      padding: EdgeInsets.only(left: 7, right: 7),
+      child: InkWell(
+        onTap: () {
+          Get.to(()=> EstateListScreenUI(estateName: text,));
+        },
+        child: Column(
+          children: [
+            Card(
+              color: AppColors.primaryColor.withOpacity(0.3),
+              elevation: 25,
+              shape: RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(10),)),
+              child: Container(
+                height: 65,
+                width: 65,
+                alignment: Alignment.center,
+                child: FaIcon(icon,color: Colors.white,size: 30),
+              ),
+            ),
+            SizedBox(height: 5),
+            Center(child: Txt(text,fontSize: 17,color: AppColors.primaryColor,fontWeight: FontWeight.w600),),
+          ],
+        ),
+      ),
+    );
+  }
 
   Widget filterDialog() {
     return Dialog(
@@ -279,7 +297,6 @@ class _HomeScreenUIState extends State<HomeScreenUI> {
         ));
   }
 
-
   getEstateApi({List<String>? area = const [],List<String>? apartment = const [],List<String>?  budget = const [],
     List<String>? estateStatus = const [],List<String>? furniture = const [],List<String>? no_of_bedrooms = const []}){
     homeController.progressDataLoading(true);
@@ -357,13 +374,10 @@ class _HomeScreenUIState extends State<HomeScreenUI> {
     });
   }
 
-
   onItemSearch(String value,List<EstateList> newEstateList,HomeController homeController) {
     homeController.estateList = newEstateList.where((string) => string.estateName!.toLowerCase().contains(value.toLowerCase())).toList();
     setState((){});
   }
-
-
 
   filterDropdownWidget({required String title,required List<String> list,required ValueChanged onChanged}){
     return DropdownButton(
@@ -379,6 +393,5 @@ class _HomeScreenUIState extends State<HomeScreenUI> {
       onChanged: onChanged,
     );
   }
-
 
 }

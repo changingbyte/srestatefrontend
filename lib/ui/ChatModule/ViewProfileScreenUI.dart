@@ -10,7 +10,8 @@ import '../../widgets/Txt.dart';
 
 class ViewProfileScreenUI extends StatefulWidget {
   String contactNumber;
-  ViewProfileScreenUI({required this.contactNumber});
+  String abs_url;
+  ViewProfileScreenUI({required this.contactNumber,required this.abs_url});
 
   @override
   State<ViewProfileScreenUI> createState() => _ViewProfileScreenUIState();
@@ -60,7 +61,7 @@ class _ViewProfileScreenUIState extends State<ViewProfileScreenUI> {
               return Container(
                 child: viewProfileController.isDataLoading
                     ? AppCommonFunction.circularIndicator()
-                    : viewProfileController.chatProfileData!.eststateList!.isEmpty
+                    : viewProfileController.chatProfileData!.estateList!.isEmpty
                     ? AppCommonFunction.noDataFound()
                     : Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -71,7 +72,7 @@ class _ViewProfileScreenUIState extends State<ViewProfileScreenUI> {
                     ),
                     Expanded(
                       child: ListView.builder(
-                        itemCount: viewProfileController.chatProfileData!.eststateList!.length,
+                        itemCount: viewProfileController.chatProfileData!.estateList!.length,
                         itemBuilder: (context, index) {
                           return Container(
                             padding: EdgeInsets.only(top: 0,bottom: 5,left: 10,right: 10),
@@ -105,15 +106,15 @@ class _ViewProfileScreenUIState extends State<ViewProfileScreenUI> {
 
                                             Container(
                                               width: Get.width/2,
-                                              child: Txt(viewProfileController.chatProfileData!.eststateList![index].estateName.toString(),
+                                              child: Txt(viewProfileController.chatProfileData!.estateList![index].estateName.toString(),
                                                   fontSize: 20,color: AppColors.black,fontWeight: FontWeight.bold),
                                             ),
 
                                             SizedBox(height: 13,),
 
-                                            ListCardContainer(icon: Icons.location_on,text: "${viewProfileController.chatProfileData!.eststateList![index].society}"),
+                                            ListCardContainer(icon: Icons.location_on,text: "${viewProfileController.chatProfileData!.estateList![index].society}"),
 
-                                            ListCardContainer(icon: Icons.home_work,text: "${viewProfileController.chatProfileData!.eststateList![index].area}"),
+                                            ListCardContainer(icon: Icons.home_work,text: "${viewProfileController.chatProfileData!.estateList![index].area}"),
 
                                             ListCardContainer(icon: Icons.photo_size_select_small_outlined,text: "floor_space"),
 
@@ -168,7 +169,7 @@ class _ViewProfileScreenUIState extends State<ViewProfileScreenUI> {
   getChatProfile(){
     viewProfileController.progressDataLoading(true);
     viewProfileController.chatProfileApi(
-      absolute_url: viewProfileController.chatProfileData!.absoluteUrl!,
+      absolute_url: widget.abs_url,
       token: PreferenceHelper().getUserData().authToken!,
     ).then((value) {
 

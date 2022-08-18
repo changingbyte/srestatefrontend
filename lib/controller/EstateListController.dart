@@ -10,7 +10,6 @@ import '../model/EstateListCommonResponse.dart';
 
 class EstateListController extends GetxController{
   MultiSelectController myMultiSelectController = MultiSelectController();
-  Set<int> selectedEstateList = {};
 
   late EstateListCommonResponse estateListResponse;
   List<EstateList> estateList = [];
