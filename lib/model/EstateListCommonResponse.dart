@@ -50,6 +50,7 @@ class EstateList {
     this.area,
     this.budget,
     this.furniture,
+    this.isMyProperty,
   });
 
   int? id;
@@ -64,6 +65,7 @@ class EstateList {
   String? area;
   int? budget;
   String? furniture;
+  bool? isMyProperty;
 
 
   factory EstateList.fromJson(Map<String, dynamic> json) => EstateList(
@@ -79,6 +81,7 @@ class EstateList {
     area: json["area"] == null ? null : json["area"],
     budget: json["budget"] == null ? null : json["budget"],
     furniture: json["furniture"] == null ? null : json["furniture"],
+    isMyProperty: json["is_my_property"] == null ? false : json["is_my_property"],
   );
 
   Map<String, dynamic> toJson() => {
@@ -94,6 +97,7 @@ class EstateList {
     "area": area == null ? null : area,
     "budget": budget == null ? null : budget,
     "furniture": furniture == null ? null : furniture,
+    "is_my_property": isMyProperty == null ? null : isMyProperty,
   };
 }
 

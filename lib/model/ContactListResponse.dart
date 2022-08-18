@@ -42,7 +42,6 @@ class Results {
   String? eststateList;
   int? unseen;
 
-
   Results(
       {this.id,
         this.timestamp,

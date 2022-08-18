@@ -1,4 +1,4 @@
-import 'dart:html';
+
 
 import 'AppString.dart';
 
@@ -74,13 +74,13 @@ class FieldValidator {
       if (value.isEmpty) {
       return "Value is Required";
       }
-      else if ((value.toLowerCase() != "available") || (value != "required"))
+      else if ((value.toLowerCase() == "available") || (value == "required"))
       {
-        return "Value should be in available or required ";
+        return null;
       }
 
       else {
-        return null;
+        return "Value should be in available or required ";
       }
     }
     return null;

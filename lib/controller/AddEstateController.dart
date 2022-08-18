@@ -28,8 +28,8 @@ class AddEstateController extends GetxController{
   String estateStatus = "";
 
 
-  Future<AddEstateResponse> addEstateApi({String? token,String? estate_name,String? city, int? budget,String? estate_type, String? floor_space,
-    String? estate_status,String? rent_status, String? society,String? area,int? no_of_bedroom,
+  Future<AddEstateResponse> addEstateApi({String? token,String? estate_name,String? city, num? budget,String? estate_type, String? floor_space,
+    String? estate_status,String? rent_status, String? society,String? area,num? no_of_bedroom,
   }) async {
     try{
 

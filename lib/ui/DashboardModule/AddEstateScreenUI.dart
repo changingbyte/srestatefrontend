@@ -199,7 +199,10 @@ class _AddEstateScreenUIState extends State<AddEstateScreenUI> {
 
                           SizedBox(height: 5,),
 
-                          TextFormInputField(
+
+                          controller.estateStatus !=  "RENT"
+                            ? Container()
+                            : TextFormInputField(
                             controller: addEstateController.rentstatusController,
                             hintText: "available or required",
                             validator: (value) {
@@ -207,7 +210,9 @@ class _AddEstateScreenUIState extends State<AddEstateScreenUI> {
                             },
                           ),
 
-                          SizedBox(height: 5,),
+                          controller.estateStatus !=  "RENT"
+                              ? Container()
+                              : SizedBox(height: 5,),
 
                           /*Autocomplete<String>(
                             optionsBuilder: (TextEditingValue textEditingValue) {
@@ -244,14 +249,17 @@ class _AddEstateScreenUIState extends State<AddEstateScreenUI> {
 
                           SizedBox(height: 5,),
 
-                          TextFormInputField(
-                            controller: controller.noOfBedroomController,
-                            hintText: "Number Of Badrooms",
-                            keyboardType: TextInputType.number,
-                          ),
+                          controller.estateType !=  "FLAT" && controller.estateType !=  "BUNGALOW" && controller.estateType !=  "ROW HOUSE"
+                            ? Container()
+                            : TextFormInputField(
+                              controller: controller.noOfBedroomController,
+                              hintText: "Number Of Bedrooms",
+                              keyboardType: TextInputType.number,
+                            ),
 
-
-                          SizedBox(height: 50,),
+                          controller.estateType !=  "FLAT" && controller.estateType !=  "BUNGALOW" && controller.estateType !=  "ROW HOUSE"
+                              ? Container()
+                              : SizedBox(height: 50,),
 
 
                           Center(
@@ -374,12 +382,12 @@ class _AddEstateScreenUIState extends State<AddEstateScreenUI> {
       token: PreferenceHelper().getUserData().authToken,
       floor_space: addEstateController.sizeController.text,
       area: addEstateController.areaController.text,
-      budget: int.parse(addEstateController.budgetController.text),
+      budget: num.parse(addEstateController.budgetController.text),
       society: addEstateController.societyController.text,
       estate_status: addEstateController.estateStatus,
       rent_status:addEstateController.rentstatusController.text, 
       city: "surat",
-      no_of_bedroom: int.parse(addEstateController.noOfBedroomController.text),
+      no_of_bedroom: num.parse(addEstateController.noOfBedroomController.text),
       estate_type: addEstateController.estateType
     ).then((resposne) {
 
@@ -388,7 +396,7 @@ class _AddEstateScreenUIState extends State<AddEstateScreenUI> {
         Get.offAll(DashboardScreenUI());
       }
       else{
-        AppCommonFunction.flutterToast(resposne.message, false);
+        AppCommonFunction.flutterToast(resposne.error![0], false);
       }
 
       addEstateController.progressDataLoading(false);

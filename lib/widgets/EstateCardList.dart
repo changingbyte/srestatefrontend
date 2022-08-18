@@ -1,6 +1,7 @@
 // ignore_for_file: must_be_immutable
 
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
 import 'package:multi_select_item/multi_select_item.dart';
 
@@ -44,7 +45,9 @@ class EstateCardList extends StatelessWidget {
               elevation: 10,
               color: homeController.myMultiSelectController.isSelected(index)
                 ? Colors.grey.shade400
-                : Colors.white,
+                : homeController.estateListResponse.data![index].isMyProperty!
+                  ? Colors.white
+                  : AppColors.premiumColor,
               shape: RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(7)),),
               child: InkWell(
                 onTap: () {
@@ -62,6 +65,13 @@ class EstateCardList extends StatelessWidget {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           mainAxisAlignment: MainAxisAlignment.start,
                           children: [
+
+
+                            homeController.estateListResponse.data![index].isMyProperty!
+                              ? Container()
+                              : ListCardContainer(icon: FontAwesomeIcons.crown,text: "Premium",fontSize: 20,iconSize: 20,iconColor: Colors.black),
+
+                            SizedBox(height: 10),
 
                             estateList[index].area!.isEmpty
                               ? Container()
@@ -110,14 +120,14 @@ class EstateCardList extends StatelessWidget {
   }
 
 
-  Widget ListCardContainer({required IconData icon,required String text}){
+  Widget ListCardContainer({required IconData icon,required String text,double fontSize = 16,double iconSize = 17,Color iconColor = AppColors.primaryColor}){
     return Wrap(
       children: [
-        Icon(icon,color: AppColors.primaryColor,size: 17,),
-        SizedBox(width: 5,),
+        Icon(icon,color: iconColor,size: iconSize,),
+        SizedBox(width: 10,),
         Container(
           width: Get.width/2.5,
-          child: Txt(text,fontSize: 16,color: AppColors.black,fontWeight: FontWeight.w600,
+          child: Txt(text,fontSize: fontSize,color: AppColors.black,fontWeight: FontWeight.w600,
             maxLines: 4,overflow: TextOverflow.ellipsis,
           ),
         ),
