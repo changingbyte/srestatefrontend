@@ -20,14 +20,16 @@ class AddEstateController extends GetxController{
   TextEditingController societyController = TextEditingController();
   TextEditingController areaController = TextEditingController();
   TextEditingController sizeController = TextEditingController();
+  TextEditingController rentstatusController = TextEditingController();
 
   String estateStatusVal = "Status";
   String estateType = "";
   String estateBudget = "";
   String estateStatus = "";
 
+
   Future<AddEstateResponse> addEstateApi({String? token,String? estate_name,String? city, int? budget,String? estate_type, String? floor_space,
-    String? estate_status, String? society,String? area,int? no_of_bedroom,
+    String? estate_status,String? rent_status, String? society,String? area,int? no_of_bedroom,
   }) async {
     try{
 
@@ -45,6 +47,7 @@ class AddEstateController extends GetxController{
         "pets_allowed": "0",
         "estate_description": "Nice Property",
         "estate_status": estate_status,
+        "rent_status": rent_status,
         "society": society,
         "area": area,
         "furniture" : "",

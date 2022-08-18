@@ -199,6 +199,16 @@ class _AddEstateScreenUIState extends State<AddEstateScreenUI> {
 
                           SizedBox(height: 5,),
 
+                          TextFormInputField(
+                            controller: addEstateController.rentstatusController,
+                            hintText: "available or required",
+                            validator: (value) {
+                              return FieldValidator.validateRentValue(value!,addEstateController.estateStatus);
+                            },
+                          ),
+
+                          SizedBox(height: 5,),
+
                           /*Autocomplete<String>(
                             optionsBuilder: (TextEditingValue textEditingValue) {
                               if (textEditingValue.text == '') {
@@ -367,6 +377,7 @@ class _AddEstateScreenUIState extends State<AddEstateScreenUI> {
       budget: int.parse(addEstateController.budgetController.text),
       society: addEstateController.societyController.text,
       estate_status: addEstateController.estateStatus,
+      rent_status:addEstateController.rentstatusController.text, 
       city: "surat",
       no_of_bedroom: int.parse(addEstateController.noOfBedroomController.text),
       estate_type: addEstateController.estateType

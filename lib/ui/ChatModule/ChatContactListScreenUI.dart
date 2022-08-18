@@ -35,46 +35,29 @@ class _ChatContactListScreenUIState extends State<ChatContactListScreenUI> {
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
-        appBar: AppBar(
-          leading: Container(),
-            title: Txt("Query History",color: Colors.white,fontSize: 20,fontWeight: FontWeight.bold),
-            flexibleSpace: Container(
-              decoration:  const BoxDecoration(
-                gradient: LinearGradient(
-                  begin: Alignment.topCenter,
-                  end: Alignment.bottomRight,
-                  colors: <Color>[
-                    AppColors.primaryColor,
-                    AppColors.primaryColor,
-                    AppColors.primaryAccent
-                  ],
-
-                ),
-              ),
-            ),
-
-        ),
         body: Padding(
           padding: const EdgeInsets.all(8.0),
-          child:
-
-          GetBuilder(
+          child: GetBuilder(
             init: ContactListController(),
             builder: (ContactListController controller) {
-              return
-                controller.isDataLoading
+              return controller.isDataLoading
                 ? AppCommonFunction.circularIndicator()
-                : ListView.builder(
-                itemCount: controller.contactListResponse.results!.length,
-                itemBuilder: (context, index) {
-                  return Padding(
+                : controller.contactListResponse.results!.isEmpty
+                  ? AppCommonFunction.noDataFound()
+                  : ListView.builder(
+                    itemCount: controller.contactListResponse.results!.length,
+                    itemBuilder: (context, index) {
+                      return Padding(
                     padding: const EdgeInsets.all(6.0),
                     child: InkWell(
                       onTap: () {
+                        print("ABS URL  ::  ${controller.contactListResponse.results![index].absoluteUrl!}");
+
                         Get.to(()=> ChatScreenUI(
                           reciver: controller.contactListResponse.results![index].lastMessage!.receiverName!,
                           webSocketUrl: controller.contactListResponse.results![index].websocketUrl!,
                           sender: controller.contactListResponse.results![index].owner!,
+                          abs_url: controller.contactListResponse.results![index].absoluteUrl!,
                         )
                         );
                       },
@@ -91,8 +74,14 @@ class _ChatContactListScreenUIState extends State<ChatContactListScreenUI> {
                                   Column(
                                     crossAxisAlignment: CrossAxisAlignment.start,
                                     children: [
-                                      Txt("${controller.contactListResponse.results![index].lastMessage!.receiverName}",fontWeight: FontWeight.w600,fontSize: 18),
-                                      Txt("${controller.contactListResponse.results![index].lastMessage!.description}",maxLines: 1,overflow: TextOverflow.ellipsis),
+                                      Txt("${controller.contactListResponse.results![index].lastMessage == ""
+                                          ? ""
+                                          : controller.contactListResponse.results![index].lastMessage!.receiverName}",fontWeight: FontWeight.w600,fontSize: 18),
+                                      Container(
+                                          width: Get.width/1.5,
+                                          child: Txt("${controller.contactListResponse.results![index].lastMessage!.description}",maxLines: 1,overflow: TextOverflow.ellipsis)),
+                                      Align( alignment: Alignment.centerRight, child: Container( color: Colors.red, child: Txt("${controller.contactListResponse.results![index].unseen}",maxLines: 1,overflow: TextOverflow.ellipsis),),),
+                                      
                                     ],
                                   ),
                                 ],
@@ -100,9 +89,7 @@ class _ChatContactListScreenUIState extends State<ChatContactListScreenUI> {
                               //Txt("${controller.chatListResponse[index].timestamp!.substring(0,10)}",fontSize: 13,color: Colors.black38),
                             ],
                           ),
-                          SizedBox(
-                            height: 10,
-                          ),
+                          SizedBox(height: 10),
                           Divider(height: 3,indent: 10),
                         ],
                       ),
@@ -137,3 +124,5 @@ class _ChatContactListScreenUIState extends State<ChatContactListScreenUI> {
   }
 
 }
+
+
