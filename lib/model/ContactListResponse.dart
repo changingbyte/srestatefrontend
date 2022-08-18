@@ -40,6 +40,8 @@ class Results {
   String? contact;
   String? owner;
   String? eststateList;
+  int? unseen;
+
 
   Results(
       {this.id,
@@ -49,7 +51,8 @@ class Results {
         this.websocketUrl,
         this.contact,
         this.owner,
-        this.eststateList});
+        this.eststateList,
+        this.unseen,});
 
   Results.fromJson(Map<String, dynamic> json) {
     id = json['id'];
@@ -62,6 +65,7 @@ class Results {
     contact = json['contact'];
     owner = json['owner'];
     eststateList = json['eststate_list'];
+    unseen  = json['unseen'];
   }
 
   Map<String, dynamic> toJson() {
@@ -76,6 +80,7 @@ class Results {
     data['contact'] = this.contact;
     data['owner'] = this.owner;
     data['eststate_list'] = this.eststateList;
+    data['unseen'] = unseen;
     return data;
   }
 }

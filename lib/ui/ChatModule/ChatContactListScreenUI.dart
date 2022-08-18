@@ -80,6 +80,8 @@ class _ChatContactListScreenUIState extends State<ChatContactListScreenUI> {
                                       Container(
                                           width: Get.width/1.5,
                                           child: Txt("${controller.contactListResponse.results![index].lastMessage!.description}",maxLines: 1,overflow: TextOverflow.ellipsis)),
+                                      Align( alignment: Alignment.centerRight, child: Container( color: Colors.red, child: Txt("${controller.contactListResponse.results![index].unseen}",maxLines: 1,overflow: TextOverflow.ellipsis),),),
+                                      
                                     ],
                                   ),
                                 ],
