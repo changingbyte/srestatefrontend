@@ -4,6 +4,7 @@ import 'package:croma_brokrage/ui/DashboardModule/DashboardScreenUI.dart';
 import 'package:croma_brokrage/utils/AppColors.dart';
 import 'package:croma_brokrage/utils/AppCommonFunction.dart';
 import 'package:croma_brokrage/widgets/RoundedButtonWidget.dart';
+import 'package:croma_brokrage/widgets/ScaffoldWidget.dart';
 import 'package:croma_brokrage/widgets/TextFormInputField.dart';
 import 'package:croma_brokrage/widgets/Txt.dart';
 import 'package:flip_card/flip_card.dart';
@@ -52,252 +53,247 @@ class _AddEstateScreenUIState extends State<AddEstateScreenUI> {
 
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
-      child: Scaffold(
-        body: SingleChildScrollView(
-          child: Padding(
-            padding: const EdgeInsets.all(12.0),
-            child: GetBuilder(
-              init: AddEstateController(),
-              builder: (AddEstateController controller) {
-                return Stack(
-                  alignment: Alignment.center,
-                  children: [
-                    Form(
-                      key: formKey,
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
+    return ScaffoldWidget(
+      body: SingleChildScrollView(
+        child: GetBuilder(
+          init: AddEstateController(),
+          builder: (AddEstateController controller) {
+            return Stack(
+              alignment: Alignment.center,
+              children: [
+                Form(
+                  key: formKey,
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+
+                      Txt("Create by Whatsapp",fontSize: 20,color: AppColors.black,fontWeight: FontWeight.w600),
+
+                      TextFormInputField(
+                        controller: whatsAppMsgController,
+                        hintText: "  Enter whatsapp message",
+                        minLine: 3,
+                        maxLine: 5,
+                        borderRadius: 10,
+                      ),
+                      Align(
+                        alignment: Alignment.topRight,
+                        child: RoundedButtonWidget(
+                          height: 40,
+                          width: 60,
+                          text: "Add",
+                          onPressed: () {
+                            if(whatsAppMsgController.text.toString().length >= 2){
+                              onChangeWhatsAppMsg(whatsAppMsgController.text.toString());
+                            }
+                        },),
+                      ),
+                      Txt("Property Type",fontSize: 20,color: AppColors.black,fontWeight: FontWeight.w600),
+
+                      SizedBox(height: 20,),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
 
-                          Txt("Create by Whatsapp",fontSize: 20,color: AppColors.black,fontWeight: FontWeight.w600),
-
-                          TextFormInputField(
-                            controller: whatsAppMsgController,
-                            hintText: "  Enter whatsapp message",
-                            minLine: 3,
-                            maxLine: 5,
-                            borderRadius: 10,
-                          ),
-                          Align(
-                            alignment: Alignment.topRight,
-                            child: RoundedButtonWidget(
-                              height: 40,
-                              width: 60,
-                              text: "Add",
-                              onPressed: () {
-                                if(whatsAppMsgController.text.toString().length >= 2){
-                                  onChangeWhatsAppMsg(whatsAppMsgController.text.toString());
-                                }
-                            },),
-                          ),
-                          Txt("Property Type",fontSize: 20,color: AppColors.black,fontWeight: FontWeight.w600),
-
-                          SizedBox(height: 20,),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-
-                              estateTypeContainer(
-                                text: "SHOP",
-                                onTap: () {
-                                  addEstateController.updateEstateType( "SHOP");
-                                },
-                              ),
-                              estateTypeContainer(
-                                text: "LAND",
-                                onTap: () {
-                                  addEstateController.updateEstateType( "LAND");
-                                },
-                              ),
-                              estateTypeContainer(
-                                text: "PLOT",
-                                onTap: () {
-                                  addEstateController.updateEstateType( "PLOT");
-                                },
-                              ),
-
-                            ],
-                          ),
-
-                          SizedBox(height: 15,),
-
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-
-                              estateTypeContainer(
-                                text: "FLAT",
-                                onTap: () {
-                                  addEstateController.updateEstateType( "FLAT");
-                                },
-                              ),
-                              estateTypeContainer(
-                                text: "BUNGALOW",
-                                onTap: () {
-                                  addEstateController.updateEstateType( "BUNGALOW");
-                                },
-                              ),
-                              estateTypeContainer(
-                                text: "ROW HOUSE",
-                                onTap: () {
-                                  addEstateController.updateEstateType( "ROW HOUSE");
-                                },
-                              ),
-
-
-                            ],
-                          ),
-
-                          SizedBox(height: 30,),
-
-
-                          Txt("Property Status",fontSize: 20,color: AppColors.black,fontWeight: FontWeight.w600),
-                          SizedBox(height: 15,),
-
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-
-                              estateTypeContainer(
-                                text: "BUY",
-                                onTap: () {
-                                  addEstateController.updateEstateStatus("BUY");
-                                },
-                              ),
-                              estateTypeContainer(
-                                text: "SELL",
-                                onTap: () {
-                                  addEstateController.updateEstateStatus("SELL");
-                                },
-                              ),
-                              estateTypeContainer(
-                                text: "RENT",
-                                onTap: () {
-                                  addEstateController.updateEstateStatus("RENT");
-                                },
-                              ),
-
-
-                            ],
-                          ),
-
-                          SizedBox(height: 30,),
-
-
-
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Txt("Details",fontSize: 20,color: AppColors.black,fontWeight: FontWeight.w600),
-                              Icon(Icons.info_rounded,),
-                            ],
-                          ),
-
-                          SizedBox(height: 5,),
-
-                          AppCommonFunction.FormContainer(addEstateController.sizeController,"Size (sqft)"),
-
-                          SizedBox(height: 5,),
-
-
-                          controller.estateStatus !=  "RENT"
-                            ? Container()
-                            : TextFormInputField(
-                            controller: addEstateController.rentstatusController,
-                            hintText: "available or required",
-                            validator: (value) {
-                              return FieldValidator.validateRentValue(value!,addEstateController.estateStatus);
+                          estateTypeContainer(
+                            text: "SHOP",
+                            onTap: () {
+                              addEstateController.updateEstateType( "SHOP");
                             },
                           ),
-
-                          controller.estateStatus !=  "RENT"
-                              ? Container()
-                              : SizedBox(height: 5,),
-
-                          /*Autocomplete<String>(
-                            optionsBuilder: (TextEditingValue textEditingValue) {
-                              if (textEditingValue.text == '') {
-                                return const Iterable<String>.empty();
-                              }
-                              return _kOptions.where((String option) {
-                                return option.contains(textEditingValue.text.toLowerCase());
-                              });
-                            },
-                            onSelected: (String selection) {
-                              debugPrint('You just selected $selection');
-                            },
-                          ),*/
-
-                          TextFormInputField(
-                            controller: addEstateController.areaController,
-                            hintText: "Area",
-                            validator: (value) {
-                              return FieldValidator.validateValueIsEmpty(value!);
+                          estateTypeContainer(
+                            text: "LAND",
+                            onTap: () {
+                              addEstateController.updateEstateType( "LAND");
                             },
                           ),
-
-                          SizedBox(height: 5,),
-
-                          AppCommonFunction.TextFormContainer(addEstateController.societyController,"Society"),
-
-                          SizedBox(height: 5,),
-
-                          TextFormInputField(
-                            controller: controller.budgetController,
-                            hintText: "Budget (in Lakhs)",
-                          ),
-
-                          SizedBox(height: 5,),
-
-                          controller.estateType !=  "FLAT" && controller.estateType !=  "BUNGALOW" && controller.estateType !=  "ROW HOUSE"
-                            ? Container()
-                            : TextFormInputField(
-                              controller: controller.noOfBedroomController,
-                              hintText: "Number Of Bedrooms",
-                              keyboardType: TextInputType.number,
-                            ),
-
-                          controller.estateType !=  "FLAT" && controller.estateType !=  "BUNGALOW" && controller.estateType !=  "ROW HOUSE"
-                              ? Container()
-                              : SizedBox(height: 50,),
-
-
-                          Center(
-                            child: RoundedButtonWidget(
-                              text: "Add",
-                              height: 45,
-                              width: Get.width/1.5,
-                              onPressed: () {
-
-                                if(formKey.currentState!.validate()){
-                                  if(controller.estateStatus == ""){
-                                    AppCommonFunction.flutterToast("Please select status", false);
-                                  }
-                                  else if(controller.estateType == ""){
-                                    AppCommonFunction.flutterToast("Please select Estate Type", false);
-                                  }
-                                  else{
-                                    addEstate();
-                                  }
-                                }
-
-
-                              },
-                            ),
+                          estateTypeContainer(
+                            text: "PLOT",
+                            onTap: () {
+                              addEstateController.updateEstateType( "PLOT");
+                            },
                           ),
 
                         ],
                       ),
-                    ),
 
-                    controller.isDataLoading
-                      ? AppCommonFunction.circularIndicator()
-                      : Container(),
-                  ],
-                );
-              },
-            ),
-          ),
+                      SizedBox(height: 15,),
+
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+
+                          estateTypeContainer(
+                            text: "FLAT",
+                            onTap: () {
+                              addEstateController.updateEstateType( "FLAT");
+                            },
+                          ),
+                          estateTypeContainer(
+                            text: "BUNGALOW",
+                            onTap: () {
+                              addEstateController.updateEstateType( "BUNGALOW");
+                            },
+                          ),
+                          estateTypeContainer(
+                            text: "ROW HOUSE",
+                            onTap: () {
+                              addEstateController.updateEstateType( "ROW HOUSE");
+                            },
+                          ),
+
+
+                        ],
+                      ),
+
+                      SizedBox(height: 30,),
+
+
+                      Txt("Property Status",fontSize: 20,color: AppColors.black,fontWeight: FontWeight.w600),
+                      SizedBox(height: 15,),
+
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+
+                          estateTypeContainer(
+                            text: "BUY",
+                            onTap: () {
+                              addEstateController.updateEstateStatus("BUY");
+                            },
+                          ),
+                          estateTypeContainer(
+                            text: "SELL",
+                            onTap: () {
+                              addEstateController.updateEstateStatus("SELL");
+                            },
+                          ),
+                          estateTypeContainer(
+                            text: "RENT",
+                            onTap: () {
+                              addEstateController.updateEstateStatus("RENT");
+                            },
+                          ),
+
+
+                        ],
+                      ),
+
+                      SizedBox(height: 30,),
+
+
+
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Txt("Details",fontSize: 20,color: AppColors.black,fontWeight: FontWeight.w600),
+                          Icon(Icons.info_rounded,),
+                        ],
+                      ),
+
+                      SizedBox(height: 5,),
+
+                      AppCommonFunction.FormContainer(addEstateController.sizeController,"Size (sqft)"),
+
+                      SizedBox(height: 5,),
+
+
+                      controller.estateStatus !=  "RENT"
+                        ? Container()
+                        : TextFormInputField(
+                        controller: addEstateController.rentstatusController,
+                        hintText: "available or required",
+                        validator: (value) {
+                          return FieldValidator.validateRentValue(value!,addEstateController.estateStatus);
+                        },
+                      ),
+
+                      controller.estateStatus !=  "RENT"
+                          ? Container()
+                          : SizedBox(height: 5,),
+
+                      /*Autocomplete<String>(
+                        optionsBuilder: (TextEditingValue textEditingValue) {
+                          if (textEditingValue.text == '') {
+                            return const Iterable<String>.empty();
+                          }
+                          return _kOptions.where((String option) {
+                            return option.contains(textEditingValue.text.toLowerCase());
+                          });
+                        },
+                        onSelected: (String selection) {
+                          debugPrint('You just selected $selection');
+                        },
+                      ),*/
+
+                      TextFormInputField(
+                        controller: addEstateController.areaController,
+                        hintText: "Area",
+                        validator: (value) {
+                          return FieldValidator.validateValueIsEmpty(value!);
+                        },
+                      ),
+
+                      SizedBox(height: 5,),
+
+                      AppCommonFunction.TextFormContainer(addEstateController.societyController,"Society"),
+
+                      SizedBox(height: 5,),
+
+                      TextFormInputField(
+                        controller: controller.budgetController,
+                        hintText: "Budget (in Lakhs)",
+                      ),
+
+                      SizedBox(height: 5,),
+
+                      controller.estateType !=  "FLAT" && controller.estateType !=  "BUNGALOW" && controller.estateType !=  "ROW HOUSE"
+                        ? Container()
+                        : TextFormInputField(
+                          controller: controller.noOfBedroomController,
+                          hintText: "Number Of Bedrooms",
+                          keyboardType: TextInputType.number,
+                        ),
+
+                      controller.estateType !=  "FLAT" && controller.estateType !=  "BUNGALOW" && controller.estateType !=  "ROW HOUSE"
+                          ? Container()
+                          : SizedBox(height: 50,),
+
+
+                      Center(
+                        child: RoundedButtonWidget(
+                          text: "Add",
+                          height: 45,
+                          width: Get.width/1.5,
+                          onPressed: () {
+
+                            if(formKey.currentState!.validate()){
+                              if(controller.estateStatus == ""){
+                                AppCommonFunction.flutterToast("Please select status", false);
+                              }
+                              else if(controller.estateType == ""){
+                                AppCommonFunction.flutterToast("Please select Estate Type", false);
+                              }
+                              else{
+                                addEstate();
+                              }
+                            }
+
+
+                          },
+                        ),
+                      ),
+
+                    ],
+                  ),
+                ),
+
+                controller.isDataLoading
+                  ? AppCommonFunction.circularIndicator()
+                  : Container(),
+              ],
+            );
+          },
         ),
       ),
     );
@@ -378,16 +374,18 @@ class _AddEstateScreenUIState extends State<AddEstateScreenUI> {
   addEstate(){
     addEstateController.progressDataLoading(true);
 
+    print("No bedroom ::  ${addEstateController.noOfBedroomController.text}");
+
     addEstateController.addEstateApi(
       token: PreferenceHelper().getUserData().authToken,
       floor_space: addEstateController.sizeController.text,
       area: addEstateController.areaController.text,
-      budget: num.parse(addEstateController.budgetController.text),
+      budget: int.parse(addEstateController.budgetController.text),
       society: addEstateController.societyController.text,
       estate_status: addEstateController.estateStatus,
       rent_status:addEstateController.rentstatusController.text, 
       city: "surat",
-      no_of_bedroom: num.parse(addEstateController.noOfBedroomController.text),
+      no_of_bedroom: addEstateController.noOfBedroomController.text.isEmpty ? 0 : int.parse(addEstateController.noOfBedroomController.text),
       estate_type: addEstateController.estateType
     ).then((resposne) {
 

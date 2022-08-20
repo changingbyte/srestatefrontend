@@ -5,6 +5,7 @@ import 'package:croma_brokrage/ui/EstateListScreenUI.dart';
 import 'package:croma_brokrage/utils/AppColors.dart';
 import 'package:croma_brokrage/utils/AppCommonFunction.dart';
 import 'package:croma_brokrage/widgets/EstateCardList.dart';
+import 'package:croma_brokrage/widgets/ScaffoldWidget.dart';
 import 'package:croma_brokrage/widgets/TextFormInputField.dart';
 import 'package:firebase_admob/firebase_admob.dart';
 import 'package:flutter/material.dart';
@@ -47,7 +48,7 @@ class _HomeScreenUIState extends State<HomeScreenUI> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return ScaffoldWidget(
       floatingActionButton: FloatingActionButton(
         backgroundColor: AppColors.primaryColor,
         child: Icon(Icons.add,color: Colors.white,),
@@ -57,7 +58,6 @@ class _HomeScreenUIState extends State<HomeScreenUI> {
       ),
       body: Column(
         children: [
-
           Row(
             children: [
               Expanded(
@@ -140,7 +140,13 @@ class _HomeScreenUIState extends State<HomeScreenUI> {
       padding: EdgeInsets.only(left: 7, right: 7),
       child: InkWell(
         onTap: () {
-          Get.to(()=> EstateListScreenUI(estateName: text,));
+          Get.to(()=> EstateListScreenUI(estateName: text,))!.then((value){
+            print("--------ABCD------------");
+            homeController.deselectItems();
+            homeController.selectedEstateList.clear();
+            getEstateApi();
+            getFilterApi();
+          });
         },
         child: Column(
           children: [
@@ -238,7 +244,6 @@ class _HomeScreenUIState extends State<HomeScreenUI> {
 
                       SizedBox(height: 10),
 
-
                       filterDropdownWidget(
                           title: controller.filterEstateCategoryTitle.toString(),
                           list: controller.filterEstateCategoryList,
@@ -265,7 +270,6 @@ class _HomeScreenUIState extends State<HomeScreenUI> {
 
                           TextButton(
                               onPressed: () {
-
                                 controller.progressDataLoading(true);
 
                                 getEstateApi(
@@ -280,11 +284,10 @@ class _HomeScreenUIState extends State<HomeScreenUI> {
                               child: Text("Ok")),
 
                           TextButton(
-                              onPressed: () {
-                                Get.back();
-                              },
-                              child: Text("Cancel")),
-
+                            onPressed: () {
+                              Get.back();
+                            },
+                            child: Text("Cancel")),
                         ],
                       ),
 

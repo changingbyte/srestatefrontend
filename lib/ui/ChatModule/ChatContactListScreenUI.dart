@@ -2,6 +2,7 @@
 
 import 'package:croma_brokrage/helper/PreferenceHelper.dart';
 import 'package:croma_brokrage/ui/ChatModule/ChatScreenUI.dart';
+import 'package:croma_brokrage/widgets/ScaffoldWidget.dart';
 import 'package:croma_brokrage/widgets/Txt.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
@@ -34,91 +35,84 @@ class _ChatContactListScreenUIState extends State<ChatContactListScreenUI> {
 
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
-      child: Scaffold(
-        body: Padding(
-          padding: const EdgeInsets.all(8.0),
-          child:
+    return ScaffoldWidget(
+      body: GetBuilder(
+        init: ContactListController(),
+        builder: (ContactListController controller) {
+          return controller.isDataLoading
+            ? AppCommonFunction.circularIndicator()
+            : ListView.builder(
+            itemCount: controller.contactListResponse.results!.length,
+            itemBuilder: (context, index) {
+              return Padding(
+                padding: EdgeInsets.symmetric(vertical: 12,horizontal: 6),
+                child: InkWell(
+                  onTap: () {
+                    var callApi = Get.to(()=> ChatScreenUI(
+                      reciver: controller.contactListResponse.results![index].lastMessage!.receiverName!,
+                      webSocketUrl: controller.contactListResponse.results![index].websocketUrl!,
+                      sender: controller.contactListResponse.results![index].owner!,
+                      abs_url: controller.contactListResponse.results![index].absoluteUrl!,
+                    )
+                    )!.then((value) {
+                        getChatList();
+                    });
 
-          GetBuilder(
-            init: ContactListController(),
-            builder: (ContactListController controller) {
-              return
-                controller.isDataLoading
-                ? AppCommonFunction.circularIndicator()
-                : ListView.builder(
-                itemCount: controller.contactListResponse.results!.length,
-                itemBuilder: (context, index) {
-                  return Padding(
-                    padding: const EdgeInsets.all(6.0),
-                    child: InkWell(
-                      onTap: () {
-                        Get.to(()=> ChatScreenUI(
-                          reciver: controller.contactListResponse.results![index].lastMessage!.receiverName!,
-                          webSocketUrl: controller.contactListResponse.results![index].websocketUrl!,
-                          sender: controller.contactListResponse.results![index].owner!,
-                          abs_url: controller.contactListResponse.results![index].absoluteUrl!,
 
-                        )
-                        );
-                      },
-                      child: Column(
-                        children: [
-                          Row(
-                            children: [
-                              CircleAvatar(backgroundColor: AppColors.primaryColor,radius: 25,child: Icon(Icons.account_circle,color: Colors.white,size: 35,)),
-                              SizedBox(width: 20),
-                              Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Row(
-                                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                    children: [
-                                      Txt("${controller.contactListResponse.results![index].lastMessage == ""
-                                          ? ""
-                                          : controller.contactListResponse.results![index].lastMessage!.receiverName}",fontWeight: FontWeight.w600,fontSize: 18),
 
-                                     Txt("${AppCommonFunction.timestampToDatetime(controller.contactListResponse.results![index].timestamp!)}",maxLines: 1,overflow: TextOverflow.ellipsis,fontSize: 14),
 
-                                    ],
-                                  ),
-                                  Row(
+                  },
+                  child: Row(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      CircleAvatar(backgroundColor: AppColors.primaryColor,radius: 23,child: Icon(Icons.account_circle,color: Colors.white,size: 35,)),
+                      SizedBox(width: 20),
+                      Expanded(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Txt("${controller.contactListResponse.results![index].lastMessage == ""
+                                    ? ""
+                                    : controller.contactListResponse.results![index].lastMessage!.receiverName}",fontWeight: FontWeight.w600,fontSize: 18),
 
-                                    children: [
-                                      Container(
-                                          width: Get.width/1.5,
-                                          child: Txt("${controller.contactListResponse.results![index].lastMessage!.description}",maxLines: 1,overflow: TextOverflow.ellipsis)),
+                               Txt("${AppCommonFunction.timestampToDatetime(controller.contactListResponse.results![index].timestamp!)}",maxLines: 1,overflow: TextOverflow.ellipsis,fontSize: 14),
+                              ],
+                            ),
 
-                                      controller.contactListResponse.results![index].unseen! == 0
-                                          ? Container()
-                                          : CircleAvatar(radius: 14,backgroundColor: AppColors.primaryColor,child: Txt("${controller.contactListResponse.results![index].unseen}",maxLines: 1,overflow: TextOverflow.ellipsis,color: Colors.white,fontWeight: FontWeight.bold,)),
 
-                                    ],
-                                  ),
+                            Row(
+                              children: [
+                                Container(
+                                    width: Get.width/1.5,
+                                    child: Txt("${controller.contactListResponse.results![index].lastMessage!.description}",fontSize: 15,maxLines: 1,overflow: TextOverflow.ellipsis)),
 
-                                ],
-                              ),
-                            ],
-                          ),
-                          SizedBox(height: 10),
-                          Divider(height: 3,indent: 10),
-                        ],
+                                controller.contactListResponse.results![index].unseen! == 0
+                                    ? Container()
+                                    : CircleAvatar(radius: 13,backgroundColor: AppColors.primaryColor,child: Txt("${controller.contactListResponse.results![index].unseen}",maxLines: 1,overflow: TextOverflow.ellipsis,color: Colors.white,fontWeight: FontWeight.bold,)),
+
+                              ],
+                            ),
+
+                          ],
+                        ),
                       ),
-                    ),
-                  );
-                },
+                    ],
+                  ),
+                ),
               );
             },
+          );
+        },
 
-          ),
-        ),
       ),
     );
   }
 
 
   getChatList(){
-
     contactListController.progressDataLoading(true);
     contactListController.contactListApi(token: PreferenceHelper().getUserData().authToken!).then((response) {
 

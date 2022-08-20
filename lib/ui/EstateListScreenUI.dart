@@ -28,7 +28,6 @@ class _EstateListScreenUIState extends State<EstateListScreenUI> {
   HomeController homeController = Get.put(HomeController());
 
 
-  ///when select 1 estate, 2 estate selected (issue pending)
   @override
   void initState() {
     super.initState();
@@ -39,7 +38,6 @@ class _EstateListScreenUIState extends State<EstateListScreenUI> {
       homeController.estateList.clear();
       homeController.selectedEstateList.clear();
     });
-
   }
 
   @override
@@ -137,4 +135,11 @@ class _EstateListScreenUIState extends State<EstateListScreenUI> {
       }
     });
   }
+
+  /*@override
+  void dispose() {
+    super.dispose();
+    homeController.deselectItems();
+  }*/
+
 }

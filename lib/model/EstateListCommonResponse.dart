@@ -51,6 +51,8 @@ class EstateList {
     this.budget,
     this.furniture,
     this.isMyProperty,
+    this.brokerMobile,
+    this.brokerName
   });
 
   int? id;
@@ -66,6 +68,8 @@ class EstateList {
   int? budget;
   String? furniture;
   bool? isMyProperty;
+  String? brokerMobile;
+  String? brokerName;
 
 
   factory EstateList.fromJson(Map<String, dynamic> json) => EstateList(
@@ -82,6 +86,8 @@ class EstateList {
     budget: json["budget"] == null ? null : json["budget"],
     furniture: json["furniture"] == null ? null : json["furniture"],
     isMyProperty: json["is_my_property"] == null ? false : json["is_my_property"],
+    brokerMobile: json["broker_mobile"] == null ? null : json["broker_mobile"],
+    brokerName: json["broker_name"] == null ? null : json["broker_name"],
   );
 
   Map<String, dynamic> toJson() => {
@@ -98,6 +104,8 @@ class EstateList {
     "budget": budget == null ? null : budget,
     "furniture": furniture == null ? null : furniture,
     "is_my_property": isMyProperty == null ? null : isMyProperty,
+    "broker_mobile": brokerMobile == null ? null : brokerMobile,
+    "broker_name": brokerName == null ? null : brokerName,
   };
 }
 

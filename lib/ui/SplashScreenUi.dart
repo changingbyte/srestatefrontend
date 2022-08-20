@@ -71,11 +71,3 @@ class _SplashScreenUiState extends State<SplashScreenUi> with TickerProviderStat
   }
 }
 
-
-
-
-
-
-
-
-

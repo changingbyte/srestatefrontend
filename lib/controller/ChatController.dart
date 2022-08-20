@@ -4,8 +4,9 @@ import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 
 import '../model/ChatListResponse.dart';
+import '../model/ChatReminderResponse.dart';
 import '../model/CreateChatMessegeResponse.dart';
-import '../model/ReminderResponse.dart';
+import '../model/SeenUpdateResponse.dart';
 import '../utils/AppCommonFunction.dart';
 import '../utils/AppString.dart';
 
@@ -15,8 +16,11 @@ class ChatController  extends GetxController{
   var selectedDateTime = "Please Select Date";
   bool isDataLoading = true;
   bool isStackDataLoading = false;
+
   late ChatListResponse chatListResponse;
-  late ReminderResponse reminderResponse;
+  late SeenUpdateResponse seenUpdateResponse;
+  late ChatReminderResponse chatReminderResponse;
+
   List<ChatListData> chatDataList = [];
 
   late CreateChatMessageResponse chatMessageResponse;
@@ -43,7 +47,6 @@ class ChatController  extends GetxController{
       if(response.statusCode == 200){
         if(response.body != null){
           chatListResponse = ChatListResponse.fromJson(json.decode(response.body));
-          progressDataLoading(false);
           return chatListResponse;
         }
         else{
@@ -68,7 +71,59 @@ class ChatController  extends GetxController{
   }
 
 
-  Future<ReminderResponse> reminderApi({required String token,required String receiver, required String sender, required String time, required String description}) async {
+  Future<SeenUpdateResponse> seenUpdateApi({required String token,required String receiver}) async {
+    try{
+      var payload = json.encode({
+        "reciver_name": receiver,
+      });
+
+
+      http.Response response = await http.post(
+        Uri.parse("http://srestateapi.herokuapp.com/chats/seen_update/"),
+        headers: {
+          "Authorization" : "Token $token",
+          "Content-Type" : "application/json"
+        },
+        body: payload,
+      ).timeout(
+          Duration(seconds: 30),
+          onTimeout: () async{
+            progressDataLoading(false);
+            AppCommonFunction.flutterToast("Temporary site in under maintenance!", false);
+            return Future.value();
+          });
+
+      printWrapped("Seen Update  --::  ${response.body}");
+
+      if(response.statusCode == 200){
+        if(response.body != null){
+          seenUpdateResponse = SeenUpdateResponse.fromJson(json.decode(response.body));
+          return seenUpdateResponse;
+        }
+        else{
+          progressDataLoading(false);
+          return AppCommonFunction.flutterToast(AppString.somethingWentWrong, false);
+        }
+      }
+      else{
+        progressDataLoading(false);
+        AppCommonFunction.flutterToast(AppString.somethingWentWrong, false);
+        throw Exception(AppString.somethingWentWrong);
+      }
+
+    }
+    catch (e){
+      progressDataLoading(false);
+      AppCommonFunction.flutterToast(AppString.somethingWentWrong, false);
+      print("ERROR  ::  $e");
+      throw Exception(AppString.somethingWentWrong);
+
+    }
+  }
+
+
+  Future<ChatReminderResponse> chatReminderApi({required String token,required String receiver,
+    required String sender, required String time, required String description}) async {
     try{
       var payload = json.encode({
         "reciver_name": receiver,
@@ -93,13 +148,12 @@ class ChatController  extends GetxController{
             return Future.value();
           });
 
-      printWrapped("Reminder API  --::  ${response.body}");
+      printWrapped("Chat Reminder API  --::  ${response.body}");
 
       if(response.statusCode == 200){
         if(response.body != null){
-          reminderResponse = ReminderResponse.fromJson(json.decode(response.body));
-          progressDataLoading(false);
-          return reminderResponse;
+          chatReminderResponse = ChatReminderResponse.fromJson(json.decode(response.body));
+          return chatReminderResponse;
         }
         else{
           progressDataLoading(false);
@@ -154,7 +208,6 @@ class ChatController  extends GetxController{
       if(response.statusCode == 200){
         if(response.body != null){
           chatMessageResponse = CreateChatMessageResponse.fromJson(json.decode(response.body));
-          progressDataLoading(false);
           return chatMessageResponse;
         }
         else{
@@ -180,7 +233,6 @@ class ChatController  extends GetxController{
 
 
   void progressDataLoading(bool isProgress) {
-
     isDataLoading = isProgress;
     update();
   }

@@ -7,6 +7,9 @@ import 'package:croma_brokrage/helper/PreferenceHelper.dart';
 import 'package:croma_brokrage/ui/ChatModule/ViewProfileScreenUI.dart';
 import 'package:croma_brokrage/ui/DashboardModule/DashboardScreenUI.dart';
 import 'package:croma_brokrage/utils/AppCommonFunction.dart';
+import 'package:croma_brokrage/utils/AppString.dart';
+import 'package:croma_brokrage/utils/FieldValidator.dart';
+import 'package:croma_brokrage/widgets/ScaffoldWidget.dart';
 import 'package:croma_brokrage/widgets/TextFormInputField.dart';
 import 'package:croma_brokrage/widgets/WidgetButton.dart';
 import 'package:flutter/material.dart';
@@ -42,8 +45,11 @@ class _ChatScreenUIState extends State<ChatScreenUI> {
   late StreamSubscription<bool> keyboardSubscription;
 
   TextEditingController msgController  = TextEditingController();
+  TextEditingController reminderDescController  = TextEditingController();
+
   ChatController chatController = Get.put(ChatController());
   HomeController homeController = Get.put(HomeController());
+
   ScrollController scrollController = new ScrollController();
 
   KeyboardVisibilityNotification _keyboardVisibility = new KeyboardVisibilityNotification();
@@ -56,6 +62,7 @@ class _ChatScreenUIState extends State<ChatScreenUI> {
     super.initState();
     print("WEB SOCKET URL  ::  ${widget.webSocketUrl}");
     getMessage();
+    seenUpdate();
 
     channel = IOWebSocketChannel.connect(Uri.parse(widget.webSocketUrl));
     channel.stream.listen((message) {
@@ -64,16 +71,17 @@ class _ChatScreenUIState extends State<ChatScreenUI> {
       var sent = desc['sent'];
       var receiverMsg = sent ? widget.reciver : widget.sender;
       var senderMsg = sent ? widget.sender : widget.reciver;
-      chatController.chatDataList.add(ChatListData(
-        id: 0,
-        description: desc['message'],
-        timestamp: desc['timestamp'],
-        receiverName: receiverMsg,
-        senderName: senderMsg,
-        seen: true,
-        sent: sent,
-      ));
-
+      chatController.chatDataList.add(
+        ChatListData(
+          id: 0,
+          description: desc['message'],
+          timestamp: desc['timestamp'],
+          receiverName: receiverMsg,
+          senderName: senderMsg,
+          seen: true,
+          sent: sent,
+        )
+      );
       scrollDown();
 
       chatController.sendChatMsgApi(
@@ -108,47 +116,42 @@ class _ChatScreenUIState extends State<ChatScreenUI> {
     );
   }
 
-  getMessage(){
-    chatController.progressDataLoading(true);
-    chatController.chatListApi(
-      token: PreferenceHelper().getUserData().authToken!,phNumber: widget.reciver).then((response){
-        if(response.success == true){
-          if(response.message == "fetch successfully"){
-            chatController.chatListResponse = response;
-            chatController.chatDataList = response.data!;
-            chatController.progressDataLoading(false);
-            scrollDown();
-          }
-        }
-        chatController.progressDataLoading(false);
-    });
-
-  }
 
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
-        child: Scaffold(
-          appBar: AppBar(
-            backgroundColor: AppColors.primaryColor,
-            leading: InkWell(
-              onTap: () {
-                Get.to(()=> ViewProfileScreenUI(contactNumber: widget.reciver,abs_url: widget.abs_url,) );
-              },
-              child: Padding(
-                padding: const EdgeInsets.all(5.0),
-                child: CircleAvatar(
-                  child: Txt("PC"),
-                ),
-              ),
+    return ScaffoldWidget(
+      appBar: AppBar(
+        backgroundColor: AppColors.primaryColor,
+        leading: InkWell(
+          onTap: () {
+            Get.to(()=> ViewProfileScreenUI(contactNumber: widget.reciver,abs_url: widget.abs_url,) );
+          },
+          child: Padding(
+            padding: const EdgeInsets.all(5.0),
+            child: CircleAvatar(
+              child: Txt("PC"),
             ),
-            title: InkWell(
-              onTap: () {
-                Get.to(()=> ViewProfileScreenUI(contactNumber: widget.reciver,abs_url: widget.abs_url,) );
-              },
-              child: Text(widget.reciver)),
           ),
-          body: GetBuilder(
+        ),
+        title: InkWell(
+          onTap: () {
+            Get.to(()=> ViewProfileScreenUI(contactNumber: widget.reciver,abs_url: widget.abs_url,) );
+          },
+          child: Text(widget.reciver)),
+      ),
+      body: WillPopScope(
+        onWillPop: () {
+          Navigator.pop(context,true);
+          return Future<bool>.value(true);
+
+        },
+        child: Container(
+          height: Get.height,
+          width: Get.width,
+          decoration: BoxDecoration(
+            image: DecorationImage(image: NetworkImage("https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRHd8tHThvuyWSG3GiZj6ogDXtTaNj-QLrD_U0IjCYWeuwx73uKFhNGSNa5Pxxq1Y5ukR8&usqp=CAU"),opacity: 0.5,)
+          ),
+          child: GetBuilder(
             init: ChatController(),
             builder: (ChatController controller) {
               return controller.isDataLoading
@@ -163,97 +166,95 @@ class _ChatScreenUIState extends State<ChatScreenUI> {
                   )
                   : Stack(
                     children: [
-                      Container(
-                          padding: EdgeInsets.all(8.0),
-                          child: Column(
-                            children: [
-                              Flexible(
-                                child: ListView.builder(
-                                  controller: scrollController,
-                                  itemCount: controller.chatDataList.length,
-                                  itemBuilder: (context,index){
-                                    return controller.chatDataList[index].sent!
-                                        ? Row(
-                                      mainAxisAlignment: MainAxisAlignment.end,
-                                      children: [
-                                        Padding(
-                                          padding: const EdgeInsets.only(top: 10.0),
-                                          child: Container(
-                                            constraints: BoxConstraints(maxWidth: 230),
-                                            color: Colors.black54.withOpacity(0.045),
-                                            child: Wrap(
-                                              children: [
+                      Column(
+                        children: [
+                          Flexible(
+                            child: ListView.builder(
+                              controller: scrollController,
+                              itemCount: controller.chatDataList.length,
+                              itemBuilder: (context,index){
+                                return controller.chatDataList[index].sent!
+                                    ? Row(
+                                  mainAxisAlignment: MainAxisAlignment.end,
+                                  children: [
+                                    Padding(
+                                      padding: const EdgeInsets.only(top: 10.0),
+                                      child: Container(
+                                        constraints: BoxConstraints(maxWidth: 230),
+                                        color: Colors.black54.withOpacity(0.045),
+                                        child: Wrap(
+                                          children: [
 
-                                              Container(
-                                                padding: const EdgeInsets.all(2.0),
-                                                alignment: Alignment.bottomRight,
-                                                child:Text("${controller.chatDataList[index].description}",
-                                                  style: TextStyle(color: Colors.black),
-                                                ),
-                                              ),
+                                          Container(
+                                            padding: const EdgeInsets.all(2.0),
+                                            alignment: Alignment.bottomRight,
+                                            child:Text("${controller.chatDataList[index].description}",
+                                              style: TextStyle(color: Colors.black),
+                                            ),
+                                          ),
 
-                                              Container(
-                                                padding: const EdgeInsets.all(2.0),
-                                                alignment: Alignment.bottomLeft,
-                                                child:Text("${AppCommonFunction.timestampToDatetime(controller.chatDataList[index].timestamp!)} ",
-                                                  style: TextStyle(color: Colors.black54),
-                                                ),
-                                              ),
+                                          Container(
+                                            padding: const EdgeInsets.all(2.0),
+                                            alignment: Alignment.bottomLeft,
+                                            child:Text("${AppCommonFunction.timestampToDatetime(controller.chatDataList[index].timestamp!)} ",
+                                              style: TextStyle(color: Colors.black54),
+                                            ),
+                                          ),
 
-                                            ],),
-                                        ),
-                                      ),
-                                      SizedBox(width: 5,),
-                                      CircleAvatar(
-                                        radius: 15,
-                                        backgroundColor: AppColors.primaryAccent ,
-                                        child: Icon(Icons.account_circle_sharp,color: Colors.white,size: 20, ),
-                                      ),
-                                    ],)
-                                      : Row(
-                                    mainAxisAlignment: MainAxisAlignment.start,
-                                    children: [
-                                      CircleAvatar(
-                                        radius: 15,
-                                        backgroundColor: AppColors.primaryAccent ,
-                                        child: Icon(Icons.account_circle_sharp,color: Colors.white,size: 20, ),
-                                      ),
-                                      SizedBox(width: 5,),
-                                      Padding(
-                                        padding: const EdgeInsets.only(top: 10.0),
-                                        child: Container(
-                                          constraints: BoxConstraints(maxWidth: 230),
-                                          color: Colors.black54.withOpacity(0.045),
-                                          child: Wrap(
-                                            children: [
+                                        ],),
+                                    ),
+                                  ),
+                                  SizedBox(width: 5,),
+                                  CircleAvatar(
+                                    radius: 15,
+                                    backgroundColor: AppColors.primaryAccent ,
+                                    child: Icon(Icons.account_circle_sharp,color: Colors.white,size: 20, ),
+                                  ),
+                                ],)
+                                  : Row(
+                                mainAxisAlignment: MainAxisAlignment.start,
+                                children: [
+                                  CircleAvatar(
+                                    radius: 15,
+                                    backgroundColor: AppColors.primaryAccent ,
+                                    child: Icon(Icons.account_circle_sharp,color: Colors.white,size: 20, ),
+                                  ),
+                                  SizedBox(width: 5,),
+                                  Padding(
+                                    padding: const EdgeInsets.only(top: 10.0),
+                                    child: Container(
+                                      constraints: BoxConstraints(maxWidth: 230),
+                                      color: Colors.black54.withOpacity(0.045),
+                                      child: Wrap(
+                                        children: [
 
-                                              Container(
-                                                padding: const EdgeInsets.all(2.0),
-                                                alignment: Alignment.bottomLeft,
-                                                child:Text("${controller.chatDataList[index].description}",
-                                                  style: TextStyle(color: Colors.black),
-                                                ),
-                                              ),
+                                          Container(
+                                            padding: const EdgeInsets.all(2.0),
+                                            alignment: Alignment.bottomLeft,
+                                            child:Text("${controller.chatDataList[index].description}",
+                                              style: TextStyle(color: Colors.black),
+                                            ),
+                                          ),
 
-                                              Container(
-                                                padding: const EdgeInsets.all(2.0),
-                                                alignment: Alignment.bottomRight,
-                                                child:Text("${AppCommonFunction.timestampToDatetime(controller.chatDataList[index].timestamp!)} ",
-                                                  style: TextStyle(color: Colors.black54),
-                                                ),
-                                              ),
+                                          Container(
+                                            padding: const EdgeInsets.all(2.0),
+                                            alignment: Alignment.bottomRight,
+                                            child:Text("${AppCommonFunction.timestampToDatetime(controller.chatDataList[index].timestamp!)} ",
+                                              style: TextStyle(color: Colors.black54),
+                                            ),
+                                          ),
 
-                                            ],),
-                                        ),
-                                      ),
+                                        ],),
+                                    ),
+                                  ),
 
-                                    ],);
-                                },
-                              ),
-                           ),
-                              enterMessageContainer(),
-                            ],
-                          )),
+                                ],);
+                            },
+                          ),
+                       ),
+                          enterMessageContainer(),
+                        ],
+                      ),
 
                       controller.isStackDataLoading
                         ? AppCommonFunction.circularIndicator()
@@ -264,7 +265,8 @@ class _ChatScreenUIState extends State<ChatScreenUI> {
             },
 
           ),
-        )
+        ),
+      ),
     );
   }
 
@@ -382,15 +384,21 @@ class _ChatScreenUIState extends State<ChatScreenUI> {
                                                           Padding(
                                                             padding: const EdgeInsets.only(left: 15,right: 15),
                                                             child: TextFormInputField(
+                                                              controller: reminderDescController,
                                                               hintText: "Enter Message",
+                                                              validator: (value) {
+                                                                return FieldValidator.validateValueIsEmpty(value!);
+                                                              },
                                                             ),
                                                           ),
 
                                                           SizedBox(height: 20),
 
                                                           WidgetButton(
-                                                              text: "Submit",
-                                                              onPressed: (){}
+                                                            text: "Submit",
+                                                            onPressed: (){
+                                                                chatReminder();
+                                                            }
                                                           ),
 
                                                           SizedBox(height: 10),
@@ -428,7 +436,6 @@ class _ChatScreenUIState extends State<ChatScreenUI> {
                                                     child: Center(
                                                       child: Column(
                                                         children: <Widget>[
-
                                                           SizedBox(height: 10),
 
                                                           EstateCardList(
@@ -460,7 +467,7 @@ class _ChatScreenUIState extends State<ChatScreenUI> {
                                 },
                               );
                             },
-                            child: Icon(Icons.attach_file,color: Colors.grey,)),
+                            child: Icon(Icons.timer,color: Colors.grey,)),
                         fillColor: Colors.grey[100],
                         hintText: "Enter your message..",
                         border: OutlineInputBorder(
@@ -499,6 +506,8 @@ class _ChatScreenUIState extends State<ChatScreenUI> {
     );
   }
 
+
+  /*
   void getImage() async{
     final ImagePicker _picker = ImagePicker();
     final XFile? image = await _picker.pickImage(source: ImageSource.gallery);
@@ -508,6 +517,8 @@ class _ChatScreenUIState extends State<ChatScreenUI> {
       Get.to(()=> ViewChatImageScreenUi(file: image.path,ticketId: "abcd id" ,email: "abc@gmail.com",pwd: "12345",) );
     }
   }
+  */
+
 
   @override
   void dispose(){
@@ -521,6 +532,63 @@ class _ChatScreenUIState extends State<ChatScreenUI> {
       final position = scrollController.position.maxScrollExtent;
       scrollController.jumpTo(position,);
     },);
+  }
+
+
+  getMessage(){
+    chatController.progressDataLoading(true);
+    chatController.chatListApi(
+        token: PreferenceHelper().getUserData().authToken!,phNumber: widget.reciver).then((response){
+      if(response.success == true){
+        if(response.message == "fetch successfully"){
+          chatController.chatListResponse = response;
+          chatController.chatDataList = response.data!;
+          scrollDown();
+        }
+      }
+      chatController.progressDataLoading(false);
+    });
+
+  }
+
+  seenUpdate(){
+    chatController.seenUpdateApi(
+      token: PreferenceHelper().getUserData().authToken!,receiver: widget.reciver).then((response){
+      chatController.seenUpdateResponse = response;
+      print("---seen update---");
+    });
+  }
+
+  chatReminder(){
+    chatController.updateIsStackDataLoading(true);
+    chatController.chatReminderApi(
+      token: PreferenceHelper().getUserData().authToken!,
+      receiver: widget.reciver,
+      sender: widget.sender,
+      time: chatController.selectedDateTime,
+      description: reminderDescController.text,
+    ).then((response){
+      if(response.success == true){
+        if(response.message == "fetch successfully"){
+          Get.back();
+          Get.back();
+          clearReminderData();
+          chatController.chatReminderResponse = response;
+          AppCommonFunction.flutterToast("Reminder set successfully", true);
+
+        }
+        else{
+          AppCommonFunction.flutterToast("unable to set reminder", false);
+        }
+      }
+
+      chatController.updateIsStackDataLoading(false);
+    });
+  }
+
+  clearReminderData(){
+    chatController.selectedDateTime = "";
+    reminderDescController.clear();
   }
 
 }

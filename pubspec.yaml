@@ -83,6 +83,8 @@ dependencies:
   sms_otp_auto_verify: ^2.1.0
   flutter_keyboard_visibility: ^5.3.0
   keyboard_visibility: ^0.5.6
+  introduction_screen: ^3.0.2
+  webview_flutter: ^3.0.4
 
 dev_dependencies:
   flutter_test:

@@ -19,6 +19,7 @@ import '../../utils/AppString.dart';
 import '../../widgets/Txt.dart';
 import '../MessageBalanceScreenUI.dart';
 import '../SearchModule/SearchModuleScreenUI.dart';
+import 'TempScreenUI.dart';
 import 'UserProfileScreenUI.dart';
 
 class DashboardScreenUI extends StatefulWidget {
@@ -111,6 +112,7 @@ class _DashboardScreenUIState extends State<DashboardScreenUI> {
                             child: InkWell(
                               onTap: () {
                                 Get.to(()=> MessageBalanceScreenUI() );
+                                  //Get.to(()=> TempScreenUI() );
                               },
                               child: Row(
                                 children: [
