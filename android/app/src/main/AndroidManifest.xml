@@ -1,5 +1,5 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.example.croma">
+    package="changingbyte.android.brokerBook">
 
     <uses-permission android:name="android.permission.READ_CONTACTS" />
     <uses-permission android:name="android.permission.WRITE_CONTACTS" />
@@ -8,7 +8,7 @@
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
 
     <application
-        android:label="croma_brokrage"
+        android:label="Broker Book"
         android:name="${applicationName}"
         android:screenOrientation="portrait"
         android:allowBackup="false"
