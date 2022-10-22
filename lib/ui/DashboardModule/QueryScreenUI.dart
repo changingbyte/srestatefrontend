@@ -1,14 +1,16 @@
-import 'package:croma_brokrage/helper/PreferenceHelper.dart';
-import 'package:croma_brokrage/ui/DashboardModule/DashboardScreenUI.dart';
-import 'package:croma_brokrage/ui/DashboardModule/QueryContactListScreenUI.dart';
-import 'package:croma_brokrage/utils/AppColors.dart';
-import 'package:croma_brokrage/utils/AppCommonFunction.dart';
-import 'package:croma_brokrage/utils/FieldValidator.dart';
-import 'package:croma_brokrage/widgets/RoundedButtonWidget.dart';
-import 'package:croma_brokrage/widgets/TextFormInputField.dart';
+import 'package:brokerBook/helper/PreferenceHelper.dart';
+import 'package:brokerBook/ui/ChatModule/ChatContactListScreenUI.dart';
+import 'package:brokerBook/ui/DashboardModule/DashboardScreenUI.dart';
+import 'package:brokerBook/ui/DashboardModule/QueryContactListScreenUI.dart';
+import 'package:brokerBook/utils/AppColors.dart';
+import 'package:brokerBook/utils/AppCommonFunction.dart';
+import 'package:brokerBook/utils/FieldValidator.dart';
+import 'package:brokerBook/widgets/RoundedButtonWidget.dart';
+import 'package:brokerBook/widgets/TextFormInputField.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
+import '../../controller/DashboardController.dart';
 import '../../controller/HomeController.dart';
 import '../../controller/QueryController.dart';
 import '../../utils/AppString.dart';
@@ -27,6 +29,9 @@ class _QueryScreenUIState extends State<QueryScreenUI> {
   HomeController homeController = Get.put(HomeController());
   QueryController queryController = Get.put(QueryController());
   TextEditingController numberController = new TextEditingController();
+
+  PageController? pageController;
+  DashboardController dashboardController = Get.put(DashboardController());
 
   /*@override
   void initState() {
@@ -185,12 +190,13 @@ class _QueryScreenUIState extends State<QueryScreenUI> {
                                   AppCommonFunction.flutterToast("please select any message method", false);
                                 }
                                 else{
-                                  sendSMS();
+                                    sendSMS();
                                 }
                               }
 
                             },
                           ),
+
 
 
                           /*Padding(
@@ -281,15 +287,14 @@ class _QueryScreenUIState extends State<QueryScreenUI> {
     );
   }
 
-
   sendSMS(){
     queryController.progressDataLoading(true);
 
     queryController.sendMessageApi(
       token: PreferenceHelper().getUserData().authToken!,
-      phNumber: numberController.text,
-      sms: queryController.isText,
-      whatsApp: queryController.isWhatsApp,
+      phNumber: numberController.text, //"broker_book_assitant"
+      sms: queryController.isText, //false
+      whatsApp: queryController.isWhatsApp, //false
       estateId: queryController.estateIdList,
     ).then((response) {
       if(response != null){

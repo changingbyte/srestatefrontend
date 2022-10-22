@@ -1,8 +1,8 @@
 import 'dart:async';
 import 'package:admob_flutter/admob_flutter.dart';
 import 'package:connectivity/connectivity.dart';
-import 'package:croma_brokrage/ui/EstateListScreenUI.dart';
-import 'package:croma_brokrage/widgets/TextFormInputField.dart';
+import 'package:brokerBook/ui/EstateListScreenUI.dart';
+import 'package:brokerBook/widgets/TextFormInputField.dart';
 import 'package:firebase_admob/firebase_admob.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
@@ -11,6 +11,7 @@ import 'package:intl/intl.dart';
 import 'package:lottie/lottie.dart';
 import 'package:url_launcher/url_launcher.dart';
 import '../widgets/Txt.dart';
+import '../widgets/WidgetButton.dart';
 import 'AppColors.dart';
 import 'AppString.dart';
 import 'package:get/get.dart';
@@ -180,13 +181,62 @@ static adsBanner({required AdmobBannerSize admobBannerSize}){
     return AdmobBanner(adUnitId: BannerAd.testAdUnitId, adSize: admobBannerSize);
 }
 
+static  int calculateDifference(DateTime date) {
+    DateTime now = DateTime.now();
+    return DateTime(date.year, date.month, date.day).difference(DateTime(now.year, now.month, now.day)).inHours;
+  }
 
-static String timestampToDatetime(int timestamp){
-  var date = DateFormat('dd/MM/yyyy, hh:mm a').format(DateTime.fromMillisecondsSinceEpoch(timestamp * 1000));
-  print("DATEEE  ::  ${date}");
+static String timestampToDatetime(int timestamp,bool inside){
+  var date = DateFormat('dd/MM/yyyy').format(DateTime.fromMillisecondsSinceEpoch(timestamp * 1000));
+  var datetimestamp = DateTime.fromMillisecondsSinceEpoch(timestamp*1000);
+
+  var diffindays = calculateDifference(datetimestamp);
+
+  print("DATEEE  ::  ${diffindays}");
+  if(inside){
+    date = DateFormat('hh:mm a').format(DateTime.fromMillisecondsSinceEpoch(timestamp * 1000));
+    return date;
+  }
+  else if(diffindays >=24 && diffindays <=48 ){
+    return "yesterday";
+  }
+
+  else if(diffindays <=24){
+    return "today";
+  }
   return date;
+
+
 }
 
+
+
+  static showRewardDialog({required String? rewardAmount, required GestureTapCallback onPressed}){
+    Get.defaultDialog(
+      content: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          AppCommonFunction.lottieAnimation(path: "ic_reward_coins.json",height: 180),
+
+          Center(child: Txt("Congratulation!!!",fontSize: 20,color: Colors.black,fontWeight: FontWeight.bold,)),
+          SizedBox(height: 5),
+          Center(child: Wrap(
+            children: [
+              Txt("$rewardAmount Coins",fontSize: 17,color: Colors.black,fontWeight: FontWeight.w500,),
+            ],
+          )),
+
+          SizedBox(height: 20),
+
+          WidgetButton(
+              text: "Collect",
+              onPressed: onPressed,
+          ),
+        ],
+      ),
+    );
+  }
 
 
 

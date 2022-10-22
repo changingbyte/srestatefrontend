@@ -1,2 +1,0 @@
-com/oohyugi/sms_otp_auto_verify/BuildConfig.java
- com.oohyugi.sms_otp_auto_verify.BuildConfig

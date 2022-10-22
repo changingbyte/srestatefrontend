@@ -7,6 +7,7 @@ import '../model/ChatListResponse.dart';
 import '../model/ChatReminderResponse.dart';
 import '../model/CreateChatMessegeResponse.dart';
 import '../model/SeenUpdateResponse.dart';
+import '../utils/ApiUtils.dart';
 import '../utils/AppCommonFunction.dart';
 import '../utils/AppString.dart';
 
@@ -29,7 +30,7 @@ class ChatController  extends GetxController{
     try{
 
       http.Response response = await http.get(
-        Uri.parse("http://srestateapi.herokuapp.com/chats/chatbymobile/?mobile=$phNumber"),
+        Uri.parse("${ApiUtils.BASE_URL}chats/chatbymobile/?mobile=$phNumber"),
         headers: {
           "Authorization" : "Token $token"
           //"Authorization" : "Token $token"
@@ -79,7 +80,7 @@ class ChatController  extends GetxController{
 
 
       http.Response response = await http.post(
-        Uri.parse("http://srestateapi.herokuapp.com/chats/seen_update/"),
+        Uri.parse("${ApiUtils.BASE_URL}chats/seen_update/"),
         headers: {
           "Authorization" : "Token $token",
           "Content-Type" : "application/json"
@@ -134,7 +135,7 @@ class ChatController  extends GetxController{
 
 
       http.Response response = await http.post(
-        Uri.parse("http://srestateapi.herokuapp.com/chats/create/reminder/"),
+        Uri.parse("${ApiUtils.BASE_URL}chats/create/reminder/"),
         headers: {
           "Authorization" : "Token $token",
           "Content-Type" : "application/json",
@@ -188,7 +189,7 @@ class ChatController  extends GetxController{
 
 
       http.Response response = await http.post(
-        Uri.parse("http://srestateapi.herokuapp.com/chats/create/?"),
+        Uri.parse("${ApiUtils.BASE_URL}chats/create/?"),
         headers: {
           "Content-Type": "application/json",
           "Authorization" : "Token $token"

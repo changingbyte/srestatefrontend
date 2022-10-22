@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:croma_brokrage/utils/AppColors.dart';
+import 'package:brokerBook/utils/AppColors.dart';
 
 class WidgetBackArrow extends StatelessWidget {
   final GestureTapCallback onPressed;

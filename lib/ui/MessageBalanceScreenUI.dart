@@ -1,7 +1,7 @@
 import 'package:admob_flutter/admob_flutter.dart';
-import 'package:croma_brokrage/helper/PreferenceHelper.dart';
-import 'package:croma_brokrage/utils/AppColors.dart';
-import 'package:croma_brokrage/widgets/RoundedButtonWidget.dart';
+import 'package:brokerBook/helper/PreferenceHelper.dart';
+import 'package:brokerBook/utils/AppColors.dart';
+import 'package:brokerBook/widgets/RoundedButtonWidget.dart';
 import 'package:firebase_admob/firebase_admob.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';

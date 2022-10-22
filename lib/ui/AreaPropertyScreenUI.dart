@@ -1,13 +1,15 @@
-import 'package:croma_brokrage/controller/AreaPropertyController.dart';
-import 'package:croma_brokrage/utils/AppCommonFunction.dart';
-import 'package:croma_brokrage/utils/AppString.dart';
-import 'package:croma_brokrage/widgets/RoundedButtonWidget.dart';
-import 'package:croma_brokrage/widgets/TextFormInputField.dart';
+import 'package:brokerBook/controller/AreaPropertyController.dart';
+import 'package:brokerBook/utils/AppCommonFunction.dart';
+import 'package:brokerBook/utils/AppString.dart';
+import 'package:brokerBook/utils/FieldValidator.dart';
+import 'package:brokerBook/widgets/RoundedButtonWidget.dart';
+import 'package:brokerBook/widgets/TextFormInputField.dart';
 import 'package:flip_card/flip_card.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:croma_brokrage/utils/AppColors.dart';
+import 'package:brokerBook/utils/AppColors.dart';
 
+import '../controller/OnbordingController.dart';
 import '../helper/PreferenceHelper.dart';
 import '../widgets/Txt.dart';
 import 'DashboardModule/DashboardScreenUI.dart';
@@ -21,9 +23,10 @@ class AreaPropertyScreenUI extends StatefulWidget {
 
 class _AreaPropertyScreenUIState extends State<AreaPropertyScreenUI> {
 
+  OnBoardingController onBoardingController = Get.put(OnBoardingController());
   AreaPropertyController areaPropertyController = Get.put(AreaPropertyController());
   TextEditingController nameController = new TextEditingController();
-
+  final formKey = GlobalKey<FormState>();
 
   @override
   void initState() {
@@ -80,12 +83,18 @@ class _AreaPropertyScreenUIState extends State<AreaPropertyScreenUI> {
 
                   SizedBox(height: 20,),
 
-                  TextFormInputField(
-                    controller: nameController,
-                    hintText: "Enter Your Name",
-                    onChanged: (val){
-                      //getAreaListApi();
-                    },
+                  Form(
+                    key: formKey,
+                    child: TextFormInputField(
+                      controller: nameController,
+                      hintText: "Enter Your Name",
+                      validator: (value) {
+                        return FieldValidator.validateValueIsEmpty(value!);
+                      },
+                      onChanged: (val){
+                        //getAreaListApi();
+                      },
+                    ),
                   ),
 
                   SizedBox(height: 20,),
@@ -184,7 +193,11 @@ class _AreaPropertyScreenUIState extends State<AreaPropertyScreenUI> {
                       onPressed:  () {
 
                         //Get.to(()=> MainScreenUI() );
-                        onSubmitCreateUser();
+
+                        if(formKey.currentState!.validate()){
+                          onSubmitCreateUser();
+                        }
+
 
                       },
                     ),
@@ -256,6 +269,8 @@ class _AreaPropertyScreenUIState extends State<AreaPropertyScreenUI> {
         if(value["success"] == true){
           AppCommonFunction.flutterToast(value["message"], true);
           clearData();
+          PreferenceHelper().saveShowIntro(false);
+          PreferenceHelper().saveIsProfileCompleted(true);
           Get.to( ()=> DashboardScreenUI() );
         }
         else{

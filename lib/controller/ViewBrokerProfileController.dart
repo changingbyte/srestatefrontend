@@ -2,6 +2,7 @@ import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 import '../model/BrokerProfileResponse.dart';
+import '../utils/ApiUtils.dart';
 import '../utils/AppCommonFunction.dart';
 import '../utils/AppString.dart';
 
@@ -18,7 +19,7 @@ class ViewBrokerProfileController extends GetxController{
     try{
 
       http.Response response = await http.get(
-        Uri.parse("http://srestateapi.herokuapp.com/api/v1/property/brokerDetails/"),
+        Uri.parse("${ApiUtils.BASE_URL}api/v1/property/brokerDetails/"),
         headers: {
           //"Content-Type": "application/json",
           "Authorization" : "Token $token"

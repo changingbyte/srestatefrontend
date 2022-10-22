@@ -1,7 +1,7 @@
-import 'package:croma_brokrage/helper/PreferenceHelper.dart';
-import 'package:croma_brokrage/utils/AppColors.dart';
-import 'package:croma_brokrage/utils/AppCommonFunction.dart';
-import 'package:croma_brokrage/widgets/TextFormInputField.dart';
+import 'package:brokerBook/helper/PreferenceHelper.dart';
+import 'package:brokerBook/utils/AppColors.dart';
+import 'package:brokerBook/utils/AppCommonFunction.dart';
+import 'package:brokerBook/widgets/TextFormInputField.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
@@ -85,7 +85,7 @@ class _EstateListScreenUIState extends State<EstateListScreenUI> {
                         return estateListController.isDataLoading
                           ? Center(child: CircularProgressIndicator())
                           : estateListController.estateList.isEmpty
-                              ? AppCommonFunction.noDataFound()
+                              ? AppCommonFunction.lottieAnimation(path: "ic_no_contacts.json",height: 200)
                               : EstateCardList(
                             homeController: homeController,
                             estateList: estateListController.estateList,

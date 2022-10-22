@@ -1,9 +1,9 @@
 
 import 'dart:convert';
-import 'package:croma_brokrage/model/NumberApiResponse.dart';
-import 'package:croma_brokrage/utils/ApiUtils.dart';
-import 'package:croma_brokrage/utils/AppCommonFunction.dart';
-import 'package:croma_brokrage/utils/AppString.dart';
+import 'package:brokerBook/model/NumberApiResponse.dart';
+import 'package:brokerBook/utils/ApiUtils.dart';
+import 'package:brokerBook/utils/AppCommonFunction.dart';
+import 'package:brokerBook/utils/AppString.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
@@ -26,7 +26,7 @@ class OnBoardingController extends GetxController
      var jsonPayload = jsonEncode( { 'Mobile' : '$number', 'appString' : '$appSignature '  });
 
     http.Response response = await http.post(
-      Uri.parse(ApiUtils.BASE_URL + ApiUtils.validate_mobile),
+      Uri.parse(ApiUtils.BASE_URL + "users/validate_mobile"),
       headers: {
         "Accept": "application/json",
       },

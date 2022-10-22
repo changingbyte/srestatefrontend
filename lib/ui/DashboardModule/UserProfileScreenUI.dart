@@ -1,9 +1,9 @@
-import 'package:croma_brokrage/controller/DashboardController.dart';
-import 'package:croma_brokrage/ui/AreaPropertyScreenUI.dart';
-import 'package:croma_brokrage/ui/DashboardModule/DashboardScreenUI.dart';
-import 'package:croma_brokrage/widgets/RoundedButtonWidget.dart';
-import 'package:croma_brokrage/widgets/ScaffoldWidget.dart';
-import 'package:croma_brokrage/widgets/Txt.dart';
+import 'package:brokerBook/controller/DashboardController.dart';
+import 'package:brokerBook/ui/AreaPropertyScreenUI.dart';
+import 'package:brokerBook/ui/DashboardModule/DashboardScreenUI.dart';
+import 'package:brokerBook/widgets/RoundedButtonWidget.dart';
+import 'package:brokerBook/widgets/ScaffoldWidget.dart';
+import 'package:brokerBook/widgets/Txt.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 

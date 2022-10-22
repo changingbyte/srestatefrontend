@@ -2,12 +2,13 @@
 
 import 'dart:convert';
 
-import 'package:croma_brokrage/utils/AppCommonFunction.dart';
-import 'package:croma_brokrage/utils/AppString.dart';
+import 'package:brokerBook/utils/AppCommonFunction.dart';
+import 'package:brokerBook/utils/AppString.dart';
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 
 import '../model/ContactListResponse.dart';
+import '../utils/ApiUtils.dart';
 
 class ContactListController extends GetxController{
 
@@ -20,7 +21,7 @@ class ContactListController extends GetxController{
     try{
 
       http.Response response = await http.get(
-        Uri.parse("http://srestateapi.herokuapp.com/chats/contactlist/"),
+        Uri.parse("${ApiUtils.BASE_URL}chats/contactlist/"),
         headers: {
           //"Content-Type": "application/json",
           "Authorization" : "Token $token"

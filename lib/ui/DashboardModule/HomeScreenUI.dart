@@ -1,12 +1,13 @@
 import 'package:admob_flutter/admob_flutter.dart';
-import 'package:croma_brokrage/helper/PreferenceHelper.dart';
-import 'package:croma_brokrage/ui/DashboardModule/AddEstateScreenUI.dart';
-import 'package:croma_brokrage/ui/EstateListScreenUI.dart';
-import 'package:croma_brokrage/utils/AppColors.dart';
-import 'package:croma_brokrage/utils/AppCommonFunction.dart';
-import 'package:croma_brokrage/widgets/EstateCardList.dart';
-import 'package:croma_brokrage/widgets/ScaffoldWidget.dart';
-import 'package:croma_brokrage/widgets/TextFormInputField.dart';
+import 'package:brokerBook/helper/PreferenceHelper.dart';
+import 'package:brokerBook/ui/DashboardModule/AddEstateScreenUI.dart';
+import 'package:brokerBook/ui/EstateListScreenUI.dart';
+import 'package:brokerBook/ui/IntroScreenUI.dart';
+import 'package:brokerBook/utils/AppColors.dart';
+import 'package:brokerBook/utils/AppCommonFunction.dart';
+import 'package:brokerBook/widgets/EstateCardList.dart';
+import 'package:brokerBook/widgets/ScaffoldWidget.dart';
+import 'package:brokerBook/widgets/TextFormInputField.dart';
 import 'package:firebase_admob/firebase_admob.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
@@ -40,6 +41,9 @@ class _HomeScreenUIState extends State<HomeScreenUI> {
       homeController.deselectItems();
       homeController.selectedEstateList.clear();
 
+      print("IS PROLE COLPETE  ::  ${PreferenceHelper().getUserData().isProfileCompleted}");
+
+
       getEstateApi();
       getFilterApi();
     });
@@ -54,6 +58,7 @@ class _HomeScreenUIState extends State<HomeScreenUI> {
         child: Icon(Icons.add,color: Colors.white,),
         onPressed: () {
           Get.to(()=> AddEstateScreenUI(), );
+
         },
       ),
       body: Column(
@@ -117,10 +122,10 @@ class _HomeScreenUIState extends State<HomeScreenUI> {
                 return Padding(
                   padding: const EdgeInsets.all(8.0),
                   child: controller.isDataLoading
-                      ? AppCommonFunction.circularIndicator()
-                      : controller.estateList.isEmpty
-                        ? AppCommonFunction.noDataFound()
-                        : EstateCardList(
+                    ? AppCommonFunction.circularIndicator()
+                    : controller.estateList.isEmpty
+                      ? AppCommonFunction.lottieAnimation(path: "ic_no_contacts.json",height: 200)
+                      : EstateCardList(
                         estateList: controller.estateList,
                         homeController: homeController,
                       ),
@@ -253,43 +258,66 @@ class _HomeScreenUIState extends State<HomeScreenUI> {
                       ),
 
                       SizedBox(height: 10),
-
-                      filterDropdownWidget(
-                          title: controller.filterBHKTitle.toString(),
+                      filterIntegerDropdownWidget(
+                          title: controller.filterBHKTitle.toString() + " BHK",
                           list: controller.filterBHKList,
                           onChanged: (newValue){
-                            controller.updateBHKTitle(newValue.toString());
+                            controller.updateBHKTitle(newValue);
                           }
                       ),
 
                       SizedBox(height: 10),
 
                       Row(
-                        mainAxisAlignment: MainAxisAlignment.end,
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-
                           TextButton(
                               onPressed: () {
-                                controller.progressDataLoading(true);
-
+                                controller.filterBHKTitle =0;
+                                controller.filterAreaListTitle = "Area";
+                                controller.filterPropertyTypeTitle = "Status";
+                                controller.filterFurnitureTitle = "Furniture Type";
+                                controller.filterEstateCategoryTitle ="Type";
                                 getEstateApi(
-                                  area: [controller.filterAreaListTitle],
-                                  furniture: [controller.filterFurnitureTitle],
-                                  no_of_bedrooms: [controller.filterBHKTitle],
-                                  estateStatus: [controller.filterEstateCategoryTitle],
+                                  area: [],
+                                  furniture: [],
+                                  no_of_bedrooms: [],
+                                  estateStatus: [],
                                 );
-
                                 Get.back();
                               },
-                              child: Text("Ok")),
+                              child: Text("Reset")),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.end,
+                            children: [
 
-                          TextButton(
-                            onPressed: () {
-                              Get.back();
-                            },
-                            child: Text("Cancel")),
-                        ],
+                              TextButton(
+                                  onPressed: () {
+                                    controller.progressDataLoading(true);
+
+                                    getEstateApi(
+                                      area: [controller.filterAreaListTitle],
+                                      furniture: [controller.filterFurnitureTitle],
+                                      no_of_bedrooms: [controller.filterBHKTitle],
+                                      estateStatus: [controller.filterPropertyTypeTitle],
+                                      estateType: [controller.filterEstateCategoryTitle],
+
+                                    );
+
+                                    Get.back();
+                                  },
+                                  child: Text("Ok")),
+
+                              TextButton(
+                                  onPressed: () {
+                                    Get.back();
+                                  },
+                                  child: Text("Cancel")),
+                            ],
+                          ),
+                          ],
                       ),
+
 
                     ],
                   ),
@@ -301,7 +329,7 @@ class _HomeScreenUIState extends State<HomeScreenUI> {
   }
 
   getEstateApi({List<String>? area = const [],List<String>? apartment = const [],List<String>?  budget = const [],
-    List<String>? estateStatus = const [],List<String>? furniture = const [],List<String>? no_of_bedrooms = const []}){
+    List<String>? estateStatus = const [],List<String>? estateType = const [],List<String>? furniture = const [],List<int>? no_of_bedrooms = const []}){
     homeController.progressDataLoading(true);
     homeController.estateList.clear();
     homeController.newEstateList.clear();
@@ -309,15 +337,17 @@ class _HomeScreenUIState extends State<HomeScreenUI> {
     if(area!.contains("Area") ){area.clear();}
     if(furniture!.contains("Furniture Type") ){furniture.clear();}
     if(no_of_bedrooms!.contains("BHK")){no_of_bedrooms.clear();}
-    if(estateStatus!.contains("Estate Status")){estateStatus.clear();}
+    if(estateStatus!.contains("Status")){estateStatus.clear();}
+    if(estateType!.contains("Type")){estateType.clear();}
 
-
+    print("Estate TYpe List" + estateType.runtimeType.toString());
     homeController.estateListApi(
       token: PreferenceHelper().getUserData().authToken!,
       area: area,
       apartment: apartment,
       budget: budget,
       estate_status: estateStatus,
+      estate_type:estateType,
       furniture: furniture,
       no_of_bedrooms: no_of_bedrooms,
     ).then((value) {
@@ -360,7 +390,7 @@ class _HomeScreenUIState extends State<HomeScreenUI> {
           homeController.filterBudgetList.addAll(homeController.data!.budget!);
 
           for(int i=0 ;i<homeController.data!.rooms!.length; i++){
-            homeController.filterBHKList.add(homeController.data!.rooms![i].toString());
+            homeController.filterBHKList.add(int.parse(homeController.data!.rooms![i].toString()));
           }
 
           homeController.intervalValue = homeController.filterBudgetList.last / 4;
@@ -388,6 +418,21 @@ class _HomeScreenUIState extends State<HomeScreenUI> {
       icon: const Icon(Icons.keyboard_arrow_down),
       isExpanded: true,
       items: list.map((String items) {
+        return DropdownMenuItem(
+          value: items,
+          child: Text(items.toString()),
+        );
+      }).toList(),
+      onChanged: onChanged,
+    );
+  }
+
+  filterIntegerDropdownWidget({required String title,required List<int> list,required ValueChanged onChanged}){
+    return DropdownButton(
+      hint: Txt(title.toString(),fontWeight: FontWeight.w500),
+      icon: const Icon(Icons.keyboard_arrow_down),
+      isExpanded: true,
+      items: list.map((int items) {
         return DropdownMenuItem(
           value: items,
           child: Text(items.toString()),

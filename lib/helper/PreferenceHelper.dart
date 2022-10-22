@@ -1,6 +1,6 @@
 import 'dart:convert';
-import 'package:croma_brokrage/model/NumberApiResponse.dart';
-import 'package:croma_brokrage/utils/PrefUtils.dart';
+import 'package:brokerBook/model/NumberApiResponse.dart';
+import 'package:brokerBook/utils/PrefUtils.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class PreferenceHelper {
@@ -21,6 +21,14 @@ class PreferenceHelper {
 
   bool getIsUserNew() {
     return _preferences!.getBool(PrefUtils.IS_USERNEW) ?? true;
+  }
+
+  void saveShowIntro(bool isLoggedIn) {
+    _preferences!.setBool(PrefUtils.SHOW_INTRO, isLoggedIn);
+  }
+
+  bool getShowIntro() {
+    return _preferences!.getBool(PrefUtils.SHOW_INTRO) ?? true;
   }
 
 
@@ -124,6 +132,21 @@ class PreferenceHelper {
   }
 
 
+
+
+
+  bool getIsProfileCompleted() {
+    return _preferences!.getBool(PrefUtils.IS_PROFILE_COMPLETE) ?? false;
+  }
+  void saveIsProfileCompleted(bool isProfileCompleted) {
+    _preferences!.setBool(PrefUtils.IS_PROFILE_COMPLETE, isProfileCompleted);
+  }
+
+
+
+
+
+
   void saveSelectedCurrencyPrefix(String currency) {
     _preferences!.setString(PrefUtils.SP_PREFIX, currency);
   }
@@ -158,6 +181,7 @@ class PreferenceHelper {
   void clearOnlySession() {
     _preferences!.remove(PrefUtils.USER_DATA);
     _preferences!.remove(PrefUtils.IS_LOGGED_IN);
+    _preferences!.remove(PrefUtils.SHOW_INTRO);
     _preferences!.remove(PrefUtils.IS_FIRST);
     _preferences!.remove(PrefUtils.IS_USERNEW);
     _preferences!.remove(PrefUtils.USER_BALANCE);

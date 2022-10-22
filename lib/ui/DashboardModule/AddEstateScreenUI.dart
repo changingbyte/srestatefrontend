@@ -1,12 +1,12 @@
-import 'package:croma_brokrage/controller/AddEstateController.dart';
-import 'package:croma_brokrage/controller/HomeController.dart';
-import 'package:croma_brokrage/ui/DashboardModule/DashboardScreenUI.dart';
-import 'package:croma_brokrage/utils/AppColors.dart';
-import 'package:croma_brokrage/utils/AppCommonFunction.dart';
-import 'package:croma_brokrage/widgets/RoundedButtonWidget.dart';
-import 'package:croma_brokrage/widgets/ScaffoldWidget.dart';
-import 'package:croma_brokrage/widgets/TextFormInputField.dart';
-import 'package:croma_brokrage/widgets/Txt.dart';
+import 'package:brokerBook/controller/AddEstateController.dart';
+import 'package:brokerBook/controller/HomeController.dart';
+import 'package:brokerBook/ui/DashboardModule/DashboardScreenUI.dart';
+import 'package:brokerBook/utils/AppColors.dart';
+import 'package:brokerBook/utils/AppCommonFunction.dart';
+import 'package:brokerBook/widgets/RoundedButtonWidget.dart';
+import 'package:brokerBook/widgets/ScaffoldWidget.dart';
+import 'package:brokerBook/widgets/TextFormInputField.dart';
+import 'package:brokerBook/widgets/Txt.dart';
 import 'package:flip_card/flip_card.dart';
 import 'package:flip_card/flip_card_controller.dart';
 import 'package:flutter/material.dart';
@@ -43,7 +43,7 @@ class _AddEstateScreenUIState extends State<AddEstateScreenUI> {
   @override
   void initState() {
     super.initState();
-    getFilterApi();
+    //getFilterApi();
   }
   static const List<String> _kOptions = <String>[
     'aardvark',
@@ -83,9 +83,7 @@ class _AddEstateScreenUIState extends State<AddEstateScreenUI> {
                           width: 60,
                           text: "Add",
                           onPressed: () {
-                            if(whatsAppMsgController.text.toString().length >= 2){
                               onChangeWhatsAppMsg(whatsAppMsgController.text.toString());
-                            }
                         },),
                       ),
                       Txt("Property Type",fontSize: 20,color: AppColors.black,fontWeight: FontWeight.w600),
@@ -365,11 +363,10 @@ class _AddEstateScreenUIState extends State<AddEstateScreenUI> {
 
   }
 
-  getFilterApi(){
+  /*getFilterApi(){
     homeController.filterApi(token: PreferenceHelper().getUserData().authToken!).then((value){
-
     });
-  }
+  }*/
 
   addEstate(){
     addEstateController.progressDataLoading(true);
@@ -391,7 +388,12 @@ class _AddEstateScreenUIState extends State<AddEstateScreenUI> {
 
       if(resposne.success == true){
         AppCommonFunction.flutterToast(resposne.message, true);
-        Get.offAll(DashboardScreenUI());
+        AppCommonFunction.showRewardDialog(
+            rewardAmount: "100",
+            onPressed: (){
+              Get.offAll(DashboardScreenUI());
+            }
+        );
       }
       else{
         AppCommonFunction.flutterToast(resposne.error![0], false);

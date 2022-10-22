@@ -1,16 +1,18 @@
-import 'package:croma_brokrage/controller/DashboardController.dart';
-import 'package:croma_brokrage/helper/PreferenceHelper.dart';
-import 'package:croma_brokrage/ui/ChatModule/ChatContactListScreenUI.dart';
-import 'package:croma_brokrage/ui/DashboardModule/AddEstateScreenUI.dart';
-import 'package:croma_brokrage/ui/DashboardModule/HomeScreenUI.dart';
-import 'package:croma_brokrage/ui/DashboardModule/QueryScreenUI.dart';
+import 'package:brokerBook/controller/DashboardController.dart';
+import 'package:brokerBook/helper/PreferenceHelper.dart';
+import 'package:brokerBook/ui/AreaPropertyScreenUI.dart';
+import 'package:brokerBook/ui/ChatModule/ChatContactListScreenUI.dart';
+import 'package:brokerBook/ui/DashboardModule/AddEstateScreenUI.dart';
+import 'package:brokerBook/ui/DashboardModule/HomeScreenUI.dart';
+import 'package:brokerBook/ui/DashboardModule/QueryScreenUI.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
 
-import 'package:croma_brokrage/utils/AppColors.dart';
-import 'package:croma_brokrage/utils/AppCommonFunction.dart';
+import 'package:brokerBook/utils/AppColors.dart';
+import 'package:brokerBook/utils/AppCommonFunction.dart';
 import 'package:salomon_bottom_bar/salomon_bottom_bar.dart';
 
 import '../../controller/HomeController.dart';
@@ -35,15 +37,22 @@ class _DashboardScreenUIState extends State<DashboardScreenUI> {
   DashboardController dashboardController = Get.put(DashboardController());
   MessageBalanceController messageBalanceController = Get.put(MessageBalanceController());
   PageController? pageController;
-  final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
+  DateTime? currentBackPressTime;
 
   @override
   void initState() {
     super.initState();
-    Future.delayed(Duration.zero,(){
-      getMessageBalance();
-      dashboardController.updateBottomSelectedIndex(0);
-      print("DASHBOARD===========  ${PreferenceHelper().getUserData().authToken}");
+    Future.delayed(Duration.zero,() {
+      print("Profile COmpleted :: ");
+
+      if (PreferenceHelper().getIsProfileCompleted()) {
+        getMessageBalance();
+        dashboardController.updateBottomSelectedIndex(0);
+        print("DASHBOARD===========  ${PreferenceHelper().getUserData().authToken}");
+      }
+      else {
+        Get.offAll(() => AreaPropertyScreenUI());
+      }
     });
     pageController = PageController(initialPage:0,keepPage: true);
   }
@@ -56,7 +65,6 @@ class _DashboardScreenUIState extends State<DashboardScreenUI> {
         init: HomeController(),
         builder: (HomeController controller) {
           return  Scaffold(
-            key: _scaffoldKey,
             bottomNavigationBar: SalomonBottomBar(
               currentIndex: dashboardController.bottomSelectedIndex,
               items:[
@@ -72,7 +80,7 @@ class _DashboardScreenUIState extends State<DashboardScreenUI> {
             ),
             body: WillPopScope(
 
-              onWillPop: _onWillPop,
+              onWillPop: onWillPop,
               child: Column(
                 children: [
                   controller.myMultiSelectController.isSelecting
@@ -208,13 +216,13 @@ class _DashboardScreenUIState extends State<DashboardScreenUI> {
   }
 
 
-  Future<bool> _onWillPop() {
+ /* Future<bool> _onWillPop() {
     showDialog(
         context: context,
         builder: (BuildContext context)=> exitAppConfirmationDialog()
     );
     return Future<bool>.value(true);
-  }
+  }*/
 
 
 
@@ -354,7 +362,16 @@ class _DashboardScreenUIState extends State<DashboardScreenUI> {
   }
 
 
+  Future<bool> onWillPop() {
+    DateTime now = DateTime.now();
+    if (currentBackPressTime == null || now.difference(currentBackPressTime!) > Duration(seconds: 2)) {
+      currentBackPressTime = now;
+      Fluttertoast.showToast(msg: "press again for exit");
+      return Future.value(false);
+    }
+    return Future.value(true);
+  }
+
 
 }
 
-// commited on 18-8 10:53

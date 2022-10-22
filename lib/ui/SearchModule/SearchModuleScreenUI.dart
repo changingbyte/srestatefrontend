@@ -1,7 +1,7 @@
-import 'package:croma_brokrage/controller/SearchModuleController.dart';
-import 'package:croma_brokrage/ui/SearchModule/BuyListScreenUI.dart';
-import 'package:croma_brokrage/ui/SearchModule/SaleListScreenUI.dart';
-import 'package:croma_brokrage/utils/AppColors.dart';
+import 'package:brokerBook/controller/SearchModuleController.dart';
+import 'package:brokerBook/ui/SearchModule/BuyListScreenUI.dart';
+import 'package:brokerBook/ui/SearchModule/SaleListScreenUI.dart';
+import 'package:brokerBook/utils/AppColors.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_tab_indicator_styler/flutter_tab_indicator_styler.dart';
 import 'package:get/get.dart';
@@ -25,8 +25,8 @@ class _SearchModuleScreenUIState extends State<SearchModuleScreenUI> {
           children: [
             TabBar(
               tabs: [
-                Tab(text: "Estate buy List",),
-                Tab(text: "Estate sale List",),
+                Tab(text: "Buy",),
+                Tab(text: "Sale",),
               ],
               labelColor: Colors.black,
               indicator: MaterialIndicator(

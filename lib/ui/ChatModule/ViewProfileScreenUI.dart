@@ -1,5 +1,5 @@
-import 'package:croma_brokrage/controller/ViewProfileController.dart';
-import 'package:croma_brokrage/utils/AppCommonFunction.dart';
+import 'package:brokerBook/controller/ViewProfileController.dart';
+import 'package:brokerBook/utils/AppCommonFunction.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 

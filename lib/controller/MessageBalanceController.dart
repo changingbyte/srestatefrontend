@@ -2,6 +2,7 @@ import 'package:get/get.dart';
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 
+import '../utils/ApiUtils.dart';
 import '../utils/AppCommonFunction.dart';
 import '../utils/AppString.dart';
 
@@ -14,7 +15,7 @@ class MessageBalanceController extends GetxController{
   Future<dynamic> messageBalanceApi({required String token}) async {
     try{
       http.Response response = await http.get(
-        Uri.parse("http://srestateapi.herokuapp.com/api/v1/property/get_balance/"),
+        Uri.parse("${ApiUtils.BASE_URL}api/v1/property/get_balance/"),
         headers: {
           "Accept" : "application/json",
           "Authorization" : "Token $token",

@@ -1,2 +1,0 @@
-com/example/multi_select_item/BuildConfig.java
- com.example.multi_select_item.BuildConfig

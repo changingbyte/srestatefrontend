@@ -2,13 +2,14 @@
 
 import 'dart:convert';
 
-import 'package:croma_brokrage/utils/AppCommonFunction.dart';
-import 'package:croma_brokrage/utils/AppString.dart';
+import 'package:brokerBook/utils/AppCommonFunction.dart';
+import 'package:brokerBook/utils/AppString.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 
 import '../model/AddEstateResponse.dart';
+import '../utils/ApiUtils.dart';
 
 
 class AddEstateController extends GetxController{
@@ -55,7 +56,7 @@ class AddEstateController extends GetxController{
       });
 
       http.Response response = await http.post(
-        Uri.parse("http://srestateapi.herokuapp.com/api/v1/property/estate/create/"),
+        Uri.parse("${ApiUtils.BASE_URL}api/v1/property/estate/create/"),
         headers: {
           "Content-Type": "application/json",
           "Authorization" : "Token $token"
@@ -108,7 +109,7 @@ class AddEstateController extends GetxController{
       });
 
       http.Response response = await http.post(
-          Uri.parse("http://srestateapi.herokuapp.com/api/v1/property/estate/createbywp/"),
+          Uri.parse("${ApiUtils.BASE_URL}api/v1/property/estate/createbywp/"),
           headers: {
             "Content-Type": "application/json",
             "Authorization" : "Token $token"

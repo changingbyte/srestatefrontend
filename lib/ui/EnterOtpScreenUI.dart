@@ -1,14 +1,14 @@
 import 'dart:async';
 
-import 'package:croma_brokrage/controller/OnbordingController.dart';
-import 'package:croma_brokrage/ui/DashboardModule/DashboardScreenUI.dart';
-import 'package:croma_brokrage/utils/AppColors.dart';
-import 'package:croma_brokrage/utils/AppCommonFunction.dart';
-import 'package:croma_brokrage/utils/AppString.dart';
-import 'package:croma_brokrage/utils/FieldValidator.dart';
-import 'package:croma_brokrage/widgets/TextFormInputField.dart';
-import 'package:croma_brokrage/widgets/WidgetBackArrow.dart';
-import 'package:croma_brokrage/widgets/WidgetButton.dart';
+import 'package:brokerBook/controller/OnbordingController.dart';
+import 'package:brokerBook/ui/DashboardModule/DashboardScreenUI.dart';
+import 'package:brokerBook/utils/AppColors.dart';
+import 'package:brokerBook/utils/AppCommonFunction.dart';
+import 'package:brokerBook/utils/AppString.dart';
+import 'package:brokerBook/utils/FieldValidator.dart';
+import 'package:brokerBook/widgets/TextFormInputField.dart';
+import 'package:brokerBook/widgets/WidgetBackArrow.dart';
+import 'package:brokerBook/widgets/WidgetButton.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_statusbarcolor_ns/flutter_statusbarcolor_ns.dart';
@@ -259,13 +259,26 @@ class _EnterOtpScreenUIState extends State<EnterOtpScreenUI> {
           AppCommonFunction.flutterToast("Success", true);
           PreferenceHelper().saveIsUserLoggedIn(true);
           print("----USER SAVED----");
-          Get.offAll(()=> DashboardScreenUI() );
+
+          if(PreferenceHelper().getIsProfileCompleted()){
+            Get.offAll(()=>  DashboardScreenUI() );
+          }
+          else{
+            Get.offAll(()=>  AreaPropertyScreenUI() );
+          }
+
         }
         else {
           AppCommonFunction.flutterToast("Success", true);
           PreferenceHelper().saveIsUserLoggedIn(true);
           print("----USER SAVED----");
-          showRewardDialog();
+
+          AppCommonFunction.showRewardDialog(
+            rewardAmount: "1000",
+            onPressed: (){
+              Get.offAll(() => AreaPropertyScreenUI());
+            }
+          );
         }
 
       }
@@ -275,7 +288,9 @@ class _EnterOtpScreenUIState extends State<EnterOtpScreenUI> {
 
   }
 
-  showRewardDialog(){
+
+
+  /*showRewardDialog(){
     Get.defaultDialog(
       content: Column(
         mainAxisAlignment: MainAxisAlignment.center,
@@ -302,7 +317,7 @@ class _EnterOtpScreenUIState extends State<EnterOtpScreenUI> {
         ],
       ),
     );
-  }
+  }*/
 
   /// resend sms
   void resendSMS(){
@@ -376,7 +391,7 @@ class _EnterOtpScreenUIState extends State<EnterOtpScreenUI> {
     });
   }
 
-  _onOtpCallBack(String otpCode, bool isAutofill) {
+  /*_onOtpCallBack(String otpCode, bool isAutofill) {
     setState(() {
       this._otpCode = otpCode;
       if (otpCode.length == _otpCodeLength && isAutofill) {
@@ -390,9 +405,9 @@ class _EnterOtpScreenUIState extends State<EnterOtpScreenUI> {
         _enableButton = false;
       }
     });
-  }
+  }*/
 
-  _verifyOtpCode() {
+  /*_verifyOtpCode() {
     FocusScope.of(context).requestFocus(new FocusNode());
     Timer(Duration(milliseconds: 4000), () {
       setState(() {
@@ -401,7 +416,7 @@ class _EnterOtpScreenUIState extends State<EnterOtpScreenUI> {
       });
 
     });
-  }
+  }*/
 
 
 }

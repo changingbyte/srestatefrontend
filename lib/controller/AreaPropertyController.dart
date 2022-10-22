@@ -1,8 +1,10 @@
 import 'dart:convert';
 import 'package:http/http.dart' as http;
-import 'package:croma_brokrage/utils/AppCommonFunction.dart';
-import 'package:croma_brokrage/utils/AppString.dart';
+import 'package:brokerBook/utils/AppCommonFunction.dart';
+import 'package:brokerBook/utils/AppString.dart';
 import 'package:get/get.dart';
+
+import '../utils/ApiUtils.dart';
 
 class AreaPropertyController extends GetxController{
 
@@ -21,7 +23,7 @@ class AreaPropertyController extends GetxController{
     try{
 
       http.Response response = await http.get(
-        Uri.parse("http://srestateapi.herokuapp.com/api/v1/property/area/"),
+        Uri.parse("${ApiUtils.BASE_URL}api/v1/property/area/"),
         headers: {
           "Accept": "application/json",
           "Authorization" : "Token $token"
@@ -69,7 +71,7 @@ class AreaPropertyController extends GetxController{
     try{
 
       http.Response response = await http.get(
-        Uri.parse("http://srestateapi.herokuapp.com/api/v1/property/estate_type/"),
+        Uri.parse("${ApiUtils.BASE_URL}api/v1/property/estate_type/"),
         headers: {
           "Accept": "application/json",
           "Authorization" : "Token $token"
@@ -127,7 +129,7 @@ class AreaPropertyController extends GetxController{
       );
 
       http.Response response = await http.post(
-        Uri.parse("http://srestateapi.herokuapp.com/api/v1/property/broker/create/"),
+        Uri.parse("${ApiUtils.BASE_URL}api/v1/property/broker/create/"),
         headers: {
           "Content-Type": "application/json",
           "Authorization" : "Token $token"

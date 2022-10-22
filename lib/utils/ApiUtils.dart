@@ -1,6 +1,7 @@
 class ApiUtils {
 
-  static const String BASE_URL = "https://srestateapi.herokuapp.com/users/";
+  //static const String BASE_URL = "https://srestateapi.herokuapp.com/";
+  static const String BASE_URL = "https://srestate-dev-app-9z8ml.ondigitalocean.app/";
 
 
   static const String ACCEPT = "Accept";

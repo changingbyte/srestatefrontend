@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:croma_brokrage/utils/AppColors.dart';
-import 'package:croma_brokrage/utils/AppString.dart';
+import 'package:brokerBook/utils/AppColors.dart';
+import 'package:brokerBook/utils/AppString.dart';
 
 // ignore: must_be_immutable
 class TextFormPasswordField extends StatelessWidget {
@@ -76,10 +76,4 @@ class TextFormPasswordField extends StatelessWidget {
     );
   }
 }
-
-
-
-
-
-
 

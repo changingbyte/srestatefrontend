@@ -1,6 +1,6 @@
-import 'package:croma_brokrage/helper/PreferenceHelper.dart';
-import 'package:croma_brokrage/widgets/EstateCardList.dart';
-import 'package:croma_brokrage/widgets/Txt.dart';
+import 'package:brokerBook/helper/PreferenceHelper.dart';
+import 'package:brokerBook/widgets/EstateCardList.dart';
+import 'package:brokerBook/widgets/Txt.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:multi_select_item/multi_select_item.dart';
@@ -29,7 +29,7 @@ class _SaleListScreenUIState extends State<SaleListScreenUI> {
     Future.delayed(Duration.zero, () {
       homeController.deselectItems();
       homeController.selectedEstateList.clear();
-
+      searchModuleController.saleEstateList.clear();
       searchModuleController.progressDataLoading(true);
     });
 
@@ -44,8 +44,8 @@ class _SaleListScreenUIState extends State<SaleListScreenUI> {
         builder: (SearchModuleController controller) {
           return controller.isDataLoading
             ? AppCommonFunction.circularIndicator()
-            : controller.saleEstateList.length < 1
-              ? AppCommonFunction.noDataFound()
+            : controller.saleEstateList.isEmpty
+              ? AppCommonFunction.lottieAnimation(path: "ic_no_contacts.json",height: 200)
               : EstateCardList(
                   homeController: homeController,
                   estateList: controller.saleEstateList,

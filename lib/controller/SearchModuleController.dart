@@ -1,13 +1,14 @@
 // ignore_for_file: unnecessary_null_comparison
 
 import 'dart:convert';
-import 'package:croma_brokrage/utils/AppCommonFunction.dart';
-import 'package:croma_brokrage/utils/AppString.dart';
+import 'package:brokerBook/utils/AppCommonFunction.dart';
+import 'package:brokerBook/utils/AppString.dart';
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 import 'package:multi_select_item/multi_select_item.dart';
 
 import '../model/EstateListCommonResponse.dart';
+import '../utils/ApiUtils.dart';
 
 class SearchModuleController extends GetxController{
   MultiSelectController myMultiSelectController = MultiSelectController();
@@ -23,7 +24,7 @@ class SearchModuleController extends GetxController{
   Future<EstateListCommonResponse> buyEstateListApi({required String token}) async {
     try{
       http.Response response = await http.get(
-        Uri.parse("http://srestateapi.herokuapp.com/api/v1/property/estate/buy/"),
+        Uri.parse("${ApiUtils.BASE_URL}api/v1/property/estate/buy/"),
         headers: {
           "Accept": "application/json",
           "Authorization" : "Token $token"
@@ -70,7 +71,7 @@ class SearchModuleController extends GetxController{
   Future<EstateListCommonResponse> saleEstateListApi({required String token}) async {
     try{
       http.Response response = await http.get(
-        Uri.parse("http://srestateapi.herokuapp.com/api/v1/property/estate/sell/"),
+        Uri.parse("${ApiUtils.BASE_URL}api/v1/property/estate/sell/"),
         headers: {
           "Accept": "application/json",
           "Authorization" : "Token $token"

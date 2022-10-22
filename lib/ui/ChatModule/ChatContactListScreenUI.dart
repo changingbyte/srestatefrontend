@@ -1,9 +1,9 @@
 // ignore_for_file: unnecessary_null_comparison
 
-import 'package:croma_brokrage/helper/PreferenceHelper.dart';
-import 'package:croma_brokrage/ui/ChatModule/ChatScreenUI.dart';
-import 'package:croma_brokrage/widgets/ScaffoldWidget.dart';
-import 'package:croma_brokrage/widgets/Txt.dart';
+import 'package:brokerBook/helper/PreferenceHelper.dart';
+import 'package:brokerBook/ui/ChatModule/ChatScreenUI.dart';
+import 'package:brokerBook/widgets/ScaffoldWidget.dart';
+import 'package:brokerBook/widgets/Txt.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
@@ -41,7 +41,9 @@ class _ChatContactListScreenUIState extends State<ChatContactListScreenUI> {
         builder: (ContactListController controller) {
           return controller.isDataLoading
             ? AppCommonFunction.circularIndicator()
-            : ListView.builder(
+            :   controller.contactListResponse.results!.isEmpty
+              ? AppCommonFunction.lottieAnimation(path: "ic_no_contacts.json",height: 200)
+              : ListView.builder(
             itemCount: controller.contactListResponse.results!.length,
             itemBuilder: (context, index) {
               return Padding(
@@ -78,7 +80,7 @@ class _ChatContactListScreenUIState extends State<ChatContactListScreenUI> {
                                     ? ""
                                     : controller.contactListResponse.results![index].lastMessage!.receiverName}",fontWeight: FontWeight.w600,fontSize: 18),
 
-                               Txt("${AppCommonFunction.timestampToDatetime(controller.contactListResponse.results![index].timestamp!)}",maxLines: 1,overflow: TextOverflow.ellipsis,fontSize: 14),
+                               Txt("${AppCommonFunction.timestampToDatetime(controller.contactListResponse.results![index].timestamp!,false)}",maxLines: 1,overflow: TextOverflow.ellipsis,fontSize: 14),
                               ],
                             ),
 

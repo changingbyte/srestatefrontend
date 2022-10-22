@@ -2,13 +2,14 @@
 
 import 'package:get/get.dart';
 import 'dart:convert';
-import 'package:croma_brokrage/utils/AppCommonFunction.dart';
-import 'package:croma_brokrage/utils/AppString.dart';
+import 'package:brokerBook/utils/AppCommonFunction.dart';
+import 'package:brokerBook/utils/AppString.dart';
 import 'package:http/http.dart' as http;
 import 'package:multi_select_item/multi_select_item.dart';
 
 import '../model/EstateListCommonResponse.dart';
 import '../model/FilterDataResponse.dart';
+import '../utils/ApiUtils.dart';
 
 class HomeController extends GetxController{
 
@@ -27,24 +28,24 @@ class HomeController extends GetxController{
     String filterAreaListTitle = "Area";
 
   List<String> filterPropertyTypeList = [];
-  String filterPropertyTypeTitle = "Type";
+  String filterPropertyTypeTitle = "Status";
 
   List<String> filterFurnitureList = [];
   String filterFurnitureTitle = "Furniture Type";
 
   List<String> filterEstateCategoryList = [];
-  String filterEstateCategoryTitle = "Estate Status";
+  String filterEstateCategoryTitle = "Type";
 
 
   List<num> filterBudgetList = [];
   num intervalValue = 0;
 
 
-  List<String> filterBHKList = [];
-  String filterBHKTitle = "BHK";
+  List<int> filterBHKList = [];
+  int filterBHKTitle = 0;
 
 
-  Future<EstateListCommonResponse> estateListApi({required String token,List<String>? area,List<String>? estate_status,List<String>? no_of_bedrooms,
+  Future<EstateListCommonResponse> estateListApi({required String token,List<String>? area,List<String>? estate_status,List<String>? estate_type,List<int>? no_of_bedrooms,
     List<String>? apartment,List<String>? budget, List<String>? furniture}) async {
 
     /*print("area  ::  $area");
@@ -59,6 +60,7 @@ class HomeController extends GetxController{
       var payload = jsonEncode({
         "area" : area,
         "estate_status": estate_status,
+        "estate_type":estate_type,
         "number_of_bedrooms": no_of_bedrooms,
         "apartment": apartment,
         "budget":budget,
@@ -69,7 +71,7 @@ class HomeController extends GetxController{
 
 
       http.Response response = await http.post(
-        Uri.parse("http://srestateapi.herokuapp.com/api/v1/property/estate/filter_query/"),
+        Uri.parse("${ApiUtils.BASE_URL}api/v1/property/estate/filter_query/"),
         headers: {
           "Content-Type": "application/json",
           "Authorization" : "Token $token"
@@ -118,7 +120,7 @@ class HomeController extends GetxController{
     try{
 
       http.Response response = await http.get(
-          Uri.parse("http://srestateapi.herokuapp.com/api/v1/property/estate/filter_details/"),
+          Uri.parse("${ApiUtils.BASE_URL}api/v1/property/estate/filter_details/"),
           headers: {
             "Content-Type": "application/json",
             "Authorization" : "Token $token"
@@ -195,7 +197,7 @@ class HomeController extends GetxController{
     update();
   }
 
-  void updateBHKTitle(String type){
+  void updateBHKTitle(int type){
     filterBHKTitle = type;
     update();
   }

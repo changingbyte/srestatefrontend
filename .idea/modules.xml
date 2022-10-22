@@ -2,8 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/croma_brokrage.iml" filepath="$PROJECT_DIR$/croma_brokrage.iml" />
-      <module fileurl="file://$PROJECT_DIR$/android/croma_brokrage_android.iml" filepath="$PROJECT_DIR$/android/croma_brokrage_android.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/srestatefrontend.iml" filepath="$PROJECT_DIR$/.idea/srestatefrontend.iml" />
     </modules>
   </component>
 </project>

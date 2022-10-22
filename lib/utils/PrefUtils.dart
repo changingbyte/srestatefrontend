@@ -30,6 +30,8 @@ class PrefUtils{
   static const String SP_LOGIN_REG_ID = "reg_id";
   static const String SP_PIN = "pin_code";
   static const String IS_USERNEW = "IsUserNew";
+  static const String SHOW_INTRO = "showIntro";
+  static const String IS_PROFILE_COMPLETE = "isProfileComplete";
   static const String IS_RESTORE_WALLET = "IsRestoreWallet";
   static const String APP_Security_Lock = "app_security_lock";
   static const String Pattern_Lock = "pattern_lock";

@@ -1,13 +1,13 @@
 import 'dart:convert';
 
-import 'package:croma_brokrage/controller/OnbordingController.dart';
-import 'package:croma_brokrage/utils/AppColors.dart';
-import 'package:croma_brokrage/utils/AppCommonFunction.dart';
-import 'package:croma_brokrage/utils/AppString.dart';
-import 'package:croma_brokrage/utils/FieldValidator.dart';
-import 'package:croma_brokrage/utils/PrefUtils.dart';
-import 'package:croma_brokrage/widgets/TextFormInputField.dart';
-import 'package:croma_brokrage/widgets/WidgetButton.dart';
+import 'package:brokerBook/controller/OnbordingController.dart';
+import 'package:brokerBook/utils/AppColors.dart';
+import 'package:brokerBook/utils/AppCommonFunction.dart';
+import 'package:brokerBook/utils/AppString.dart';
+import 'package:brokerBook/utils/FieldValidator.dart';
+import 'package:brokerBook/utils/PrefUtils.dart';
+import 'package:brokerBook/widgets/TextFormInputField.dart';
+import 'package:brokerBook/widgets/WidgetButton.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_statusbarcolor_ns/flutter_statusbarcolor_ns.dart';
 
@@ -38,8 +38,8 @@ class _EnterNumberScreenUIState extends State<EnterNumberScreenUI> {
 
   @override
   Widget build(BuildContext context) {
-    FlutterStatusbarcolor.setStatusBarColor(AppColors.primaryColor);
-    FlutterStatusbarcolor.setStatusBarWhiteForeground(true);
+    //FlutterStatusbarcolor.setStatusBarColor(AppColors.primaryColor);
+    //FlutterStatusbarcolor.setStatusBarWhiteForeground(true);
     return SafeArea(
       child: Scaffold(
           body: SingleChildScrollView(
@@ -230,6 +230,7 @@ class _EnterNumberScreenUIState extends State<EnterNumberScreenUI> {
 
       prefs.setString(PrefUtils.USER_DATA, json.encode(onBoardingController.numberApiResponse));
       PreferenceHelper().saveUserData(onBoardingController.numberApiResponse);
+      PreferenceHelper().saveIsProfileCompleted(onBoardingController.numberApiResponse.isProfileCompleted!);
 
       onBoardingController.progressDataLoading(false);
       AppCommonFunction.flutterToast("Success", true);

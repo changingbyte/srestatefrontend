@@ -1,7 +1,8 @@
+import 'package:brokerBook/utils/ApiUtils.dart';
 import 'package:get/get.dart';
 import 'dart:convert';
-import 'package:croma_brokrage/utils/AppCommonFunction.dart';
-import 'package:croma_brokrage/utils/AppString.dart';
+import 'package:brokerBook/utils/AppCommonFunction.dart';
+import 'package:brokerBook/utils/AppString.dart';
 import 'package:http/http.dart' as http;
 import 'package:multi_select_item/multi_select_item.dart';
 
@@ -22,7 +23,7 @@ class EstateListController extends GetxController{
 
 
       http.Response response = await http.post(
-        Uri.parse("http://srestateapi.herokuapp.com/api/v1/property/estate/filter_query/"),
+        Uri.parse("${ApiUtils.BASE_URL}api/v1/property/estate/filter_query/"),
         headers: {
           "Content-Type": "application/json",
           "Authorization" : "Token $token"

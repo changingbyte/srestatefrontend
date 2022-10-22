@@ -1,7 +1,7 @@
 import 'dart:convert';
 import 'package:contacts_service/contacts_service.dart';
-import 'package:croma_brokrage/utils/AppCommonFunction.dart';
-import 'package:croma_brokrage/utils/AppString.dart';
+import 'package:brokerBook/utils/AppCommonFunction.dart';
+import 'package:brokerBook/utils/AppString.dart';
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 

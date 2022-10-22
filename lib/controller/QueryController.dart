@@ -4,6 +4,7 @@ import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 
 import '../model/SendMessageResponse.dart';
+import '../utils/ApiUtils.dart';
 import '../utils/AppCommonFunction.dart';
 import '../utils/AppString.dart';
 
@@ -32,7 +33,7 @@ class QueryController extends GetxController{
       });
 
       http.Response response = await http.post(
-        Uri.parse("http://srestateapi.herokuapp.com/api/v1/property/estate/sendmessage/"),
+        Uri.parse("${ApiUtils.BASE_URL}api/v1/property/estate/sendmessage/"),
         headers: {
           "Content-Type": "application/json",
           "Authorization" : "Token $token"

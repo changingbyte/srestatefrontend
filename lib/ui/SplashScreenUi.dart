@@ -1,7 +1,7 @@
 
 import 'package:animated_text/animated_text.dart';
-import 'package:croma_brokrage/utils/AppColors.dart';
-import 'package:croma_brokrage/utils/AppString.dart';
+import 'package:brokerBook/utils/AppColors.dart';
+import 'package:brokerBook/utils/AppString.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -9,6 +9,7 @@ import '../helper/PreferenceHelper.dart';
 import '../widgets/Txt.dart';
 import 'DashboardModule/DashboardScreenUI.dart';
 import 'EnterNumberScreenUI.dart';
+import 'IntroScreenUI.dart';
 
 class SplashScreenUi extends StatefulWidget {
   const SplashScreenUi({Key? key}) : super(key: key);
@@ -31,7 +32,12 @@ class _SplashScreenUiState extends State<SplashScreenUi> with TickerProviderStat
         Get.off(()=> DashboardScreenUI(),);
       }
       else{
-        Get.off(()=> EnterNumberScreenUI(),);
+        if(PreferenceHelper().getShowIntro()){
+          Get.off(()=> IntroScreenUI(),);
+        }else{
+          Get.off(()=> EnterNumberScreenUI(),);
+        }
+
       }
 
       //Get.off(()=> EnterNumberScreenUI(),);

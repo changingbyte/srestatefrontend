@@ -2,7 +2,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:croma_brokrage/utils/AppColors.dart';
+import 'package:brokerBook/utils/AppColors.dart';
 
 import 'Txt.dart';
 
@@ -12,18 +12,22 @@ class WidgetButton extends StatelessWidget {
     required this.text,
     this.width = 0,
     required this.onPressed,
+    this.fontsize =20,
+    this.height =44,
   });
 
   final String text;
   double width;
   final GestureTapCallback onPressed;
+  double fontsize;
+  double height;
 
   @override
   Widget build(BuildContext context,) {
     return InkWell(
       onTap: onPressed,
       child: Container(
-        height: 44,
+        height: height,
         width: width == 0 ? Get.width/2.5 : width ,
         decoration: BoxDecoration(
           color: AppColors.primaryColor,
@@ -31,7 +35,7 @@ class WidgetButton extends StatelessWidget {
         ),
 
         child: Center(
-          child: Txt( text,fontSize: 20,color: AppColors.bgColor,fontWeight: FontWeight.bold),
+          child: Txt( text,fontSize: fontsize,color: AppColors.bgColor,fontWeight: FontWeight.bold),
         ),
         ),
     );

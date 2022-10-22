@@ -3,18 +3,19 @@
 import 'dart:async';
 import 'dart:convert';
 
-import 'package:croma_brokrage/helper/PreferenceHelper.dart';
-import 'package:croma_brokrage/ui/ChatModule/ViewProfileScreenUI.dart';
-import 'package:croma_brokrage/ui/DashboardModule/DashboardScreenUI.dart';
-import 'package:croma_brokrage/utils/AppCommonFunction.dart';
-import 'package:croma_brokrage/utils/AppString.dart';
-import 'package:croma_brokrage/utils/FieldValidator.dart';
-import 'package:croma_brokrage/widgets/ScaffoldWidget.dart';
-import 'package:croma_brokrage/widgets/TextFormInputField.dart';
-import 'package:croma_brokrage/widgets/WidgetButton.dart';
+import 'package:brokerBook/helper/PreferenceHelper.dart';
+import 'package:brokerBook/ui/ChatModule/ViewProfileScreenUI.dart';
+import 'package:brokerBook/ui/DashboardModule/DashboardScreenUI.dart';
+import 'package:brokerBook/utils/AppCommonFunction.dart';
+import 'package:brokerBook/utils/AppString.dart';
+import 'package:brokerBook/utils/FieldValidator.dart';
+import 'package:brokerBook/widgets/ScaffoldWidget.dart';
+import 'package:brokerBook/widgets/TextFormInputField.dart';
+import 'package:brokerBook/widgets/WidgetButton.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_datetime_picker/flutter_datetime_picker.dart';
 import 'package:flutter_keyboard_visibility/flutter_keyboard_visibility.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:keyboard_visibility/keyboard_visibility.dart';
@@ -129,7 +130,7 @@ class _ChatScreenUIState extends State<ChatScreenUI> {
           child: Padding(
             padding: const EdgeInsets.all(5.0),
             child: CircleAvatar(
-              child: Txt("PC"),
+              child: Icon(Icons.account_circle,size: 35),
             ),
           ),
         ),
@@ -143,13 +144,14 @@ class _ChatScreenUIState extends State<ChatScreenUI> {
         onWillPop: () {
           Navigator.pop(context,true);
           return Future<bool>.value(true);
-
         },
         child: Container(
           height: Get.height,
           width: Get.width,
+          padding: EdgeInsets.all(0),
+          margin:  EdgeInsets.all(0),
           decoration: BoxDecoration(
-            image: DecorationImage(image: NetworkImage("https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRHd8tHThvuyWSG3GiZj6ogDXtTaNj-QLrD_U0IjCYWeuwx73uKFhNGSNa5Pxxq1Y5ukR8&usqp=CAU"),opacity: 0.5,)
+            image: DecorationImage(image: AssetImage(AppString.imagesBackgroundPath+"ic_chat_bg.png"),fit: BoxFit.cover,opacity: 0.8)
           ),
           child: GetBuilder(
             init: ChatController(),
@@ -181,27 +183,32 @@ class _ChatScreenUIState extends State<ChatScreenUI> {
                                       padding: const EdgeInsets.only(top: 10.0),
                                       child: Container(
                                         constraints: BoxConstraints(maxWidth: 230),
-                                        color: Colors.black54.withOpacity(0.045),
-                                        child: Wrap(
-                                          children: [
+                                        //color: Colors.black54.withOpacity(0.045),
+                                        child: Card(
+                                          color: Colors.lightBlue.shade50,
+                                          child: Padding(
+                                            padding: const EdgeInsets.all(8.0),
+                                            child: Wrap(
+                                              children: [
+                                              Container(
+                                                padding: const EdgeInsets.all(2.0),
+                                                alignment: Alignment.bottomRight,
+                                                child:Text("${controller.chatDataList[index].description}",
+                                                  style: TextStyle(color: Colors.black),
+                                                ),
+                                              ),
 
-                                          Container(
-                                            padding: const EdgeInsets.all(2.0),
-                                            alignment: Alignment.bottomRight,
-                                            child:Text("${controller.chatDataList[index].description}",
-                                              style: TextStyle(color: Colors.black),
-                                            ),
+                                              Container(
+                                                padding: const EdgeInsets.all(2.0),
+                                                alignment: Alignment.bottomLeft,
+                                                child:Text("${AppCommonFunction.timestampToDatetime(controller.chatDataList[index].timestamp!,true)} ",
+                                                  style: TextStyle(color: Colors.black54),
+                                                ),
+                                              ),
+
+                                            ],),
                                           ),
-
-                                          Container(
-                                            padding: const EdgeInsets.all(2.0),
-                                            alignment: Alignment.bottomLeft,
-                                            child:Text("${AppCommonFunction.timestampToDatetime(controller.chatDataList[index].timestamp!)} ",
-                                              style: TextStyle(color: Colors.black54),
-                                            ),
-                                          ),
-
-                                        ],),
+                                        ),
                                     ),
                                   ),
                                   SizedBox(width: 5,),
@@ -224,27 +231,33 @@ class _ChatScreenUIState extends State<ChatScreenUI> {
                                     padding: const EdgeInsets.only(top: 10.0),
                                     child: Container(
                                       constraints: BoxConstraints(maxWidth: 230),
-                                      color: Colors.black54.withOpacity(0.045),
-                                      child: Wrap(
-                                        children: [
+                                      //color: Colors.black54.withOpacity(0.045),
+                                      child: Card(
+                                        color: Colors.greenAccent.shade100,
+                                        child: Padding(
+                                          padding: const EdgeInsets.all(8.0),
+                                          child: Wrap(
+                                            children: [
 
-                                          Container(
-                                            padding: const EdgeInsets.all(2.0),
-                                            alignment: Alignment.bottomLeft,
-                                            child:Text("${controller.chatDataList[index].description}",
-                                              style: TextStyle(color: Colors.black),
-                                            ),
-                                          ),
+                                              Container(
+                                                padding: const EdgeInsets.all(2.0),
+                                                alignment: Alignment.bottomLeft,
+                                                child:Text("${controller.chatDataList[index].description}",
+                                                  style: TextStyle(color: Colors.black),
+                                                ),
+                                              ),
 
-                                          Container(
-                                            padding: const EdgeInsets.all(2.0),
-                                            alignment: Alignment.bottomRight,
-                                            child:Text("${AppCommonFunction.timestampToDatetime(controller.chatDataList[index].timestamp!)} ",
-                                              style: TextStyle(color: Colors.black54),
-                                            ),
-                                          ),
+                                              Container(
+                                                padding: const EdgeInsets.all(2.0),
+                                                alignment: Alignment.bottomRight,
+                                                child:Text("${AppCommonFunction.timestampToDatetime(controller.chatDataList[index].timestamp!,true)} ",
+                                                  style: TextStyle(color: Colors.black54),
+                                                ),
+                                              ),
 
-                                        ],),
+                                            ],),
+                                        ),
+                                      ),
                                     ),
                                   ),
 
@@ -294,14 +307,14 @@ class _ChatScreenUIState extends State<ChatScreenUI> {
                               showModalBottomSheet(
                                 context: context,
                                 barrierColor: Colors.transparent,
-                                backgroundColor: AppColors.blueColor,
+                                backgroundColor: AppColors.primaryColor,
                                 elevation: 10,
                                 shape: RoundedRectangleBorder(
                                   borderRadius: BorderRadius.circular(10.0),
                                 ),
                                 builder: (BuildContext context) {
                                   return SizedBox(
-                                    height: 180,
+                                    height: 120,
                                     child: Center(
                                       child: Row(
                                         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -312,7 +325,7 @@ class _ChatScreenUIState extends State<ChatScreenUI> {
                                               showModalBottomSheet(
                                                 context: context,
                                                 barrierColor: Colors.transparent,
-                                                backgroundColor: AppColors.blueColor,
+                                                backgroundColor: AppColors.white,
                                                 elevation: 50,
                                                 shape: RoundedRectangleBorder(
                                                   borderRadius: BorderRadius.circular(10.0),
@@ -329,7 +342,7 @@ class _ChatScreenUIState extends State<ChatScreenUI> {
 
                                                           SizedBox(height: 10),
 
-                                                          Txt("Set Reminder",fontWeight: FontWeight.w600,fontSize: 22,color: AppColors.white),
+                                                          Txt("Set Reminder",fontWeight: FontWeight.w500,fontSize: 22,color: AppColors.primaryColor),
 
                                                           Padding(
                                                             padding: EdgeInsets.only(top: 12,bottom: 12),
@@ -337,7 +350,7 @@ class _ChatScreenUIState extends State<ChatScreenUI> {
                                                               height: 40,
                                                               width: Get.width/1.1,
                                                               decoration: BoxDecoration(
-                                                                  color: Colors.blue,
+                                                                  color: AppColors.white,
                                                                   borderRadius: BorderRadius.all(Radius.circular(11))
                                                               ),
                                                               child: Row(
@@ -346,7 +359,7 @@ class _ChatScreenUIState extends State<ChatScreenUI> {
 
                                                                   Padding(
                                                                     padding: EdgeInsets.only(left: 10.0),
-                                                                    child: Txt("${controller.selectedDateTime}",fontSize: 18,fontWeight: FontWeight.w500,color: Colors.white),
+                                                                    child: Txt("${controller.selectedDateTime}",fontSize: 18,fontWeight: FontWeight.w500,color: AppColors.primaryColor),
                                                                   ),
 
                                                                   InkWell(
@@ -414,7 +427,7 @@ class _ChatScreenUIState extends State<ChatScreenUI> {
                                             child: Column(
                                               mainAxisAlignment: MainAxisAlignment.center,
                                               children: [
-                                                CircleAvatar(radius: 30),
+                                                Icon(Icons.notifications_active,size: 35,color: Colors.white),
                                                 SizedBox(height: 5),
                                                 Txt("Reminder",fontWeight: FontWeight.w600,color: Colors.white),
                                               ],
@@ -422,10 +435,11 @@ class _ChatScreenUIState extends State<ChatScreenUI> {
                                           ),
                                           InkWell(
                                             onTap: (){
+
                                               showModalBottomSheet(
                                                 context: context,
                                                 barrierColor: Colors.transparent,
-                                                backgroundColor: AppColors.blueColor,
+                                                backgroundColor: AppColors.primaryColor,
                                                 elevation: 50,
                                                 shape: RoundedRectangleBorder(
                                                   borderRadius: BorderRadius.circular(10.0),
@@ -437,10 +451,15 @@ class _ChatScreenUIState extends State<ChatScreenUI> {
                                                       child: Column(
                                                         children: <Widget>[
                                                           SizedBox(height: 10),
+                                                          Txt("Properties",fontWeight: FontWeight.w600,color: Colors.white,fontSize: 21),
 
-                                                          EstateCardList(
-                                                            homeController: homeController,
-                                                            estateList: homeController.estateList,
+                                                          SizedBox(height: 10),
+
+                                                          Expanded(
+                                                            child: EstateCardList(
+                                                              homeController: homeController,
+                                                              estateList: homeController.estateList,
+                                                            ),
                                                           ),
 
                                                         ],
@@ -453,7 +472,7 @@ class _ChatScreenUIState extends State<ChatScreenUI> {
                                             child: Column(
                                               mainAxisAlignment: MainAxisAlignment.center,
                                               children: [
-                                                CircleAvatar(radius: 30),
+                                                FaIcon(FontAwesomeIcons.buildingCircleArrowRight,size: 35,color: Colors.white),
                                                 SizedBox(height: 5),
                                                 Txt("Properties",fontWeight: FontWeight.w600,color: Colors.white),
                                               ],

@@ -1,23 +1,27 @@
 // ignore_for_file: must_be_immutable
 
 import 'package:carousel_slider/carousel_slider.dart';
-import 'package:croma_brokrage/ui/DashboardModule/QueryContactListScreenUI.dart';
-import 'package:croma_brokrage/ui/DashboardModule/QueryScreenUI.dart';
-import 'package:croma_brokrage/ui/MapScreenUI.dart';
-import 'package:croma_brokrage/utils/AppColors.dart';
-import 'package:croma_brokrage/utils/AppString.dart';
-import 'package:croma_brokrage/widgets/RoundedButtonWidget.dart';
+import 'package:brokerBook/ui/DashboardModule/QueryContactListScreenUI.dart';
+import 'package:brokerBook/ui/DashboardModule/QueryScreenUI.dart';
+import 'package:brokerBook/ui/MapScreenUI.dart';
+import 'package:brokerBook/utils/AppColors.dart';
+import 'package:brokerBook/utils/AppString.dart';
+import 'package:brokerBook/widgets/RoundedButtonWidget.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
 
 import '../../controller/HomeController.dart';
 import '../../controller/PropertyDetailsController.dart';
 import '../../helper/PreferenceHelper.dart';
 import '../../model/EstateListCommonResponse.dart';
+import '../../model/FilterDataResponse.dart';
+import '../../utils/ApiCommonMethod.dart';
 import '../../utils/AppCommonFunction.dart';
 import '../../widgets/EstateCardList.dart';
 import '../../widgets/Txt.dart';
+import '../../widgets/WidgetButton.dart';
 
 
 class PropertyDetailsScreenUI extends StatefulWidget {
@@ -38,13 +42,16 @@ class _PropertyDetailsScreenUIState extends State<PropertyDetailsScreenUI> {
   var lat = 0.0000;
   var long = 0.0000;
   bool isLoading = false;
-
+  Set<Marker> _marker ={};
 
   @override
   void initState() {
     super.initState();
     getSuggestion();
   }
+
+
+
 
   @override
   Widget build(BuildContext context) {
@@ -84,7 +91,8 @@ class _PropertyDetailsScreenUIState extends State<PropertyDetailsScreenUI> {
                               ),
                             ),
 
-                            InkWell(
+                            widget.estateList.isMyProperty!
+                              ? InkWell(
                               onTap: () {
                                 print("Estate ID  ::  ${widget.estateList.id}");
                                 homeController.selectedEstateList.add(widget.estateList.id!);
@@ -94,7 +102,9 @@ class _PropertyDetailsScreenUIState extends State<PropertyDetailsScreenUI> {
                                 padding: EdgeInsets.only(right: 8.0),
                                 child: Icon(Icons.share,color: Colors.blueAccent,),
                               ),
-                            ),
+                            )
+                              : Container(),
+
                           ],
                         ),
                       ),
@@ -180,31 +190,42 @@ class _PropertyDetailsScreenUIState extends State<PropertyDetailsScreenUI> {
 
                             SizedBox(height: 20),
 
-                            Container(
+                            controller.suggestionResponse.data!.isNotEmpty
+                              ? Container(
                                 height: 220,
-                                child: controller.suggestionResponse.data!.isNotEmpty
-                                  ? Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Padding(
-                                      padding: EdgeInsets.only(left:12.0,top: 10,bottom: 0),
-                                      child: Txt("Suggestion",fontSize: 22,fontWeight: FontWeight.bold),
+                                child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Padding(
+                                    padding: EdgeInsets.only(left:12.0,top: 10,bottom: 0),
+                                    child: Txt("Suggestion",fontSize: 22,fontWeight: FontWeight.bold),
+                                  ),
+                                  Expanded(
+                                    child: EstateCardList(
+                                      estateList: controller.suggestionResponse.data!,
+                                      scrollDirection: Axis.horizontal,
+                                      homeController: homeController,
                                     ),
-                                    Expanded(
-                                      child: EstateCardList(
-                                        estateList: controller.suggestionResponse.data!,
-                                        scrollDirection: Axis.horizontal,
-                                        homeController: homeController,
-                                      ),
 
-                                    ),
-                                  ],
-                                )
-                                  : Container(),
-
-                              ),
+                                  ),
+                                ],
+                               ),
+                              )
+                              : Container(),
 
                             SizedBox(height: 10),
+
+                            Container(
+                              height: 200,
+                              child: GoogleMap(
+                                  onMapCreated: onMapCreated,
+                                  markers: _marker,
+                                  initialCameraPosition:
+                                  CameraPosition(
+                                    target:LatLng(21.1702,72.8311),
+                                    zoom: 11,
+                                  )),
+                            ),
 
                           ],
                         ),
@@ -293,5 +314,11 @@ class _PropertyDetailsScreenUIState extends State<PropertyDetailsScreenUI> {
     );
   }
 
+
+  void onMapCreated(GoogleMapController googleMapController){
+    setState(() {
+      _marker.add(Marker(markerId: MarkerId("id-1"),position: LatLng(21.1702,72.8311)));
+    });
+  }
 
 }
